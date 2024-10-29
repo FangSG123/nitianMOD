@@ -39,7 +39,7 @@ import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.WitherSkull;
+import net.minecraft.world.entity.projectile.SmallFireball;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -206,19 +206,17 @@ public class NaiLongEntity extends Monster implements PowerableMob, RangedAttack
 
         boolean isPowered = this.isPowered();
 
+        // Fire particle effects instead of wither particles
         for (int i = 0; i < 3; ++i) {
             double headX = this.getHeadX(i);
             double headY = this.getHeadY(i);
             double headZ = this.getHeadZ(i);
-            this.level().addParticle(ParticleTypes.SMOKE, headX + this.random.nextGaussian() * 0.3, headY + this.random.nextGaussian() * 0.3, headZ + this.random.nextGaussian() * 0.3, 0.0, 0.0, 0.0);
-            if (isPowered && this.level().random.nextInt(4) == 0) {
-                this.level().addParticle(ParticleTypes.ENTITY_EFFECT, headX + this.random.nextGaussian() * 0.3, headY + this.random.nextGaussian() * 0.3, headZ + this.random.nextGaussian() * 0.3, 0.7, 0.7, 0.5);
-            }
+            this.level().addParticle(ParticleTypes.FLAME, headX + this.random.nextGaussian() * 0.3, headY + this.random.nextGaussian() * 0.3, headZ + this.random.nextGaussian() * 0.3, 0.0, 0.0, 0.0);
         }
 
         if (this.getInvulnerableTicks() > 0) {
             for (int i = 0; i < 3; ++i) {
-                this.level().addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() + this.random.nextGaussian(), this.getY() + this.random.nextFloat() * 3.3F, this.getZ() + this.random.nextGaussian(), 0.7, 0.7, 0.9);
+                this.level().addParticle(ParticleTypes.FLAME, this.getX() + this.random.nextGaussian(), this.getY() + this.random.nextFloat() * 3.3F, this.getZ() + this.random.nextGaussian(), 0.7, 0.7, 0.9);
             }
         }
     }
@@ -342,6 +340,7 @@ public class NaiLongEntity extends Monster implements PowerableMob, RangedAttack
         this.performRangedAttack(headIndex, target.getX(), target.getEyeY() - 0.1, target.getZ(), headIndex == 0 && this.random.nextFloat() < 0.001F);
     }
 
+    // Change to fire small fireballs instead of Wither Skulls
     private void performRangedAttack(int headIndex, double x, double y, double z, boolean dangerous) {
         if (!this.isSilent()) {
             this.level().levelEvent(null, 1024, this.blockPosition(), 0);
@@ -354,13 +353,9 @@ public class NaiLongEntity extends Monster implements PowerableMob, RangedAttack
         double dy = y - headY;
         double dz = z - headZ;
 
-        WitherSkull skull = new WitherSkull(this.level(), this, dx, dy, dz);
-        skull.setOwner(this);
-        if (dangerous) {
-            skull.setDangerous(true);
-        }
-        skull.setPosRaw(headX, headY, headZ);
-        this.level().addFreshEntity(skull);
+        SmallFireball fireball = new SmallFireball(this.level(), this, dx, dy, dz);
+        fireball.setPosRaw(headX, headY, headZ);
+        this.level().addFreshEntity(fireball);
     }
 
     @Override
@@ -373,7 +368,7 @@ public class NaiLongEntity extends Monster implements PowerableMob, RangedAttack
             } else {
                 Entity attacker = source.getEntity();
                 if (this.isPowered()) {
-                    if (attacker instanceof WitherSkull) {
+                    if (attacker instanceof SmallFireball) {
                         return false;
                     }
                 }
