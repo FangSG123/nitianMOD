@@ -318,19 +318,16 @@ public class NaiLongEntity extends Monster implements PowerableMob, RangedAttack
 
     @Override
     protected SoundEvent getAmbientSound() {
-        System.out.println("1");
         return ModSounds.NAILONG_AMBIENT1.get();
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSource) {
-        System.out.println("2");
         return ModSounds.NAILONG_HURT.get();
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        System.out.println("3");
         return ModSounds.NAILONG_DEATH.get();
     }
 
@@ -398,7 +395,10 @@ public class NaiLongEntity extends Monster implements PowerableMob, RangedAttack
     @Override
     protected void dropCustomDeathLoot(DamageSource source, int looting, boolean recentlyHit) {
         super.dropCustomDeathLoot(source, looting, recentlyHit);
-        this.spawnAtLocation(ModItems.HuangTaoGuangTou.get(),64);
+        for(int i = 0;i <= 128 ; i++)
+        {
+            this.spawnAtLocation(ModItems.HuangTaoGuangTou.get());
+        }
     }
 
     @Override

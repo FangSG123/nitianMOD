@@ -13,13 +13,13 @@ public class ModSounds {
 
     // 注册自定义音效
     public static final RegistryObject<SoundEvent> NAILONG_AMBIENT1 = SOUND_EVENTS.register("entity.nailong.ambient1",
-            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("nailongmod", "entity.nailong.ambient1")));
+            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Main.MODID, "entity.nailong.ambient1")));
     public static final RegistryObject<SoundEvent> NAILONG_AMBIENT2 = SOUND_EVENTS.register("entity.nailong.ambient2",
-            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("nailongmod", "entity.nailong.ambient2")));
+            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Main.MODID, "entity.nailong.ambient2")));
 
     public static final RegistryObject<SoundEvent> NAILONG_HURT = SOUND_EVENTS.register("entity.nailong.hurt",
-            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("nailongmod", "entity.nailong.hurt")));
+            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Main.MODID, "entity.nailong.hurt")));
 
     public static final RegistryObject<SoundEvent> NAILONG_DEATH = SOUND_EVENTS.register("entity.nailong.death",
-            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("nailongmod", "entity.nailong.death")));
+            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Main.MODID, "entity.nailong.death")));
 }
