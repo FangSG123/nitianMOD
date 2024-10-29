@@ -3,8 +3,6 @@ package com.nailong.nailong;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -17,9 +15,9 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
-import net.minecraft.world.Difficulty;
 import net.minecraft.world.BossEvent.BossBarColor;
 import net.minecraft.world.BossEvent.BossBarOverlay;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -54,7 +52,6 @@ import java.util.function.Predicate;
 
 public class NaiLongEntity extends Monster implements PowerableMob, RangedAttackMob {
 
-    // Data Accessors for targets and invulnerability
     private static final EntityDataAccessor<Integer> DATA_TARGET_A = SynchedEntityData.defineId(NaiLongEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> DATA_TARGET_B = SynchedEntityData.defineId(NaiLongEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> DATA_TARGET_C = SynchedEntityData.defineId(NaiLongEntity.class, EntityDataSerializers.INT);
@@ -63,30 +60,21 @@ public class NaiLongEntity extends Monster implements PowerableMob, RangedAttack
 
     private static final int INVULNERABLE_TICKS = 220;
 
-    // Head rotation arrays
     private final float[] xRotHeads = new float[2];
     private final float[] yRotHeads = new float[2];
     private final float[] xRotOHeads = new float[2];
     private final float[] yRotOHeads = new float[2];
 
-    // Head update timers
     private final int[] nextHeadUpdate = new int[2];
     private final int[] idleHeadUpdates = new int[2];
 
-    // Block destruction timer
     private int destroyBlocksTick;
 
-    // Boss event for the boss bar
     private final ServerBossEvent bossEvent;
 
-    // Selector for valid living entities (excluding undead)
-    private static final Predicate<LivingEntity> LIVING_ENTITY_SELECTOR = (entity) ->
-            entity.getMobType() != MobType.UNDEAD && entity.attackable();
+    private static final Predicate<LivingEntity> LIVING_ENTITY_SELECTOR = (entity) -> entity.getMobType() != MobType.UNDEAD && entity.attackable();
 
-    // Targeting conditions similar to the vanilla Wither
-    private static final TargetingConditions TARGETING_CONDITIONS = TargetingConditions.forCombat()
-            .range(20.0)
-            .selector(LIVING_ENTITY_SELECTOR);
+    private static final TargetingConditions TARGETING_CONDITIONS = TargetingConditions.forCombat().range(20.0).selector(LIVING_ENTITY_SELECTOR);
 
     public NaiLongEntity(EntityType<? extends NaiLongEntity> entityType, Level level) {
         super(entityType, level);
@@ -150,14 +138,12 @@ public class NaiLongEntity extends Monster implements PowerableMob, RangedAttack
 
     @Override
     protected void registerGoals() {
-        // Goals similar to vanilla Wither
         this.goalSelector.addGoal(0, new WitherDoNothingGoal());
         this.goalSelector.addGoal(2, new RangedAttackGoal(this, 1.0D, 40, 20.0F));
         this.goalSelector.addGoal(5, new WaterAvoidingRandomFlyingGoal(this, 1.0D));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
 
-        // Targeting players and other living entities
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this, new Class[0]));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 0, false, false, LIVING_ENTITY_SELECTOR));
     }
@@ -189,7 +175,6 @@ public class NaiLongEntity extends Monster implements PowerableMob, RangedAttack
 
         super.aiStep();
 
-        // Update head rotations
         for (int i = 0; i < 2; ++i) {
             this.yRotOHeads[i] = this.yRotHeads[i];
             this.xRotOHeads[i] = this.xRotHeads[i];
@@ -221,7 +206,6 @@ public class NaiLongEntity extends Monster implements PowerableMob, RangedAttack
 
         boolean isPowered = this.isPowered();
 
-        // Particle effects for heads
         for (int i = 0; i < 3; ++i) {
             double headX = this.getHeadX(i);
             double headY = this.getHeadY(i);
@@ -232,7 +216,6 @@ public class NaiLongEntity extends Monster implements PowerableMob, RangedAttack
             }
         }
 
-        // Additional particle effects during invulnerability
         if (this.getInvulnerableTicks() > 0) {
             for (int i = 0; i < 3; ++i) {
                 this.level().addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() + this.random.nextGaussian(), this.getY() + this.random.nextFloat() * 3.3F, this.getZ() + this.random.nextGaussian(), 0.7, 0.7, 0.9);
@@ -243,11 +226,9 @@ public class NaiLongEntity extends Monster implements PowerableMob, RangedAttack
     @Override
     protected void customServerAiStep() {
         if (this.getInvulnerableTicks() > 0) {
-            // Handle invulnerability phase
             int invulTicks = this.getInvulnerableTicks() - 1;
             this.bossEvent.setProgress(1.0F - (float) invulTicks / INVULNERABLE_TICKS);
             if (invulTicks <= 0) {
-                // Explosion when invulnerability ends
                 this.level().explode(this, this.getX(), this.getEyeY(), this.getZ(), 7.0F, false, Level.ExplosionInteraction.MOB);
                 if (!this.isSilent()) {
                     this.level().globalLevelEvent(1023, this.blockPosition(), 0);
@@ -258,7 +239,6 @@ public class NaiLongEntity extends Monster implements PowerableMob, RangedAttack
                 this.heal(10.0F);
             }
         } else {
-            // Normal AI steps
             super.customServerAiStep();
 
             for (int j = 1; j < 3; ++j) {
@@ -268,7 +248,6 @@ public class NaiLongEntity extends Monster implements PowerableMob, RangedAttack
                         int index = j - 1;
                         this.idleHeadUpdates[index]++;
                         if (this.idleHeadUpdates[index] > 15) {
-                            // Perform ranged attack
                             float spread = 10.0F;
                             float verticalSpread = 5.0F;
                             double targetX = Mth.nextDouble(this.random, this.getX() - spread, this.getX() + spread);
@@ -299,14 +278,12 @@ public class NaiLongEntity extends Monster implements PowerableMob, RangedAttack
                 }
             }
 
-            // Set primary target
             if (this.getTarget() != null) {
                 this.setAlternativeTarget(0, this.getTarget().getId());
             } else {
                 this.setAlternativeTarget(0, 0);
             }
 
-            // Handle block destruction
             if (this.destroyBlocksTick > 0) {
                 --this.destroyBlocksTick;
                 if (this.destroyBlocksTick == 0 && ForgeEventFactory.getMobGriefingEvent(this.level(), this)) {
@@ -333,12 +310,10 @@ public class NaiLongEntity extends Monster implements PowerableMob, RangedAttack
                 }
             }
 
-            // Heal periodically
             if (this.tickCount % 20 == 0) {
                 this.heal(1.0F);
             }
 
-            // Update boss bar progress
             this.bossEvent.setProgress(this.getHealth() / this.getMaxHealth());
         }
     }
@@ -363,12 +338,10 @@ public class NaiLongEntity extends Monster implements PowerableMob, RangedAttack
         this.performRangedAttack(0, target);
     }
 
-    // Overloaded method to handle specific head attacks
     private void performRangedAttack(int headIndex, LivingEntity target) {
         this.performRangedAttack(headIndex, target.getX(), target.getEyeY() - 0.1, target.getZ(), headIndex == 0 && this.random.nextFloat() < 0.001F);
     }
 
-    // Method to spawn and fire WitherSkulls
     private void performRangedAttack(int headIndex, double x, double y, double z, boolean dangerous) {
         if (!this.isSilent()) {
             this.level().levelEvent(null, 1024, this.blockPosition(), 0);
@@ -465,7 +438,6 @@ public class NaiLongEntity extends Monster implements PowerableMob, RangedAttack
         // No-op to prevent being stuck in blocks
     }
 
-    // Helper methods for head positions
     private double getHeadX(int headIndex) {
         if (headIndex <= 0) {
             return this.getX();
@@ -488,7 +460,6 @@ public class NaiLongEntity extends Monster implements PowerableMob, RangedAttack
         }
     }
 
-    // Linear interpolation for rotation
     private float rotlerp(float current, float target, float maxChange) {
         float delta = Mth.wrapDegrees(target - current);
         if (delta > maxChange) {
@@ -500,19 +471,16 @@ public class NaiLongEntity extends Monster implements PowerableMob, RangedAttack
         return current + delta;
     }
 
-    // Static method to determine if a block can be destroyed
     public static boolean canDestroy(BlockState state) {
         return !state.isAir() && !state.is(BlockTags.WITHER_IMMUNE);
     }
 
-    // Make the entity invulnerable for a certain period
     public void makeInvulnerable() {
         this.setInvulnerableTicks(INVULNERABLE_TICKS);
         this.bossEvent.setProgress(0.0F);
         this.setHealth(this.getMaxHealth() / 3.0F);
     }
 
-    // Getters and setters for invulnerable ticks and alternative targets
     public int getInvulnerableTicks() {
         return this.entityData.get(DATA_ID_INV);
     }
@@ -529,7 +497,6 @@ public class NaiLongEntity extends Monster implements PowerableMob, RangedAttack
         this.entityData.set(DATA_TARGETS.get(index), targetId);
     }
 
-    // Boss bar progress update
     @Override
     public void tick() {
         super.tick();
@@ -538,26 +505,22 @@ public class NaiLongEntity extends Monster implements PowerableMob, RangedAttack
         }
     }
 
-    // Synchronize boss bar on entity death
     @Override
     public void die(DamageSource source) {
         super.die(source);
         this.bossEvent.removeAllPlayers();
     }
 
-    // Make entity immune to drowning
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
         return source.is(DamageTypes.DROWN) || super.isInvulnerableTo(source);
     }
 
-    // Ensure the entity has no gravity
     @Override
     public boolean isNoGravity() {
         return true;
     }
 
-    // Define entity attributes similar to the vanilla Wither
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, 300.0)
@@ -567,7 +530,6 @@ public class NaiLongEntity extends Monster implements PowerableMob, RangedAttack
                 .add(Attributes.ARMOR, 4.0);
     }
 
-    // Inner class to handle the Wither's invulnerability goal
     class WitherDoNothingGoal extends Goal {
         public WitherDoNothingGoal() {
             this.setFlags(EnumSet.of(Flag.MOVE, Flag.JUMP, Flag.LOOK));
