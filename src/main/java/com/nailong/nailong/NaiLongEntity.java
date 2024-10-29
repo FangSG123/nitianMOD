@@ -11,7 +11,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
@@ -44,6 +43,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.fml.common.Mod;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
@@ -318,17 +318,20 @@ public class NaiLongEntity extends Monster implements PowerableMob, RangedAttack
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return SoundEvents.WITHER_AMBIENT;
+        System.out.println("1");
+        return ModSounds.NAILONG_AMBIENT1.get();
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSource) {
-        return SoundEvents.WITHER_HURT;
+        System.out.println("2");
+        return ModSounds.NAILONG_HURT.get();
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return SoundEvents.WITHER_DEATH;
+        System.out.println("3");
+        return ModSounds.NAILONG_DEATH.get();
     }
 
     @Override
@@ -395,7 +398,7 @@ public class NaiLongEntity extends Monster implements PowerableMob, RangedAttack
     @Override
     protected void dropCustomDeathLoot(DamageSource source, int looting, boolean recentlyHit) {
         super.dropCustomDeathLoot(source, looting, recentlyHit);
-        this.spawnAtLocation(net.minecraft.world.item.Items.NETHER_STAR).setExtendedLifetime();
+        this.spawnAtLocation(ModItems.HuangTaoGuangTou.get(),64);
     }
 
     @Override
@@ -518,11 +521,11 @@ public class NaiLongEntity extends Monster implements PowerableMob, RangedAttack
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, 300.0)
-                .add(Attributes.MOVEMENT_SPEED, 0.6)
-                .add(Attributes.FLYING_SPEED, 0.6)
-                .add(Attributes.FOLLOW_RANGE, 40.0)
-                .add(Attributes.ARMOR, 4.0);
+                .add(Attributes.MAX_HEALTH, 100.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.4)
+                .add(Attributes.FLYING_SPEED, 0.4)
+                .add(Attributes.FOLLOW_RANGE, 30.0)
+                .add(Attributes.ARMOR, 1.0);
     }
 
     class WitherDoNothingGoal extends Goal {

@@ -34,7 +34,7 @@ public class Main {
     // 定义并注册自定义实体
     public static final RegistryObject<EntityType<NaiLongEntity>> NAILONG_ENTITY = ENTITY_TYPES.register("nailong_entity",
             () -> EntityType.Builder.of(NaiLongEntity::new, MobCategory.MONSTER)
-                    .sized(1f, 2.5f)  // 设置实体的尺寸
+                    .sized(3f, 6f)  // 设置实体的尺寸
                     .build(new ResourceLocation(MODID, "nailong_entity").toString()));
 
     public Main() {
@@ -44,8 +44,9 @@ public class Main {
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::onClientSetup);
         modEventBus.addListener(this::addEntityAttributes);
-        ModItems.ITEMS.register(modEventBus);
         MinecraftForge.EVENT_BUS.addListener(this::addCreativeTab);
+        ModItems.ITEMS.register(modEventBus);
+        ModSounds.SOUND_EVENTS.register(modEventBus);
         modEventBus.addListener(Main::registerLayerDefinitions); // 注册模型层定义
 
         // 注册到 Forge 事件总线
