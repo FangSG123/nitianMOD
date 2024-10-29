@@ -1,22 +1,22 @@
 {
     "entity.nailong.ambient1": {
       "sounds": [
-        "nailong:sounds/nailong_ambient1"
+        "nailong:nailong_ambient1"
       ]
     },
     "entity.nailong.ambient2": {
       "sounds": [
-        "nailong:sounds/nailong_ambient2"
+        "nailong:nailong_ambient2"
       ]
     },
     "entity.nailong.hurt": {
       "sounds": [
-        "nailong:sounds/nailong_hurt"
+        "nailong:nailong_hurt"
       ]
     },
     "entity.nailong.death": {
       "sounds": [
-        "nailong:sounds/nailong_death"
+        "nailong:nailong_death"
       ]
     }
   }

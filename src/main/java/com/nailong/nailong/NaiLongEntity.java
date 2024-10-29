@@ -343,7 +343,7 @@ public class NaiLongEntity extends Monster implements PowerableMob, RangedAttack
     // Change to fire small fireballs instead of Wither Skulls
     private void performRangedAttack(int headIndex, double x, double y, double z, boolean dangerous) {
         if (!this.isSilent()) {
-            this.level().levelEvent(null, 1024, this.blockPosition(), 0);
+            //this.playSound(ModSounds.NAILONG_AMBIENT2.get(), 1.0F, 1.0F); //攻击音效
         }
 
         double headX = this.getHeadX(headIndex);
