@@ -1,6 +1,8 @@
-package com.nailong.nailong;
+package com.ntsw.entity;
 
 import com.google.common.collect.ImmutableList;
+import com.ntsw.ModItems;
+import com.ntsw.ModSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -43,7 +45,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.fml.common.Mod;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
@@ -82,7 +83,7 @@ public class NaiLongEntity extends Monster implements PowerableMob, RangedAttack
         this.bossEvent = new ServerBossEvent(this.getDisplayName(), BossBarColor.PURPLE, BossBarOverlay.PROGRESS);
         this.bossEvent.setDarkenScreen(true);
         this.setHealth(this.getMaxHealth());
-        this.xpReward = 50;
+        this.xpReward = 2333;
     }
 
     @Override
@@ -126,10 +127,12 @@ public class NaiLongEntity extends Monster implements PowerableMob, RangedAttack
 
     @Override
     public void startSeenByPlayer(ServerPlayer player) {
-        super.startSeenByPlayer(player);
-        this.bossEvent.addPlayer(player);
+        // 检查玩家是否在8格范围内
+        if (this.distanceTo(player) <= 8.0) {
+            super.startSeenByPlayer(player);
+            this.bossEvent.addPlayer(player);
+        }
     }
-
     @Override
     public void stopSeenByPlayer(ServerPlayer player) {
         super.stopSeenByPlayer(player);
@@ -150,6 +153,16 @@ public class NaiLongEntity extends Monster implements PowerableMob, RangedAttack
 
     @Override
     public void aiStep() {
+        if (this.tickCount % 20 == 0) {
+            List<ServerPlayer> nearbyPlayers = this.level().getEntitiesOfClass(ServerPlayer.class, this.getBoundingBox().inflate(8.0));
+            for (ServerPlayer player : nearbyPlayers) {
+                if (this.distanceTo(player) <= 20.0) {
+                    this.bossEvent.addPlayer(player);
+                } else {
+                    this.bossEvent.removePlayer(player);
+                }
+            }
+        }
         Vec3 movement = this.getDeltaMovement().multiply(1.0, 0.6, 1.0);
         if (!this.level().isClientSide && this.getAlternativeTarget(0) > 0) {
             Entity targetEntity = this.level().getEntity(this.getAlternativeTarget(0));
@@ -174,6 +187,7 @@ public class NaiLongEntity extends Monster implements PowerableMob, RangedAttack
         }
 
         super.aiStep();
+
 
         for (int i = 0; i < 2; ++i) {
             this.yRotOHeads[i] = this.yRotHeads[i];
@@ -261,7 +275,7 @@ public class NaiLongEntity extends Monster implements PowerableMob, RangedAttack
                         LivingEntity targetEntity = (LivingEntity) this.level().getEntity(targetId);
                         if (targetEntity != null && this.canAttack(targetEntity) && !(this.distanceToSqr(targetEntity) > 900.0) && this.hasLineOfSight(targetEntity)) {
                             this.performRangedAttack(j + 1, targetEntity);
-                            this.nextHeadUpdate[j - 1] = this.tickCount + 40 + this.random.nextInt(20);
+                            this.nextHeadUpdate[j - 1] = this.tickCount + 10 + this.random.nextInt(5);
                             this.idleHeadUpdates[j - 1] = 0;
                         } else {
                             this.setAlternativeTarget(j, 0);
@@ -318,7 +332,7 @@ public class NaiLongEntity extends Monster implements PowerableMob, RangedAttack
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return ModSounds.NAILONG_AMBIENT1.get();
+        return null;
     }
 
     @Override
@@ -521,7 +535,7 @@ public class NaiLongEntity extends Monster implements PowerableMob, RangedAttack
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, 100.0)
+                .add(Attributes.MAX_HEALTH, 120.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.4)
                 .add(Attributes.FLYING_SPEED, 0.4)
                 .add(Attributes.FOLLOW_RANGE, 30.0)

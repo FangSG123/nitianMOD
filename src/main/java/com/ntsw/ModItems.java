@@ -1,6 +1,7 @@
-package com.nailong.nailong;
+package com.ntsw;
 
-import net.minecraft.world.item.CreativeModeTabs;
+import com.ntsw.item.FeiJiPiao;
+import com.ntsw.ntsw.item.HuangTaoGuanTou;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -13,4 +14,7 @@ public class ModItems {
     // 注册特殊食物
     public static final RegistryObject<Item> HuangTaoGuangTou = ITEMS.register("htgt",
             () -> new HuangTaoGuanTou(new Item.Properties()));
+
+
+    public static final RegistryObject<Item> FeiJiPiao = ITEMS.register("feijipiao",() -> new FeiJiPiao(new Item.Properties()));
 }

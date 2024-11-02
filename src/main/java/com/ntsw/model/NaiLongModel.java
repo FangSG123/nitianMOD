@@ -1,13 +1,14 @@
-    package com.nailong.nailong;
+    package com.ntsw.model;
 
     import com.mojang.blaze3d.vertex.PoseStack;
     import com.mojang.blaze3d.vertex.VertexConsumer;
+    import com.ntsw.Main;
+    import com.ntsw.entity.NaiLongEntity;
     import net.minecraft.client.model.EntityModel;
     import net.minecraft.client.model.geom.ModelLayerLocation;
     import net.minecraft.client.model.geom.ModelPart;
     import net.minecraft.client.model.geom.builders.*;
     import net.minecraft.client.model.geom.PartPose;
-    import net.minecraft.client.renderer.RenderType;
     import net.minecraft.resources.ResourceLocation;
 
     public class NaiLongModel extends EntityModel<NaiLongEntity> {
@@ -46,8 +47,6 @@
         public static LayerDefinition createBodyLayer() {
             MeshDefinition meshdefinition = new MeshDefinition();
             PartDefinition partdefinition = meshdefinition.getRoot();
-
-
             PartDefinition leg = partdefinition.addOrReplaceChild("leg", CubeListBuilder.create().texOffs(30, 122).addBox(-10.0F, -70.0F, -46.0F, 14.0F, 31.0F, 24.0F, new CubeDeformation(0.0F))
                     .texOffs(13, 225).addBox(-1.0F, -20.0F, -48.0F, 3.0F, 8.0F, 5.0F, new CubeDeformation(0.0F))
                     .texOffs(13, 225).addBox(-7.0F, -20.0F, -48.0F, 3.0F, 8.0F, 5.0F, new CubeDeformation(0.0F))
@@ -57,9 +56,11 @@
                     .texOffs(30, 122).addBox(50.0F, -70.0F, -46.0F, 14.0F, 31.0F, 24.0F, new CubeDeformation(0.0F))
                     .texOffs(147, 159).addBox(-9.0F, -46.0F, -45.0F, 12.0F, 31.0F, 19.0F, new CubeDeformation(0.0F)), PartPose.offset(-27.0F, 3.0F, 34.0F));
 
-            PartDefinition head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create().texOffs(100, 21).addBox(-14.0F, -113.0F, 9.0F, 24.0F, 24.0F, 24.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 18.0F, -24.0F));
+            PartDefinition head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create(), PartPose.offset(0.0F, 18.0F, -24.0F));
 
-            PartDefinition body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create().texOffs(27, 88).addBox(-24.0F, -19.6135F, -76.7759F, 48.0F, 46.0F, 64.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 4.0F, 8.0F, -1.5272F, 0.0F, 0.0F));
+            PartDefinition head_r1 = head.addOrReplaceChild("head_r1", CubeListBuilder.create().texOffs(100, 21).addBox(-16.0F, -22.0F, -34.0F, 24.0F, 24.0F, 24.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(4.0F, -91.0F, 32.0F, 0.2618F, 0.0F, 0.0F));
+
+            PartDefinition body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create().texOffs(31, 70).addBox(-24.0F, -19.6135F, -76.7759F, 48.0F, 46.0F, 64.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 4.0F, 8.0F, -1.5272F, 0.0F, 0.0F));
 
             PartDefinition weiba = partdefinition.addOrReplaceChild("weiba", CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, 0.0F));
 

@@ -1,14 +1,12 @@
-package com.nailong.nailong;
+package com.ntsw;
 
 import com.mojang.logging.LogUtils;
+import com.ntsw.ntsw.entity.HeiManBaEntity;
+import com.ntsw.model.NaiLongModel;
+import com.ntsw.network.ModMessages;
 import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
@@ -20,22 +18,14 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
 import org.slf4j.Logger;
 
 @Mod(Main.MODID)
 public class Main {
-    public static final String MODID = "nailong";
+    public static final String MODID = "nitian";
     private static final Logger LOGGER = LogUtils.getLogger();
-    public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, MODID);
 
-    // 定义并注册自定义实体
-    public static final RegistryObject<EntityType<NaiLongEntity>> NAILONG_ENTITY = ENTITY_TYPES.register("nailong_entity",
-            () -> EntityType.Builder.of(NaiLongEntity::new, MobCategory.MONSTER)
-                    .sized(3f, 6f)  // 设置实体的尺寸
-                    .build(new ResourceLocation(MODID, "nailong_entity").toString()));
 
     public Main() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -44,14 +34,17 @@ public class Main {
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::onClientSetup);
         modEventBus.addListener(this::addEntityAttributes);
-        MinecraftForge.EVENT_BUS.addListener(this::addCreativeTab);
-        ModItems.ITEMS.register(modEventBus);
-        ModSounds.SOUND_EVENTS.register(modEventBus);
-        modEventBus.addListener(Main::registerLayerDefinitions); // 注册模型层定义
+        modEventBus.addListener(Main::registerLayerDefinitions);
+        MinecraftForge.EVENT_BUS.register(new DeathProtectionHandler()); //自定义监听器
 
-        // 注册到 Forge 事件总线
+        MinecraftForge.EVENT_BUS.addListener(this::addCreativeTab);
         MinecraftForge.EVENT_BUS.register(this);
-        ENTITY_TYPES.register(modEventBus);
+
+
+        ModItems.ITEMS.register(modEventBus);
+        ModMessages.register();
+        ModSounds.SOUND_EVENTS.register(modEventBus);
+        ModEntity.ENTITY_TYPES.register(modEventBus);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
@@ -62,6 +55,9 @@ public class Main {
         if (event.getTabKey() == CreativeModeTabs.FOOD_AND_DRINKS) {
             event.accept(ModItems.HuangTaoGuangTou);
         }
+        if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
+            event.accept(ModItems.FeiJiPiao);
+        }
     }
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
@@ -70,11 +66,13 @@ public class Main {
 
     @SubscribeEvent
     public void addEntityAttributes(EntityAttributeCreationEvent event) {
-        event.put(NAILONG_ENTITY.get(), NaiLongEntity.createAttributes().build());
+        event.put(ModEntity.NAILONG_ENTITY.get(), NaiLongEntity.createAttributes().build());
+        event.put(ModEntity.HeiManBa_Entity.get(), HeiManBaEntity.createAttributes().build());
     }
 
     private void onClientSetup(final FMLClientSetupEvent event) {
-        EntityRenderers.register(NAILONG_ENTITY.get(), NaiLongEntityRenderer::new);
+        EntityRenderers.register(ModEntity.NAILONG_ENTITY.get(), NaiLongEntityRenderer::new);
+        EntityRenderers.register(ModEntity.HeiManBa_Entity.get(), HeiManBaEntityRenderer::new);
     }
 
     // 注册模型层定义

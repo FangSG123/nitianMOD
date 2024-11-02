@@ -1,8 +1,8 @@
-package com.nailong.nailong;
+package com.ntsw.entityrenderer;
 
-import com.nailong.nailong.Main;
-import com.nailong.nailong.NaiLongModel;
-import com.nailong.nailong.NaiLongEntity;
+import com.ntsw.Main;
+import com.ntsw.model.NaiLongModel;
+import com.ntsw.entity.NaiLongEntity;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;

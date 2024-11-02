@@ -1,4 +1,4 @@
-package com.nailong.nailong;
+package com.ntsw.ntsw.item;
 
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
