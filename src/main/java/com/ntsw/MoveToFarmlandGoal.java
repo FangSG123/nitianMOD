@@ -34,7 +34,7 @@ public class MoveToFarmlandGoal extends Goal {
     private BlockPos findNearbyFarmland() {
         Level level = mob.level();
         BlockPos mobPos = mob.blockPosition();
-        for (BlockPos pos : BlockPos.betweenClosed(mobPos.offset(-5, -1, -5), mobPos.offset(5, 1, 5))) {
+        for (BlockPos pos : BlockPos.betweenClosed(mobPos.offset(-10, -1, -10), mobPos.offset(10, 1, 10))) {  // 扩大范围至10x10
             if (level.getBlockState(pos).is(Blocks.FARMLAND) && level.isEmptyBlock(pos.above())) {
                 return pos.above();
             }

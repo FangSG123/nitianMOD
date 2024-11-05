@@ -2,44 +2,55 @@ package com.ntsw.entity;
 
 import com.ntsw.MoveToFarmlandGoal;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.npc.Villager;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 
 public class LaoHeiEntity extends Villager {
-    private boolean isSpeedBoosted = false;
+    private static final double INITIAL_SPEED = 0.1D;
+    private static final double SPEED_INCREMENT = 0.1D;
+    private static final int RESET_TICKS = 2000;
+    private int tickCounter = 0;
 
     public LaoHeiEntity(EntityType<? extends Villager> type, Level world) {
         super(type, world);
+        this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(INITIAL_SPEED);
     }
 
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        // 添加靠近耕地并种植作物的自定义目标
         this.goalSelector.addGoal(5, new MoveToFarmlandGoal(this, 1.0D));
     }
 
     @Override
-    public InteractionResult mobInteract(Player player, InteractionHand hand) {
-        if (player.getItemInHand(hand).is(Items.LEAD)) {
-            // 增加速度和种田速度
-            isSpeedBoosted = true;
-            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.5D);  // 设定为更高的移动速度
-            // 可选：增加种田的速度（实现种田速度加成逻辑）
-            return InteractionResult.SUCCESS;
+    public boolean hurt(DamageSource source, float amount) {
+        // 检查攻击来源是否为栓绳
+        if (source.getDirectEntity() instanceof Player player) {
+            if (player.getMainHandItem().is(Items.LEAD)) {
+                System.out.println("加速！");
+                double newSpeed = this.getAttribute(Attributes.MOVEMENT_SPEED).getBaseValue() + SPEED_INCREMENT;
+                this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(newSpeed);
+                return super.hurt(source, amount);
+            }
         }
-        return super.mobInteract(player, hand);
+        return super.hurt(source, amount);
     }
 
-    public boolean isSpeedBoosted() {
-        return isSpeedBoosted;
+    @Override
+    public void tick() {
+        super.tick();
+
+        // 计时器增加
+        tickCounter++;
+        if (tickCounter >= RESET_TICKS) {
+            // 每 2000 个 tick 重置速度
+            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(INITIAL_SPEED);
+            tickCounter = 0;
+        }
     }
 }
