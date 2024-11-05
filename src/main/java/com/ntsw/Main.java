@@ -1,8 +1,10 @@
 package com.ntsw;
 
 import com.mojang.logging.LogUtils;
+import com.ntsw.entity.LaoHeiEntity;
 import com.ntsw.entity.ZiMinEntity;
 import com.ntsw.entityrenderer.HeiManBaEntityRenderer;
+import com.ntsw.entityrenderer.LaoHeiEntityRenderer;
 import com.ntsw.entityrenderer.NaiLongEntityRenderer;
 import com.ntsw.entity.NaiLongEntity;
 import com.ntsw.entity.HeiManBaEntity;
@@ -76,12 +78,14 @@ public class Main {
         event.put(ModEntitys.NAILONG_ENTITY.get(), NaiLongEntity.createAttributes().build());
         event.put(ModEntitys.HeiManBa_Entity.get(), HeiManBaEntity.createAttributes().build());
         event.put(ModEntitys.ZiMin_Entity.get(), ZiMinEntity.createAttributes().build());
+        event.put(ModEntitys.LAO_HEI.get(), LaoHeiEntity.createAttributes().build());
     }
 
     private void onClientSetup(final FMLClientSetupEvent event) {
         EntityRenderers.register(ModEntitys.NAILONG_ENTITY.get(), NaiLongEntityRenderer::new);
         EntityRenderers.register(ModEntitys.HeiManBa_Entity.get(), HeiManBaEntityRenderer::new);
         EntityRenderers.register(ModEntitys.ZiMin_Entity.get(), ZiMinEntityRender::new);
+        EntityRenderers.register(ModEntitys.LAO_HEI.get(), LaoHeiEntityRenderer::new);
     }
 
     // 注册模型层定义

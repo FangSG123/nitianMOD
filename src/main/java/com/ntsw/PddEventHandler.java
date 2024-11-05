@@ -5,8 +5,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.damagesource.DamageType;
-import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -14,7 +13,6 @@ import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.item.Items;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.trading.MerchantOffer;
@@ -23,10 +21,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import java.lang.reflect.Field;
 import java.util.List;
 
 @Mod.EventBusSubscriber(modid = Main.MODID)
@@ -56,7 +54,6 @@ public class PddEventHandler {
             LivingEntity target = (LivingEntity) targetEntity;
 
             if (!player.level().isClientSide) {
-
                 // 获取玩家的持久化数据
                 CompoundTag playerData = player.getPersistentData();
 
@@ -163,7 +160,6 @@ public class PddEventHandler {
                         }
                     }
 
-
                 } else {
                     // 造成目标当前生命值的90%伤害
                     float damage = target.getHealth() * DAMAGE_MULTIPLIER;
@@ -180,10 +176,157 @@ public class PddEventHandler {
         }
     }
 
+    @SubscribeEvent
+    public static void onPlayerRightClick(PlayerInteractEvent.RightClickItem event) {
+        Player player = event.getEntity();
+        ItemStack heldItem = player.getMainHandItem();
+
+        if (heldItem.getItem() instanceof PddItem) {
+            if (!player.level().isClientSide) {
+                performSelfAttack(player, heldItem);
+                event.setCanceled(true); // Prevent default action if any
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onLivingHurt(LivingHurtEvent event) {
+        if (event.getSource().getEntity() instanceof Player player) {
+            ItemStack heldItem = player.getMainHandItem();
+            if (heldItem.getItem() instanceof PddItem) {
+                if(event.getEntity().getHealth() < 5)
+                {
+                    event.setAmount(0); // 将伤害量设置为 0
+                }
+            }
+        }
+    }
+
+    private static void performSelfAttack(Player player, ItemStack heldItem) {
+        // 获取玩家的持久化数据
+        CompoundTag playerData = player.getPersistentData();
+
+        // 获取上一次的攻击目标的 UUID
+        String lastTargetUUID = playerData.getString("PddLastTargetUUID");
+        String currentTargetUUID = player.getUUID().toString(); // Self UUID
+
+        // 检查攻击目标是否发生变化
+        if (!lastTargetUUID.equals(currentTargetUUID)) {
+            // 攻击目标发生了切换，执行清除和重置操作
+            clearZuanshiAndJifen(player);
+            resetPlayerCounters(playerData);
+
+            // 更新上一次的攻击目标为当前目标
+            playerData.putString("PddLastTargetUUID", currentTargetUUID);
+        }
+
+        // 初始化攻击次数和积分数量
+        int attackCount = playerData.getInt("PddAttackCount");
+        int jifenCount = playerData.getInt("PddJifenCount");
+
+        // 检查是否已发送提示信息
+        boolean hasSentDiamondMessage = playerData.getBoolean("HasSentDiamondMessage");
+        boolean hasSentJifenMessage = playerData.getBoolean("HasSentJifenMessage");
+        boolean hasSentChanceMessage = playerData.getBoolean("HasSentChanceMessage");
+
+        // 攻击次数增加
+        attackCount++;
+        playerData.putInt("PddAttackCount", attackCount);
+
+        // 检查攻击次数是否达到 200 次
+        if (attackCount >= 200) {
+            // 执行特殊操作
+
+            // 造成致命伤害
+            DamageSource damageSource = player.damageSources().fellOutOfWorld();
+            player.hurt(damageSource, Float.MAX_VALUE);
+
+            // 移除玩家手中的 PddItem
+            player.getInventory().removeItem(heldItem);
+
+            // 清除所有 zuanshi 和 jifen
+            clearZuanshiAndJifen(player);
+
+            // 重置计数器
+            resetPlayerCounters(playerData);
+
+            // 在玩家位置产生爆炸
+            player.level().explode(null, player.getX(), player.getY(), player.getZ(), 4.0F, false, Level.ExplosionInteraction.NONE);
+
+            // 发送提示信息
+            player.sendSystemMessage(Component.literal("ERRORERRORERRORERROR").withStyle(ChatFormatting.RED));
+
+            return;
+        }
+
+        if (player.getHealth() < HEALTH_THRESHOLD) {
+
+            // 第一次发送钻石提示
+            if (!hasSentDiamondMessage) {
+                player.sendSystemMessage(Component.literal("集齐64个钻石可以造成一点伤害").withStyle(ChatFormatting.GREEN));
+                playerData.putBoolean("HasSentDiamondMessage", true);
+            }
+
+            if (attackCount <= 5) {
+                // 前5次攻击，给予10个钻石
+                ItemStack zuanshi = new ItemStack(ModItems.ZUANSHI.get(), 10);
+                heldItem.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(player.getUsedItemHand()));
+                player.getInventory().add(zuanshi);
+            } else if (attackCount <= 10) {
+                // 接下来5次攻击，给予2个钻石
+                ItemStack zuanshi = new ItemStack(ModItems.ZUANSHI.get(), 2);
+                heldItem.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(player.getUsedItemHand()));
+                player.getInventory().add(zuanshi);
+            } else {
+                if (jifenCount < 63) {
+                    // 给予玩家1个积分
+                    ItemStack jifen = new ItemStack(ModItems.JIFEN.get());
+                    player.getInventory().add(jifen);
+                    jifenCount++;
+                    heldItem.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(player.getUsedItemHand()));
+                    playerData.putInt("PddJifenCount", jifenCount);
+
+                    // 第一次发送积分提示
+                    if (!hasSentJifenMessage) {
+                        player.sendSystemMessage(Component.literal("集齐64个积分可以兑换一个钻石").withStyle(ChatFormatting.BLUE));
+                        playerData.putBoolean("HasSentJifenMessage", true);
+                    }
+                } else if (jifenCount == 63) {
+                    // 达到63个积分，发送一次性提示
+                    if (!hasSentChanceMessage) {
+                        player.sendSystemMessage(Component.literal("恭喜你获得抽取100个钻石的机会").withStyle(ChatFormatting.GOLD));
+                        playerData.putBoolean("HasSentChanceMessage", true);
+                    }
+                    jifenCount++; // 增加到64，防止再次进入此条件
+                    playerData.putInt("PddJifenCount", jifenCount);
+                } else {
+                    heldItem.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(player.getUsedItemHand()));
+                    // 已达到最大积分，发送泥土提示并给予泥土
+                    player.sendSystemMessage(Component.literal("恭喜你获得泥土 x1").withStyle(ChatFormatting.YELLOW));
+                    ItemStack dirt = new ItemStack(Items.DIRT);
+                    player.getInventory().add(dirt);
+                }
+            }
+
+        } else {
+            // 造成玩家当前生命值的90%伤害
+            float damage = player.getHealth() * DAMAGE_MULTIPLIER;
+            DamageSource damageSource = player.damageSources().playerAttack(player);
+            player.hurt(damageSource, damage);
+
+            // 施加免疫效果，持续指定的时长
+            player.addEffect(new MobEffectInstance(ModEffects.DAMAGE_IMMUNITY.get(),200, 0));
+
+            // 减少武器耐久度
+            heldItem.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(player.getUsedItemHand()));
+        }
+    }
+
     private static void clearZuanshiAndJifen(Player player) {
         System.out.println("Code is executing.");
         ServerLevel level = (ServerLevel) player.level();
-        AABB boundingBox = new AABB(level.getMinBuildHeight(), level.getMinBuildHeight(), level.getMinBuildHeight(), level.getMaxBuildHeight(), level.getMaxBuildHeight(), level.getMaxBuildHeight());
+        AABB boundingBox = new AABB(level.getMinBuildHeight(), level.getMinBuildHeight(), level.getMinBuildHeight(),
+                level.getMaxBuildHeight(), level.getMaxBuildHeight(), level.getMaxBuildHeight());
         List<ItemEntity> itemEntities = level.getEntitiesOfClass(ItemEntity.class, boundingBox);
         System.out.println("Found " + itemEntities.size() + " items.");
         for (ItemEntity itemEntity : itemEntities) {
@@ -193,7 +336,6 @@ public class PddEventHandler {
                 itemEntity.remove(Entity.RemovalReason.DISCARDED); // 尝试用移除原因方法
             }
         }
-
 
         // 清除所有玩家物品栏中的相关物品
         for (Player onlinePlayer : level.players()) {
@@ -236,18 +378,6 @@ public class PddEventHandler {
         playerData.putString("PddLastTargetUUID", "");
     }
 
-    @SubscribeEvent
-    public static void onLivingHurt(LivingHurtEvent event) {
-        if (event.getSource().getEntity() instanceof Player player) {
-            ItemStack heldItem = player.getMainHandItem();
-            if (heldItem.getItem() instanceof PddItem) {
-                if(event.getEntity().getHealth() < 5)
-                {
-                    event.setAmount(0); // 将伤害量设置为 0
-                }
-            }
-        }
-    }
     private static void modifyVillagerTrades(Villager villager, Player player) {
         MerchantOffers originalOffers = villager.getOffers();
         MerchantOffers newOffers = new MerchantOffers();
@@ -279,7 +409,6 @@ public class PddEventHandler {
         villager.setOffers(newOffers);
 
         // 发送提示信息给玩家
-        player.sendSystemMessage(Component.literal("村民的交易已被修改。").withStyle(ChatFormatting.RED));
+        player.sendSystemMessage(Component.literal("砍价成功!").withStyle(ChatFormatting.RED));
     }
-
 }
