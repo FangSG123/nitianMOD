@@ -7,5 +7,6 @@
   "item.nitian.pdd" : "§4速速砍一刀",
   "item.nitian.jifen" : "§1积分",
   "item.nitian.zuanshi" : "钻石",
-  "item.nitian.zimin_spawn_egg" : "§2§l§n保护大籽然"
+  "item.nitian.zimin_spawn_egg" : "§2§l§n保护大籽然",
+  "effect.nitian.damage_immunity" : "砍一刀中..."
 }

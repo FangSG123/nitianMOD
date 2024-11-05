@@ -17,6 +17,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.item.Items;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -115,10 +116,12 @@ public class PddEventHandler {
                     if (attackCount <= 5) {
                         // 前5次攻击，给予10个钻石
                         ItemStack zuanshi = new ItemStack(ModItems.ZUANSHI.get(), 10);
+                        heldItem.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(player.getUsedItemHand()));
                         player.getInventory().add(zuanshi);
                     } else if (attackCount <= 10) {
                         // 接下来5次攻击，给予2个钻石
                         ItemStack zuanshi = new ItemStack(ModItems.ZUANSHI.get(), 2);
+                        heldItem.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(player.getUsedItemHand()));
                         player.getInventory().add(zuanshi);
                     } else {
                         if (jifenCount < 63) {
@@ -126,6 +129,7 @@ public class PddEventHandler {
                             ItemStack jifen = new ItemStack(ModItems.JIFEN.get());
                             player.getInventory().add(jifen);
                             jifenCount++;
+                            heldItem.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(player.getUsedItemHand()));
                             playerData.putInt("PddJifenCount", jifenCount);
 
                             // 第一次发送积分提示
@@ -142,6 +146,7 @@ public class PddEventHandler {
                             jifenCount++; // 增加到64，防止再次进入此条件
                             playerData.putInt("PddJifenCount", jifenCount);
                         } else {
+                            heldItem.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(player.getUsedItemHand()));
                             // 已达到最大积分，发送泥土提示并给予泥土
                             player.sendSystemMessage(Component.literal("恭喜你获得泥土 x1").withStyle(ChatFormatting.YELLOW));
                             ItemStack dirt = new ItemStack(Items.DIRT);
@@ -167,15 +172,19 @@ public class PddEventHandler {
     }
 
     private static void clearZuanshiAndJifen(Player player) {
-        // 清除世界上的物品
+        System.out.println("Code is executing.");
         ServerLevel level = (ServerLevel) player.level();
-        List<ItemEntity> itemEntities = level.getEntitiesOfClass(ItemEntity.class, level.getWorldBorder().getCollisionShape().bounds());
+        AABB boundingBox = new AABB(level.getMinBuildHeight(), level.getMinBuildHeight(), level.getMinBuildHeight(), level.getMaxBuildHeight(), level.getMaxBuildHeight(), level.getMaxBuildHeight());
+        List<ItemEntity> itemEntities = level.getEntitiesOfClass(ItemEntity.class, boundingBox);
+        System.out.println("Found " + itemEntities.size() + " items.");
         for (ItemEntity itemEntity : itemEntities) {
             ItemStack stack = itemEntity.getItem();
+            System.out.println("Found item: " + stack.getItem()); // 打印检测到的物品
             if (stack.getItem() == ModItems.ZUANSHI.get() || stack.getItem() == ModItems.JIFEN.get()) {
-                itemEntity.discard();
+                itemEntity.remove(Entity.RemovalReason.DISCARDED); // 尝试用移除原因方法
             }
         }
+
 
         // 清除所有玩家物品栏中的相关物品
         for (Player onlinePlayer : level.players()) {

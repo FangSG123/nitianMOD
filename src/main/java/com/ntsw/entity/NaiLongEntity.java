@@ -535,7 +535,7 @@ public class NaiLongEntity extends Monster implements PowerableMob, RangedAttack
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, 120.0)
+                .add(Attributes.MAX_HEALTH, 1000.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.4)
                 .add(Attributes.FLYING_SPEED, 0.4)
                 .add(Attributes.FOLLOW_RANGE, 30.0)

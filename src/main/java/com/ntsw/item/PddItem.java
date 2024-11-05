@@ -16,6 +16,6 @@ public class PddItem extends Item {
     public PddItem() {
         super(new Properties()
                 .stacksTo(1)
-                .durability(1000)); // 设置耐久度（可选）
+                .durability(300)); // 设置耐久度（可选）
     }
 }
