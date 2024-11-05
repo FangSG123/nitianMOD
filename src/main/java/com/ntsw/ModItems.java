@@ -2,6 +2,7 @@ package com.ntsw;
 
 import com.ntsw.item.FeiJiPiao;
 import com.ntsw.item.ZuanShiItem;
+import com.ntsw.item.JifenItem;
 import com.ntsw.item.HuangTaoGuanTou;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
@@ -27,6 +28,7 @@ public class ModItems {
     public static final RegistryObject<Item> FeiJiPiao = ITEMS.register("feijipiao",() -> new FeiJiPiao(new Item.Properties()));
 
     public static final RegistryObject<Item> ZUANSHI  = ITEMS.register("zuanshi", ZuanShiItem::new);
+    public static final RegistryObject<Item> JIFEN = ITEMS.register("jifen", JifenItem::new);
 
     public static final RegistryObject<Item> ZIMIN_SPAWN_EGG = ITEMS.register("zimin_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntitys.ZiMin_Entity, 0xFFFFFF, 0x000000, // 自定义颜色，例如白色和黑色
