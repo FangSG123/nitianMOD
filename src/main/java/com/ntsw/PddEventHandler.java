@@ -1,19 +1,28 @@
 package com.ntsw;
 
 import com.ntsw.item.PddItem;
-import com.ntsw.item.JifenItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.item.Items;
+import net.minecraft.core.NonNullList;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+
+import java.util.List;
 
 @Mod.EventBusSubscriber(modid = Main.MODID)
 public class PddEventHandler {
@@ -28,31 +37,80 @@ public class PddEventHandler {
         ItemStack heldItem = player.getMainHandItem();
 
         if (heldItem.getItem() instanceof PddItem) {
-            LivingEntity target = (LivingEntity) event.getTarget();
+            Entity targetEntity = event.getTarget();
+
+            if (!(targetEntity instanceof LivingEntity)) {
+                return; // 如果目标不是 LivingEntity，直接返回
+            }
+
+            LivingEntity target = (LivingEntity) targetEntity;
 
             if (!player.level().isClientSide) {
+
+                // 获取玩家的持久化数据
+                CompoundTag playerData = player.getPersistentData();
+
+                // 获取上一次的攻击目标的 UUID
+                String lastTargetUUID = playerData.getString("PddLastTargetUUID");
+                String currentTargetUUID = target.getStringUUID();
+
+                // 检查攻击目标是否发生变化
+                if (!lastTargetUUID.equals(currentTargetUUID)) {
+                    // 攻击目标发生了切换，执行清除和重置操作
+                    clearZuanshiAndJifen(player);
+                    resetPlayerCounters(playerData);
+
+                    // 更新上一次的攻击目标为当前目标
+                    playerData.putString("PddLastTargetUUID", currentTargetUUID);
+                }
+
+                // 初始化攻击次数和积分数量
+                int attackCount = playerData.getInt("PddAttackCount");
+                int jifenCount = playerData.getInt("PddJifenCount");
+
+                // 检查是否已发送提示信息
+                boolean hasSentDiamondMessage = playerData.getBoolean("HasSentDiamondMessage");
+                boolean hasSentJifenMessage = playerData.getBoolean("HasSentJifenMessage");
+                boolean hasSentChanceMessage = playerData.getBoolean("HasSentChanceMessage");
+
+                // 攻击次数增加
+                attackCount++;
+                playerData.putInt("PddAttackCount", attackCount);
+
+                // 检查攻击次数是否达到 200 次
+                if (attackCount >= 200) {
+                    // 执行特殊操作
+
+                    // 击杀当前目标生物
+                    DamageSource damageSource = player.damageSources().fellOutOfWorld();
+                    target.hurt(damageSource, Float.MAX_VALUE);
+
+                    // 移除玩家手中的 PddItem
+                    player.getInventory().removeItem(heldItem);
+
+                    // 清除所有 zuanshi 和 jifen
+                    clearZuanshiAndJifen(player);
+
+                    // 重置计数器
+                    resetPlayerCounters(playerData);
+
+                    // 在目标位置产生爆炸
+                    target.level().explode(null, target.getX(), target.getY(), target.getZ(), 4.0F, false, Level.ExplosionInteraction.NONE);
+
+                    // 发送提示信息
+                    player.sendSystemMessage(Component.literal("ERRORERRORERRORERROR").withStyle(ChatFormatting.RED));
+
+                    event.setCanceled(true); // 取消默认攻击，避免其他效果
+                    return;
+                }
+
                 if (target.getHealth() < HEALTH_THRESHOLD) {
-
-                    // 获取玩家的持久化数据
-                    CompoundTag playerData = player.getPersistentData();
-
-                    // 初始化攻击次数和积分数量
-                    int attackCount = playerData.getInt("PddAttackCount");
-                    int jifenCount = playerData.getInt("PddJifenCount");
-
-                    // 检查是否已发送提示信息
-                    boolean hasSentDiamondMessage = playerData.getBoolean("HasSentDiamondMessage");
-                    boolean hasSentJifenMessage = playerData.getBoolean("HasSentJifenMessage");
-                    boolean hasSentChanceMessage = playerData.getBoolean("HasSentChanceMessage");
-                    boolean hasSentMaxJifenMessage = playerData.getBoolean("HasSentMaxJifenMessage");
 
                     // 第一次发送钻石提示
                     if (!hasSentDiamondMessage) {
                         player.sendSystemMessage(Component.literal("集齐64个钻石可以造成一点伤害").withStyle(ChatFormatting.GREEN));
                         playerData.putBoolean("HasSentDiamondMessage", true);
                     }
-
-                    attackCount++;
 
                     if (attackCount <= 5) {
                         // 前5次攻击，给予10个钻石
@@ -68,6 +126,7 @@ public class PddEventHandler {
                             ItemStack jifen = new ItemStack(ModItems.JIFEN.get());
                             player.getInventory().add(jifen);
                             jifenCount++;
+                            playerData.putInt("PddJifenCount", jifenCount);
 
                             // 第一次发送积分提示
                             if (!hasSentJifenMessage) {
@@ -81,6 +140,7 @@ public class PddEventHandler {
                                 playerData.putBoolean("HasSentChanceMessage", true);
                             }
                             jifenCount++; // 增加到64，防止再次进入此条件
+                            playerData.putInt("PddJifenCount", jifenCount);
                         } else {
                             // 已达到最大积分，发送泥土提示并给予泥土
                             player.sendSystemMessage(Component.literal("恭喜你获得泥土 x1").withStyle(ChatFormatting.YELLOW));
@@ -89,11 +149,6 @@ public class PddEventHandler {
                         }
                     }
 
-                    // 更新玩家数据
-                    playerData.putInt("PddAttackCount", attackCount);
-                    playerData.putInt("PddJifenCount", jifenCount);
-
-                    event.setCanceled(true); // 取消默认攻击，避免造成伤害
 
                 } else {
                     // 造成目标当前生命值的90%伤害
@@ -107,6 +162,68 @@ public class PddEventHandler {
                     // 减少武器耐久度
                     heldItem.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(player.getUsedItemHand()));
                 }
+            }
+        }
+    }
+
+    private static void clearZuanshiAndJifen(Player player) {
+        // 清除世界上的物品
+        ServerLevel level = (ServerLevel) player.level();
+        List<ItemEntity> itemEntities = level.getEntitiesOfClass(ItemEntity.class, level.getWorldBorder().getCollisionShape().bounds());
+        for (ItemEntity itemEntity : itemEntities) {
+            ItemStack stack = itemEntity.getItem();
+            if (stack.getItem() == ModItems.ZUANSHI.get() || stack.getItem() == ModItems.JIFEN.get()) {
+                itemEntity.discard();
+            }
+        }
+
+        // 清除所有玩家物品栏中的相关物品
+        for (Player onlinePlayer : level.players()) {
+            // 清除主物品栏
+            NonNullList<ItemStack> mainInventory = onlinePlayer.getInventory().items;
+            for (int i = 0; i < mainInventory.size(); i++) {
+                ItemStack stack = mainInventory.get(i);
+                if (stack.getItem() == ModItems.ZUANSHI.get() || stack.getItem() == ModItems.JIFEN.get()) {
+                    mainInventory.set(i, ItemStack.EMPTY);
+                }
+            }
+
+            // 清除副手物品
+            NonNullList<ItemStack> offhandInventory = onlinePlayer.getInventory().offhand;
+            for (int i = 0; i < offhandInventory.size(); i++) {
+                ItemStack stack = offhandInventory.get(i);
+                if (stack.getItem() == ModItems.ZUANSHI.get() || stack.getItem() == ModItems.JIFEN.get()) {
+                    offhandInventory.set(i, ItemStack.EMPTY);
+                }
+            }
+
+            // 清除盔甲槽位
+            NonNullList<ItemStack> armorInventory = onlinePlayer.getInventory().armor;
+            for (int i = 0; i < armorInventory.size(); i++) {
+                ItemStack stack = armorInventory.get(i);
+                if (stack.getItem() == ModItems.ZUANSHI.get() || stack.getItem() == ModItems.JIFEN.get()) {
+                    armorInventory.set(i, ItemStack.EMPTY);
+                }
+            }
+        }
+    }
+
+    private static void resetPlayerCounters(CompoundTag playerData) {
+        playerData.putInt("PddAttackCount", 0);
+        playerData.putInt("PddJifenCount", 0);
+        playerData.putBoolean("HasSentDiamondMessage", false);
+        playerData.putBoolean("HasSentJifenMessage", false);
+        playerData.putBoolean("HasSentChanceMessage", false);
+        playerData.putBoolean("HasSentMaxJifenMessage", false);
+        playerData.putString("PddLastTargetUUID", "");
+    }
+
+    @SubscribeEvent
+    public static void onLivingHurt(LivingHurtEvent event) {
+        if (event.getSource().getEntity() instanceof Player player) {
+            ItemStack heldItem = player.getMainHandItem();
+            if (heldItem.getItem() instanceof PddItem) {
+                event.setAmount(0); // 将伤害量设置为 0
             }
         }
     }
