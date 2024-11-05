@@ -10,12 +10,15 @@ import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.item.Items;
 import net.minecraft.core.NonNullList;
+import net.minecraft.world.item.trading.MerchantOffer;
+import net.minecraft.world.item.trading.MerchantOffers;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -23,6 +26,7 @@ import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
 @Mod.EventBusSubscriber(modid = Main.MODID)
@@ -39,7 +43,12 @@ public class PddEventHandler {
 
         if (heldItem.getItem() instanceof PddItem) {
             Entity targetEntity = event.getTarget();
-
+            if (targetEntity instanceof Villager villager) {
+                if (!player.level().isClientSide) {
+                    // 修改村民的交易
+                    modifyVillagerTrades(villager, player);
+                }
+            }
             if (!(targetEntity instanceof LivingEntity)) {
                 return; // 如果目标不是 LivingEntity，直接返回
             }
@@ -239,4 +248,38 @@ public class PddEventHandler {
             }
         }
     }
+    private static void modifyVillagerTrades(Villager villager, Player player) {
+        MerchantOffers originalOffers = villager.getOffers();
+        MerchantOffers newOffers = new MerchantOffers();
+
+        for (MerchantOffer offer : originalOffers) {
+            // 创建新的交易，价格设为1个绿宝石
+            ItemStack newCostA = new ItemStack(Items.EMERALD, 1);
+            ItemStack newCostB = ItemStack.EMPTY;
+            ItemStack result = offer.getResult().copy();
+
+            // 创建新的 MerchantOffer
+            MerchantOffer newOffer = new MerchantOffer(
+                    newCostA,
+                    newCostB,
+                    result,
+                    0, // uses 起始为 0
+                    offer.getMaxUses(),
+                    offer.getXp(),
+                    offer.getPriceMultiplier()
+            );
+
+            // 设置交易为不可用
+            newOffer.setToOutOfStock();
+
+            newOffers.add(newOffer);
+        }
+
+        // 替换村民的交易列表
+        villager.setOffers(newOffers);
+
+        // 发送提示信息给玩家
+        player.sendSystemMessage(Component.literal("村民的交易已被修改。").withStyle(ChatFormatting.RED));
+    }
+
 }
