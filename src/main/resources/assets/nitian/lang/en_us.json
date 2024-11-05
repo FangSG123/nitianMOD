@@ -1,4 +1,7 @@
 {
-  "entity.nailong.nailong_entity": "nailong",
-  "item.nailong.htgt" : "htgt"
+  "entity.nitian.nailong_entity": "nailong",
+  "entity.nitian.heimanba_entity": "heimanba",
+  "item.nitian.htgt" : "htgt",
+  "item.nitian.feijipiao" : "feijipiao",
+  "item.nitian.zimin_spawn_egg" : "baohudaziran"
 }

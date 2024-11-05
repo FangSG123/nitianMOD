@@ -1,7 +1,7 @@
 package com.ntsw.entityrenderer;
 
 import com.ntsw.Main;
-import com.ntsw.ntsw.entity.HeiManBaEntity;
+import com.ntsw.entity.HeiManBaEntity;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;

@@ -1,4 +1,4 @@
-package com.ntsw.ntsw.item;
+package com.ntsw.item;
 
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;

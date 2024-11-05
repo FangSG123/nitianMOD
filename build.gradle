@@ -164,7 +164,9 @@ tasks.named('processResources', ProcessResources).configure {
         expand replaceProperties + [project: project]
     }
 }
-
+jar {
+    destinationDirectory = file("C:\\Users\\16609\\Desktop\\mc\\.minecraft\\versions\\1.20.1-Forge_47.3.0\\mods") //导到本地MC客服端,方便测试多人模式兼容性
+}
 // Example for how to get properties into the manifest for reading at runtime.
 tasks.named('jar', Jar).configure {
     manifest {

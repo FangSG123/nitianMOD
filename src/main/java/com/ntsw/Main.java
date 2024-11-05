@@ -1,7 +1,12 @@
 package com.ntsw;
 
 import com.mojang.logging.LogUtils;
-import com.ntsw.ntsw.entity.HeiManBaEntity;
+import com.ntsw.entity.ZiMinEntity;
+import com.ntsw.entityrenderer.HeiManBaEntityRenderer;
+import com.ntsw.entityrenderer.NaiLongEntityRenderer;
+import com.ntsw.entity.NaiLongEntity;
+import com.ntsw.entity.HeiManBaEntity;
+import com.ntsw.entityrenderer.ZiMinEntityRender;
 import com.ntsw.model.NaiLongModel;
 import com.ntsw.network.ModMessages;
 import net.minecraft.client.renderer.entity.EntityRenderers;
@@ -31,20 +36,19 @@ public class Main {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         // 注册生命周期事件
+        ModSounds.SOUND_EVENTS.register(modEventBus);
+        ModEntitys.ENTITY_TYPES.register(modEventBus);
+        ModItems.ITEMS.register(modEventBus);
+        ModMessages.register();
+        ModEffects.MOB_EFFECTS.register(modEventBus);
+
+        MinecraftForge.EVENT_BUS.addListener(this::addCreativeTab);
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::onClientSetup);
         modEventBus.addListener(this::addEntityAttributes);
         modEventBus.addListener(Main::registerLayerDefinitions);
         MinecraftForge.EVENT_BUS.register(new DeathProtectionHandler()); //自定义监听器
-
-        MinecraftForge.EVENT_BUS.addListener(this::addCreativeTab);
         MinecraftForge.EVENT_BUS.register(this);
-
-
-        ModItems.ITEMS.register(modEventBus);
-        ModMessages.register();
-        ModSounds.SOUND_EVENTS.register(modEventBus);
-        ModEntity.ENTITY_TYPES.register(modEventBus);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
@@ -58,6 +62,9 @@ public class Main {
         if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
             event.accept(ModItems.FeiJiPiao);
         }
+        if (event.getTabKey() == CreativeModeTabs.SPAWN_EGGS) {
+            event.accept(ModItems.ZIMIN_SPAWN_EGG);
+        }
     }
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
@@ -66,13 +73,15 @@ public class Main {
 
     @SubscribeEvent
     public void addEntityAttributes(EntityAttributeCreationEvent event) {
-        event.put(ModEntity.NAILONG_ENTITY.get(), NaiLongEntity.createAttributes().build());
-        event.put(ModEntity.HeiManBa_Entity.get(), HeiManBaEntity.createAttributes().build());
+        event.put(ModEntitys.NAILONG_ENTITY.get(), NaiLongEntity.createAttributes().build());
+        event.put(ModEntitys.HeiManBa_Entity.get(), HeiManBaEntity.createAttributes().build());
+        event.put(ModEntitys.ZiMin_Entity.get(), ZiMinEntity.createAttributes().build());
     }
 
     private void onClientSetup(final FMLClientSetupEvent event) {
-        EntityRenderers.register(ModEntity.NAILONG_ENTITY.get(), NaiLongEntityRenderer::new);
-        EntityRenderers.register(ModEntity.HeiManBa_Entity.get(), HeiManBaEntityRenderer::new);
+        EntityRenderers.register(ModEntitys.NAILONG_ENTITY.get(), NaiLongEntityRenderer::new);
+        EntityRenderers.register(ModEntitys.HeiManBa_Entity.get(), HeiManBaEntityRenderer::new);
+        EntityRenderers.register(ModEntitys.ZiMin_Entity.get(), ZiMinEntityRender::new);
     }
 
     // 注册模型层定义

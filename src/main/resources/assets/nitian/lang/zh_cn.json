@@ -1,4 +1,8 @@
 {
-  "entity.nailong.nailong_entity": "奶龙",
-  "item.nailong.htgt" : "黄桃罐头"
+  "entity.nitian.nailong_entity": "奶龙",
+  "entity.nitian.heimanba_entity": "牢大",
+  "entity.nitian.zimin_entity": "§a米子山民",
+  "item.nitian.htgt" : "黄桃罐头",
+  "item.nitian.feijipiao" : "§6孩子们,我回来了",
+  "item.nitian.zimin_spawn_egg" : "§2§l§n保护大籽然"
 }

@@ -1,5 +1,9 @@
-package com.ntsw.ntsw.entity;
+package com.ntsw.entity;
 
+import com.ntsw.ModSounds;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
@@ -37,5 +41,12 @@ public class HeiManBaEntity extends IronGolem {
     public boolean isAlliedTo(net.minecraft.world.entity.Entity entity) {
         // 设置为与玩家为盟友，即不会攻击玩家
         return entity instanceof Player;
+    }
+
+    @Override
+    public void die(DamageSource cause) {
+        // 播放死亡音效
+        this.level().playSound(null, this.getX(), this.getY(), this.getZ(), ModSounds.HeiManBa_DEATH.get(), SoundSource.HOSTILE, 1.0F, 1.0F);
+        super.die(cause);
     }
 }

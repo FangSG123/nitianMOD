@@ -1,23 +1,28 @@
 {
-    "entity.nailong.ambient1": {
-      "sounds": [
-        "nailong:nailong_ambient1"
-      ]
-    },
-    "entity.nailong.ambient2": {
-      "sounds": [
-        "nailong:nailong_ambient2"
-      ]
-    },
     "entity.nailong.hurt": {
       "sounds": [
-        "nailong:nailong_hurt"
+        "nitian:nailong_hurt"
       ]
     },
     "entity.nailong.death": {
       "sounds": [
-        "nailong:nailong_death"
+        "nitian:nailong_death"
       ]
-    }
+    },
+  "entity.heimanba.death": {
+    "sounds": [
+      "nitian:heimanba_death"
+    ]
+  },
+  "entity.heimanba.summon": {
+    "sounds": [
+      "nitian:heimanba_summon"
+    ]
+  },
+  "entity.zimin.summon": {
+    "sounds": [
+      "nitian:zimin_summon"
+    ]
   }
+}
   

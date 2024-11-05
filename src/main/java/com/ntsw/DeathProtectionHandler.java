@@ -5,6 +5,7 @@ import com.ntsw.network.ModMessages;
 import com.ntsw.network.PacketFeiJiPiaoTotemEffect;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
@@ -32,8 +33,6 @@ public class DeathProtectionHandler {
                     // 发送自定义包到客户端，显示`FeiJiPiao`的图腾动画
                     ModMessages.sendToClient(new PacketFeiJiPiaoTotemEffect(), serverPlayer);
 
-                    // 播放音效
-                    player.playSound(SoundEvents.TOTEM_USE, 1.0F, 1.0F);
 
                     // 添加恢复和吸收效果
                     player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 900, 1));
