@@ -223,7 +223,10 @@ public class PddEventHandler {
         if (event.getSource().getEntity() instanceof Player player) {
             ItemStack heldItem = player.getMainHandItem();
             if (heldItem.getItem() instanceof PddItem) {
-                event.setAmount(0); // 将伤害量设置为 0
+                if(event.getEntity().getHealth() < 5)
+                {
+                    event.setAmount(0); // 将伤害量设置为 0
+                }
             }
         }
     }
