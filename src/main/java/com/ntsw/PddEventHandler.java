@@ -323,46 +323,50 @@ public class PddEventHandler {
     }
 
     private static void clearZuanshiAndJifen(Player player) {
-        System.out.println("Code is executing.");
-        ServerLevel level = (ServerLevel) player.level();
-        AABB boundingBox = new AABB(level.getMinBuildHeight(), level.getMinBuildHeight(), level.getMinBuildHeight(),
-                level.getMaxBuildHeight(), level.getMaxBuildHeight(), level.getMaxBuildHeight());
-        List<ItemEntity> itemEntities = level.getEntitiesOfClass(ItemEntity.class, boundingBox);
-        System.out.println("Found " + itemEntities.size() + " items.");
-        for (ItemEntity itemEntity : itemEntities) {
-            ItemStack stack = itemEntity.getItem();
-            System.out.println("Found item: " + stack.getItem()); // 打印检测到的物品
-            if (stack.getItem() == ModItems.ZUANSHI.get() || stack.getItem() == ModItems.JIFEN.get()) {
-                itemEntity.remove(Entity.RemovalReason.DISCARDED); // 尝试用移除原因方法
-            }
-        }
-
-        // 清除所有玩家物品栏中的相关物品
-        for (Player onlinePlayer : level.players()) {
-            // 清除主物品栏
-            NonNullList<ItemStack> mainInventory = onlinePlayer.getInventory().items;
-            for (int i = 0; i < mainInventory.size(); i++) {
-                ItemStack stack = mainInventory.get(i);
+        if (player.level() instanceof ServerLevel) {
+            // 服务器端代码
+            ServerLevel serverLevel = (ServerLevel) player.level();
+            System.out.println("Code is executing.");
+            ServerLevel level = (ServerLevel) player.level();
+            AABB boundingBox = new AABB(level.getMinBuildHeight(), level.getMinBuildHeight(), level.getMinBuildHeight(),
+                    level.getMaxBuildHeight(), level.getMaxBuildHeight(), level.getMaxBuildHeight());
+            List<ItemEntity> itemEntities = level.getEntitiesOfClass(ItemEntity.class, boundingBox);
+            System.out.println("Found " + itemEntities.size() + " items.");
+            for (ItemEntity itemEntity : itemEntities) {
+                ItemStack stack = itemEntity.getItem();
+                System.out.println("Found item: " + stack.getItem()); // 打印检测到的物品
                 if (stack.getItem() == ModItems.ZUANSHI.get() || stack.getItem() == ModItems.JIFEN.get()) {
-                    mainInventory.set(i, ItemStack.EMPTY);
+                    itemEntity.remove(Entity.RemovalReason.DISCARDED); // 尝试用移除原因方法
                 }
             }
 
-            // 清除副手物品
-            NonNullList<ItemStack> offhandInventory = onlinePlayer.getInventory().offhand;
-            for (int i = 0; i < offhandInventory.size(); i++) {
-                ItemStack stack = offhandInventory.get(i);
-                if (stack.getItem() == ModItems.ZUANSHI.get() || stack.getItem() == ModItems.JIFEN.get()) {
-                    offhandInventory.set(i, ItemStack.EMPTY);
+            // 清除所有玩家物品栏中的相关物品
+            for (Player onlinePlayer : level.players()) {
+                // 清除主物品栏
+                NonNullList<ItemStack> mainInventory = onlinePlayer.getInventory().items;
+                for (int i = 0; i < mainInventory.size(); i++) {
+                    ItemStack stack = mainInventory.get(i);
+                    if (stack.getItem() == ModItems.ZUANSHI.get() || stack.getItem() == ModItems.JIFEN.get()) {
+                        mainInventory.set(i, ItemStack.EMPTY);
+                    }
                 }
-            }
 
-            // 清除盔甲槽位
-            NonNullList<ItemStack> armorInventory = onlinePlayer.getInventory().armor;
-            for (int i = 0; i < armorInventory.size(); i++) {
-                ItemStack stack = armorInventory.get(i);
-                if (stack.getItem() == ModItems.ZUANSHI.get() || stack.getItem() == ModItems.JIFEN.get()) {
-                    armorInventory.set(i, ItemStack.EMPTY);
+                // 清除副手物品
+                NonNullList<ItemStack> offhandInventory = onlinePlayer.getInventory().offhand;
+                for (int i = 0; i < offhandInventory.size(); i++) {
+                    ItemStack stack = offhandInventory.get(i);
+                    if (stack.getItem() == ModItems.ZUANSHI.get() || stack.getItem() == ModItems.JIFEN.get()) {
+                        offhandInventory.set(i, ItemStack.EMPTY);
+                    }
+                }
+
+                // 清除盔甲槽位
+                NonNullList<ItemStack> armorInventory = onlinePlayer.getInventory().armor;
+                for (int i = 0; i < armorInventory.size(); i++) {
+                    ItemStack stack = armorInventory.get(i);
+                    if (stack.getItem() == ModItems.ZUANSHI.get() || stack.getItem() == ModItems.JIFEN.get()) {
+                        armorInventory.set(i, ItemStack.EMPTY);
+                    }
                 }
             }
         }

@@ -32,5 +32,8 @@ public class ModEntitys {
             () -> EntityType.Builder.of(NongChangZhuEntity::new, MobCategory.MISC)
                     .sized(0.6F, 1.8F) // 设置实体尺寸
                     .build("nongchangzhu_entity"));
-
+    public static final RegistryObject<EntityType<ChuanJianGuoEntity>>CHUANGJIANGUO = ENTITY_TYPES.register("chuanjianguo_entity",
+            () -> EntityType.Builder.of(ChuanJianGuoEntity::new, MobCategory.MISC)
+                    .sized(0.6F, 1.8F) // 设置实体尺寸
+                    .build("chuanjianguo_entity"));
 }

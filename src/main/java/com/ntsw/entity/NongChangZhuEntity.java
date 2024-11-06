@@ -18,7 +18,6 @@ public class NongChangZhuEntity extends PathfinderMob {
     public NongChangZhuEntity(EntityType<? extends PathfinderMob> entityType, Level world) {
         super(entityType, world);
         // 设置基础移动速度和其他属性
-        this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.5D);
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(3.0D);
 
         // 设置手持物品为栓绳
@@ -39,7 +38,7 @@ public class NongChangZhuEntity extends PathfinderMob {
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, 120.0)
-                .add(Attributes.MOVEMENT_SPEED, 0.2)
+                .add(Attributes.MOVEMENT_SPEED, 0.35)
                 .add(Attributes.FLYING_SPEED, 0.4)
                 .add(Attributes.FOLLOW_RANGE, 30.0)
                 .add(Attributes.ATTACK_DAMAGE, 1.0)

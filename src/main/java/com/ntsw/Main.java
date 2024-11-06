@@ -71,6 +71,7 @@ public class Main {
     public void addEntityAttributes(EntityAttributeCreationEvent event) {
         event.put(ModEntitys.NAILONG_ENTITY.get(), NaiLongEntity.createAttributes().build());
         event.put(ModEntitys.HeiManBa_Entity.get(), HeiManBaEntity.createAttributes().build());
+        event.put(ModEntitys.CHUANGJIANGUO.get(), ChuanJianGuoEntity.createAttributes().build());
         event.put(ModEntitys.ZiMin_Entity.get(), ZiMinEntity.createAttributes().build());
         event.put(ModEntitys.LAO_HEI.get(), LaoHeiEntity.createAttributes().build());
         event.put(ModEntitys.NONGCHANGZHU.get(), NongChangZhuEntity.createAttributes().build());
@@ -82,6 +83,7 @@ public class Main {
         EntityRenderers.register(ModEntitys.ZiMin_Entity.get(), ZiMinEntityRender::new);
         EntityRenderers.register(ModEntitys.LAO_HEI.get(), LaoHeiEntityRenderer::new);
         EntityRenderers.register(ModEntitys.NONGCHANGZHU.get(),NongChangZhuEntityRenderer::new);
+        EntityRenderers.register(ModEntitys.CHUANGJIANGUO.get(),ChuanJianGuoEntityRenderer::new);
     }
 
     // 注册模型层定义
