@@ -1,6 +1,8 @@
 package com.ntsw.entity;
 
+import com.ntsw.ModEntitys;
 import com.ntsw.MoveToFarmlandGoal;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.npc.Villager;
@@ -19,6 +21,7 @@ public class LaoHeiEntity extends Villager {
     public LaoHeiEntity(EntityType<? extends Villager> type, Level world) {
         super(type, world);
         this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(INITIAL_SPEED);
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(100);
     }
 
     @Override
@@ -29,17 +32,21 @@ public class LaoHeiEntity extends Villager {
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        // 检查攻击来源是否为栓绳
-        if (source.getDirectEntity() instanceof Player player) {
-            if (player.getMainHandItem().is(Items.LEAD)) {
-                System.out.println("加速！");
-                double newSpeed = this.getAttribute(Attributes.MOVEMENT_SPEED).getBaseValue() + SPEED_INCREMENT;
-                this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(newSpeed);
-                return super.hurt(source, amount);
-            }
+        // 获取攻击源实体
+        Entity directEntity = source.getDirectEntity();
+
+        // 检查攻击来源是否为 NongChangZhu 或手持栓绳的玩家
+        if (directEntity instanceof NongChangZhuEntity ||
+                (directEntity instanceof Player player && player.getMainHandItem().is(Items.LEAD))) {
+
+            System.out.println("加速！");
+            double newSpeed = this.getAttribute(Attributes.MOVEMENT_SPEED).getBaseValue() + SPEED_INCREMENT;
+            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(newSpeed);
         }
+
         return super.hurt(source, amount);
     }
+
 
     @Override
     public void tick() {

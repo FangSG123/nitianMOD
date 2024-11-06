@@ -1,14 +1,8 @@
 package com.ntsw;
 
 import com.mojang.logging.LogUtils;
-import com.ntsw.entity.LaoHeiEntity;
-import com.ntsw.entity.ZiMinEntity;
-import com.ntsw.entityrenderer.HeiManBaEntityRenderer;
-import com.ntsw.entityrenderer.LaoHeiEntityRenderer;
-import com.ntsw.entityrenderer.NaiLongEntityRenderer;
-import com.ntsw.entity.NaiLongEntity;
-import com.ntsw.entity.HeiManBaEntity;
-import com.ntsw.entityrenderer.ZiMinEntityRender;
+import com.ntsw.entity.*;
+import com.ntsw.entityrenderer.*;
 import com.ntsw.model.NaiLongModel;
 import com.ntsw.network.ModMessages;
 import net.minecraft.client.renderer.entity.EntityRenderers;
@@ -79,6 +73,7 @@ public class Main {
         event.put(ModEntitys.HeiManBa_Entity.get(), HeiManBaEntity.createAttributes().build());
         event.put(ModEntitys.ZiMin_Entity.get(), ZiMinEntity.createAttributes().build());
         event.put(ModEntitys.LAO_HEI.get(), LaoHeiEntity.createAttributes().build());
+        event.put(ModEntitys.NONGCHANGZHU.get(), NongChangZhuEntity.createAttributes().build());
     }
 
     private void onClientSetup(final FMLClientSetupEvent event) {
@@ -86,6 +81,7 @@ public class Main {
         EntityRenderers.register(ModEntitys.HeiManBa_Entity.get(), HeiManBaEntityRenderer::new);
         EntityRenderers.register(ModEntitys.ZiMin_Entity.get(), ZiMinEntityRender::new);
         EntityRenderers.register(ModEntitys.LAO_HEI.get(), LaoHeiEntityRenderer::new);
+        EntityRenderers.register(ModEntitys.NONGCHANGZHU.get(),NongChangZhuEntityRenderer::new);
     }
 
     // 注册模型层定义
