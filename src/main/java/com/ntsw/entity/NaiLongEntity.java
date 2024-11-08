@@ -1,7 +1,7 @@
 package com.ntsw.entity;
 
 import com.google.common.collect.ImmutableList;
-import com.ntsw.ModItems;
+import com.ntsw.item.ModItems;
 import com.ntsw.ModSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;

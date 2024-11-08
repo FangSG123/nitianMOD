@@ -3,9 +3,12 @@ package com.ntsw;
 import com.mojang.logging.LogUtils;
 import com.ntsw.entity.*;
 import com.ntsw.entityrenderer.*;
+import com.ntsw.item.ModItems;
 import com.ntsw.model.NaiLongModel;
 import com.ntsw.network.ModMessages;
+
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -33,11 +36,11 @@ public class Main {
 
         // 注册生命周期事件
         ModSounds.SOUND_EVENTS.register(modEventBus);
-        ModEntitys.ENTITY_TYPES.register(modEventBus);
-        ModItems.ITEMS.register(modEventBus);
+        ModEntitys.register(modEventBus);
+        ModItems.register(modEventBus);
         ModMessages.register();
         ModEffects.MOB_EFFECTS.register(modEventBus);
-
+        ModPotions.POTIONS.register(modEventBus);
         MinecraftForge.EVENT_BUS.addListener(this::addCreativeTab);
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::onClientSetup);
@@ -84,6 +87,7 @@ public class Main {
         EntityRenderers.register(ModEntitys.LAO_HEI.get(), LaoHeiEntityRenderer::new);
         EntityRenderers.register(ModEntitys.NONGCHANGZHU.get(),NongChangZhuEntityRenderer::new);
         EntityRenderers.register(ModEntitys.CHUANGJIANGUO.get(),ChuanJianGuoEntityRenderer::new);
+        EntityRenderers.register(ModEntitys.SHIKUAI.get(), ThrownItemRenderer::new);
     }
 
     // 注册模型层定义

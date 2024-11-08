@@ -13,7 +13,7 @@ import net.minecraftforge.network.NetworkDirection;
 public class ModMessages {
     private static final String PROTOCOL_VERSION = "1";
     public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
-            new ResourceLocation(Main.MODID, "main"), // 使用正确的Mod ID
+            new ResourceLocation(Main.MODID, Main.MODID), // 使用正确的Mod ID
             () -> PROTOCOL_VERSION,
             PROTOCOL_VERSION::equals,
             PROTOCOL_VERSION::equals

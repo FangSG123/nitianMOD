@@ -1,0 +1,19 @@
+{
+	"type" : "minecraft:crafting_shapeless",
+	"ingredients":
+	[
+
+	{
+		"item": "nitian:shikuai"
+	},
+
+	{
+        "item": "nitian:saoba"
+	}
+	],
+	"result":
+	{
+        "item": "nitian:zhanshisaoba",
+		"count": 1
+	}
+}

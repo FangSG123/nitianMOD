@@ -4,6 +4,7 @@ import com.ntsw.entity.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -36,4 +37,15 @@ public class ModEntitys {
             () -> EntityType.Builder.of(ChuanJianGuoEntity::new, MobCategory.MISC)
                     .sized(0.6F, 1.8F) // 设置实体尺寸
                     .build("chuanjianguo_entity"));
+
+    public static final RegistryObject<EntityType<ShikuaiEntity>> SHIKUAI = ENTITY_TYPES.register("shikuai",
+            () -> EntityType.Builder.<ShikuaiEntity>of(ShikuaiEntity::new, MobCategory.MISC)
+                    .sized(0.25F, 0.25F)
+                    .clientTrackingRange(4)
+                    .updateInterval(10)
+                    .build("shikuai"));
+    public static void register(IEventBus eventBus) {
+        ENTITY_TYPES.register(eventBus);
+        System.out.println("ShikuaiEntity registered."); // 确认注册是否执行
+    }
 }

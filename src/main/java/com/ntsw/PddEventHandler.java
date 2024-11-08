@@ -1,5 +1,6 @@
 package com.ntsw;
 
+import com.ntsw.item.ModItems;
 import com.ntsw.item.PddItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
