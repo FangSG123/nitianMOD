@@ -1,17 +1,15 @@
 package com.ntsw.item;
 
 import com.ntsw.event.EntityConnectionHandler;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
@@ -29,34 +27,68 @@ public class TiesuoLianhuanItem extends Item {
 
         // 检查是否已经选择了第一个实体
         if (!stack.hasTag() || !stack.getTag().contains("FirstEntityID")) {
-            // 射线检测选择第一个实体
-            Entity target = getEntityLookedAt(player, 10.0); // 10.0为检测距离，可调整
 
-            if (target != null && target != player) {
-                // 将第一个实体的ID保存到物品的NBT中
-                stack.getOrCreateTag().putInt("FirstEntityID", target.getId());
+            // 检查玩家是否在潜行
+            if (player.isShiftKeyDown()) {
+                // 将玩家自己作为第一个实体
+                stack.getOrCreateTag().putInt("FirstEntityID", player.getId());
                 if (level.isClientSide) {
-                    player.displayClientMessage(Component.literal("已选择第一个实体：" + target.getDisplayName().getString()), true);
+                    player.displayClientMessage(Component.literal("已选择自己作为第一个实体"), true);
                 }
                 return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
             } else {
-                if (level.isClientSide) {
-                    player.displayClientMessage(Component.literal("未找到可选的实体。"), true);
+                // 射线检测选择第一个实体
+                Entity target = getEntityLookedAt(player, 10.0); // 10.0为检测距离，可调整
+
+                if (target != null && target != player) {
+                    // 将第一个实体的ID保存到物品的NBT中
+                    stack.getOrCreateTag().putInt("FirstEntityID", target.getId());
+                    if (level.isClientSide) {
+                        player.displayClientMessage(Component.literal("已选择第一个实体：" + target.getDisplayName().getString()), true);
+                    }
+                    return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
+                } else {
+                    if (level.isClientSide) {
+                        player.displayClientMessage(Component.literal("未找到可选的实体。"), true);
+                    }
+                    return InteractionResultHolder.fail(stack);
                 }
-                return InteractionResultHolder.fail(stack);
             }
         } else {
             // 已经选择了第一个实体，选择第二个实体
-            Entity firstEntity = level.getEntity(stack.getTag().getInt("FirstEntityID"));
-            Entity secondEntity = getEntityLookedAt(player, 10.0);
 
-            if (secondEntity != null && secondEntity != player && secondEntity != firstEntity) {
+            int firstEntityId = stack.getTag().getInt("FirstEntityID");
+            Entity firstEntity = level.getEntity(firstEntityId);
+
+            if (firstEntity == null) {
+                if (level.isClientSide) {
+                    player.displayClientMessage(Component.literal("第一个实体已不在世界中。"), true);
+                }
+                stack.getTag().remove("FirstEntityID");
+                return InteractionResultHolder.fail(stack);
+            }
+
+            Entity secondEntity;
+
+            // 检查玩家是否在潜行
+            if (player.isShiftKeyDown()) {
+                // 将玩家自己作为第二个实体
+                secondEntity = player;
+            } else {
+                // 正常选择第二个实体
+                secondEntity = getEntityLookedAt(player, 10.0);
+            }
+
+            if (secondEntity != null && secondEntity != firstEntity) {
                 // 保存连接关系
                 EntityConnectionHandler.addConnection(firstEntity, secondEntity);
 
                 if (level.isClientSide) {
                     player.displayClientMessage(Component.literal("已连接实体：" + firstEntity.getDisplayName().getString() + " 和 " + secondEntity.getDisplayName().getString()), true);
                 }
+
+                // 移除 NBT 中的 FirstEntityID
+                stack.getTag().remove("FirstEntityID");
 
                 // 消耗物品
                 stack.shrink(1);
@@ -79,16 +111,16 @@ public class TiesuoLianhuanItem extends Item {
         Vec3 endPosition = eyePosition.add(lookVector.scale(range));
 
         // 创建 ClipContext 对象
-        ClipContext context = new ClipContext(
-                eyePosition,         // 起点
-                endPosition,         // 终点
-                ClipContext.Block.OUTLINE,  // 对方块的处理方式
-                ClipContext.Fluid.NONE,     // 对流体的处理方式
-                player               // 视线所属的实体
+        var context = new net.minecraft.world.level.ClipContext(
+                eyePosition,
+                endPosition,
+                net.minecraft.world.level.ClipContext.Block.OUTLINE,
+                net.minecraft.world.level.ClipContext.Fluid.NONE,
+                player
         );
 
         // 使用 level.clip() 方法进行射线检测
-        BlockHitResult blockHitResult = level.clip(context);
+        var blockHitResult = level.clip(context);
 
         // 获取起点到碰撞点的距离
         double blockDistance = blockHitResult.getLocation().distanceTo(eyePosition);
@@ -119,5 +151,4 @@ public class TiesuoLianhuanItem extends Item {
 
         return closestEntity;
     }
-
 }
