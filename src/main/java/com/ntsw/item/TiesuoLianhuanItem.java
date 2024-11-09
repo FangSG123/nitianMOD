@@ -80,11 +80,11 @@ public class TiesuoLianhuanItem extends Item {
             }
 
             if (secondEntity != null && secondEntity != firstEntity) {
-                // 保存连接关系
-                EntityConnectionHandler.addConnection(firstEntity, secondEntity);
+                // 保存连接关系，持续600 ticks（30秒）
+                EntityConnectionHandler.addConnection(firstEntity, secondEntity, 600);
 
                 if (level.isClientSide) {
-                    player.displayClientMessage(Component.literal("已连接实体：" + firstEntity.getDisplayName().getString() + " 和 " + secondEntity.getDisplayName().getString()), true);
+                    player.displayClientMessage(Component.literal("已连接实体：" + firstEntity.getDisplayName().getString() + " 和 " + secondEntity.getDisplayName().getString() + "，持续30秒"), true);
                 }
 
                 // 移除 NBT 中的 FirstEntityID
