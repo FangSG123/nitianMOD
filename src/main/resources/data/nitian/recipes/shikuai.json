@@ -1,0 +1,15 @@
+{
+	"type" : "minecraft:crafting_shapeless",
+	"ingredients":
+	[
+
+	{
+		"item": "nitian:dabian"
+	}
+	],
+	"result":
+	{
+        "item": "nitian:shikuai",
+		"count": 1
+	}
+}

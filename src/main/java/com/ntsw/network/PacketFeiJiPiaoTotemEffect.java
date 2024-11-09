@@ -1,6 +1,6 @@
 package com.ntsw.network;
 
-import com.ntsw.item.ModItems;
+import com.ntsw.ModItems;
 import com.ntsw.ModSounds;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;

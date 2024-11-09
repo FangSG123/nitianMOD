@@ -37,7 +37,7 @@ public class ZhanshiSaobaItem extends SaobaItem {
 
         if (!level.isClientSide) {
             // 设置投掷物数量和范围
-            int projectileCount = 50; // 可以修改数量
+            int projectileCount = 5; // 可以修改数量
             double spread = 0.5D; // 控制发射的扩散范围
 
             for (int i = 0; i < projectileCount; i++) {
@@ -66,7 +66,7 @@ public class ZhanshiSaobaItem extends SaobaItem {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, world, tooltip, flag);
-        tooltip.add(Component.literal("右键发射大量投掷物"));
+        tooltip.add(Component.literal("右键喷射"));
     }
     @Override
     public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {

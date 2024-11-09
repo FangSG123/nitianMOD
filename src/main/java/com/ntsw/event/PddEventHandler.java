@@ -1,6 +1,8 @@
-package com.ntsw;
+package com.ntsw.event;
 
-import com.ntsw.item.ModItems;
+import com.ntsw.Main;
+import com.ntsw.ModEffects;
+import com.ntsw.ModItems;
 import com.ntsw.item.PddItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;

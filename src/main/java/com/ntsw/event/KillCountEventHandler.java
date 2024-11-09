@@ -1,8 +1,8 @@
 // KillCountEventHandler.java
-package com.ntsw;
+package com.ntsw.event;
+import com.ntsw.ModEntitys;
 import com.ntsw.entity.ZiMinEntity;
 import net.minecraft.network.chat.Component;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;

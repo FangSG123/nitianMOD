@@ -1,0 +1,21 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+      " XX",
+      " XX",
+      "Y  "
+    ],
+    "key": {
+      "X": {
+        "item": "minecraft:wheat"
+      },
+      "Y": {
+        "item": "minecraft:stick"
+      }
+    },
+    "result": {
+      "item": "nitian:saoba",
+      "count": 1
+    }
+  }
+  

@@ -13,8 +13,11 @@
   "item.nitian.zimin_spawn_egg" : "§2§l§n保护大籽然",
   "item.nitian.saoba": "扫把",
   "item.nitian.shikuai": "屎块",
-  "item.nitian.dabian": "排泄物",
+  "item.nitian.dabian": "答辩",
+  "item.nitian.dabian.tooltip": "食用后会导致反胃、中毒和恶臭的效果。",
   "item.nitian.zhanshisaoba": "§6沾§kS§r§6扫把",
+  "item.nitian.mctow": "靶场",
 
-  "effect.nitian.damage_immunity" : "砍一刀中..."
+  "effect.nitian.damage_immunity" : "砍一刀中...",
+  "effect.nitian.repel" : "恶臭"
 }
