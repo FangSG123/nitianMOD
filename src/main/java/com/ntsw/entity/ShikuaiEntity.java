@@ -1,6 +1,8 @@
 package com.ntsw.entity;
 
 import com.ntsw.ModEffects;
+import com.ntsw.ModEntitys;
+import com.ntsw.item.ModItems;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -24,13 +26,13 @@ public class ShikuaiEntity extends ThrowableItemProjectile {
     }
 
     public ShikuaiEntity(Level world, LivingEntity thrower) {
-        super(EntityType.SNOWBALL, thrower, world);
+        super(ModEntitys.SHIKUAI.get(), thrower, world);
         System.out.println("ShikuaiEntity created by thrower.");
     }
 
     @Override
     protected Item getDefaultItem() {
-        return Items.STONE; // 使用石块作为投掷物的显示效果
+        return ModItems.SHIKUAI_ITEM.get(); // 使用石块作为投掷物的显示效果
     }
 
     @Override

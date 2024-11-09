@@ -12,6 +12,9 @@
   "item.nitian.zuanshi" : "钻石",
   "item.nitian.zimin_spawn_egg" : "§2§l§n保护大籽然",
   "item.nitian.saoba": "扫把",
+  "item.nitian.shikuai": "屎块",
+  "item.nitian.dabian": "排泄物",
+  "item.nitian.zhanshisaoba": "§6沾§kS§r§6扫把",
 
   "effect.nitian.damage_immunity" : "砍一刀中..."
 }

@@ -1,6 +1,7 @@
 package com.ntsw.item;
 
 import com.ntsw.entity.ShikuaiEntity;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -9,7 +10,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SnowballItem;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class ShikuaiItem extends SnowballItem {
 
@@ -40,5 +45,10 @@ public class ShikuaiItem extends SnowballItem {
         }
 
         return InteractionResultHolder.sidedSuccess(itemstack, level.isClientSide());
+    }
+    @Override
+    public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flag) {
+        super.appendHoverText(stack, world, tooltip, flag);
+        tooltip.add(Component.literal("干燥的排泄物。大便。\n裂开来里面却很新鲜。\n\n可以投向敌人。"));
     }
 }

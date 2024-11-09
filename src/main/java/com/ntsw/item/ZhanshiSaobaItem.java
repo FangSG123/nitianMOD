@@ -37,8 +37,8 @@ public class ZhanshiSaobaItem extends SaobaItem {
 
         if (!level.isClientSide) {
             // 设置投掷物数量和范围
-            int projectileCount = 5; // 可以修改数量
-            double spread = 0.1D; // 控制发射的扩散范围
+            int projectileCount = 50; // 可以修改数量
+            double spread = 0.5D; // 控制发射的扩散范围
 
             for (int i = 0; i < projectileCount; i++) {
                 // 创建新的 ShikuaiEntity 投掷物

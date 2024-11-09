@@ -87,7 +87,7 @@ public class Main {
         EntityRenderers.register(ModEntitys.LAO_HEI.get(), LaoHeiEntityRenderer::new);
         EntityRenderers.register(ModEntitys.NONGCHANGZHU.get(),NongChangZhuEntityRenderer::new);
         EntityRenderers.register(ModEntitys.CHUANGJIANGUO.get(),ChuanJianGuoEntityRenderer::new);
-        EntityRenderers.register(ModEntitys.SHIKUAI.get(), ThrownItemRenderer::new);
+        EntityRenderers.register(ModEntitys.SHIKUAI.get(), ShiKuaiRenderer::new);
     }
 
     // 注册模型层定义
