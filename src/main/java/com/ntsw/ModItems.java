@@ -5,6 +5,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Tiers;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -39,6 +40,10 @@ public class ModItems {
     public static final RegistryObject<Item> SHAN = ITEMS.register("shan",ShanItem::new);
     public static final RegistryObject<Item> JIU = ITEMS.register("jiu",
             () -> new JiuItem(new Item.Properties()));
+    public static final RegistryObject<Item> GUDINGDAO = ITEMS.register("gudingdao",
+            () -> new GudingdaoItem(Tiers.IRON, 3, -2.4F, new Item.Properties()));
+    public static final RegistryObject<Item> HUOSHA = ITEMS.register("huosha",
+            () -> new HuoShaItem(Tiers.IRON, 3, -2.4F, new Item.Properties().durability(250)));
 
 
 

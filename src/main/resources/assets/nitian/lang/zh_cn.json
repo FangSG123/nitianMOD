@@ -18,6 +18,13 @@
   "item.nitian.zhanshisaoba": "§6沾§kS§r§6扫把",
   "item.nitian.mctow": "靶场",
 
+  "item.nitian.huosha": "火杀",
+  "item.nitian.shan": "闪",
+  "item.nitian.gudingdao": "古锭刀",
+  "item.nitian.jiu": "酒",
+  "item.nitian.tiesuolianhuan": "铁索连环",
+
+
   "effect.nitian.damage_immunity" : "砍一刀中...",
   "effect.nitian.repel" : "恶臭"
 }

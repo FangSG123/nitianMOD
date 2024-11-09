@@ -48,6 +48,14 @@ public class Main {
                 output.accept(ModItems.SAOBA.get());
                 output.accept(ModItems.ZHANSHISAOBA.get());
                 output.accept(ModItems.ZUANSHI.get());
+
+                output.accept(ModItems.SHAN.get());
+                output.accept(ModItems.GUDINGDAO.get());
+                output.accept(ModItems.JIU.get());
+                output.accept(ModItems.TIESUO_LIANHUAN.get());
+                output.accept(ModItems.HUOSHA.get());
+
+
                 output.accept(ModItems.ZIMIN_SPAWN_EGG.get());
                 output.accept(ModItems.NONGCHANGZHU_SPAWN_EGG.get());
                 output.accept(ModItems.NAILONG_SPAWN_EGG.get());
