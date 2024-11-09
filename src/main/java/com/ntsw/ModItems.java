@@ -25,7 +25,8 @@ public class ModItems {
             () -> new SaobaItem(new Item.Properties()));
     public static final RegistryObject<Item> ZHANSHISAOBA = ITEMS.register("zhanshisaoba",
             () -> new ZhanshiSaobaItem(new Item.Properties()));
-
+    public static final RegistryObject<Item> TIESUO_LIANHUAN = ITEMS.register("tiesuolianhuan",
+            () -> new TiesuoLianhuanItem(new Item.Properties().stacksTo(1).durability(1)));
 
 
     public static final RegistryObject<Item> PDD = ITEMS.register("pdd", PddItem::new);
@@ -35,6 +36,9 @@ public class ModItems {
 
     public static final RegistryObject<Item> ZUANSHI  = ITEMS.register("zuanshi", ZuanShiItem::new);
     public static final RegistryObject<Item> JIFEN = ITEMS.register("jifen", JifenItem::new);
+    public static final RegistryObject<Item> SHAN = ITEMS.register("shan",ShanItem::new);
+    public static final RegistryObject<Item> JIU = ITEMS.register("jiu",
+            () -> new JiuItem(new Item.Properties()));
 
 
 

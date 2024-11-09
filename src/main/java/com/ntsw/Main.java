@@ -4,6 +4,7 @@ import com.mojang.logging.LogUtils;
 import com.ntsw.entity.*;
 import com.ntsw.entityrenderer.*;
 import com.ntsw.event.DeathProtectionHandler;
+import com.ntsw.event.PlayerEventHandler;
 import com.ntsw.model.NaiLongModel;
 import com.ntsw.network.ModMessages;
 
@@ -79,6 +80,7 @@ public class Main {
         modEventBus.addListener(this::addEntityAttributes);
         modEventBus.addListener(Main::registerLayerDefinitions);
         CREATIVE_MODE_TABS.register(modEventBus);
+
 
         MinecraftForge.EVENT_BUS.register(new DeathProtectionHandler()); //自定义监听器
         MinecraftForge.EVENT_BUS.register(this);

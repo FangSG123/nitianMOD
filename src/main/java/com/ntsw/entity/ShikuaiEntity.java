@@ -41,7 +41,7 @@ public class ShikuaiEntity extends ThrowableItemProjectile {
                 // 施加 REPEL 效果，持续时间和强度可以根据需要调整
                 livingEntity.addEffect(new MobEffectInstance(ModEffects.REPEL.get(), 100, 1));
                 // 设置伤害
-                livingEntity.hurt(damageSources().thrown(this, this.getOwner()), 4.0F);
+                livingEntity.hurt(damageSources().thrown(this, this.getOwner()), 50.0F);
             }
         }
     }

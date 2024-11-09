@@ -30,18 +30,16 @@ public class ZhanshiSaobaItem extends SaobaItem {
         super(properties);
     }
     private static final String POTION_EFFECTS_KEY = "PotionEffects";
-    // 重写使用逻辑，右键投掷大量投掷物
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
 
         if (!level.isClientSide) {
             // 设置投掷物数量和范围
-            int projectileCount = 5; // 可以修改数量
-            double spread = 0.5D; // 控制发射的扩散范围
+            int projectileCount = 1000; // 可以修改数量
+            double spread = 3D; // 控制发射的扩散范围
 
             for (int i = 0; i < projectileCount; i++) {
-                // 创建新的 ShikuaiEntity 投掷物
                 ShikuaiEntity projectile = new ShikuaiEntity(level, player);
                 projectile.setPos(player.getX(), player.getEyeY() - 0.1, player.getZ());
 
