@@ -22,6 +22,7 @@ import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.item.trading.MerchantOffers;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -328,21 +329,32 @@ public class PddEventHandler {
     private static void clearZuanshiAndJifen(Player player) {
         if (player.level() instanceof ServerLevel) {
             // 服务器端代码
-            ServerLevel serverLevel = (ServerLevel) player.level();
-            System.out.println("Code is executing.");
             ServerLevel level = (ServerLevel) player.level();
-            AABB boundingBox = new AABB(level.getMinBuildHeight(), level.getMinBuildHeight(), level.getMinBuildHeight(),
-                    level.getMaxBuildHeight(), level.getMaxBuildHeight(), level.getMaxBuildHeight());
+            System.out.println("Code is executing.");
+
+// 创建合理的 AABB 边界，覆盖一部分世界或整个世界
+// 这里选择了世界的最大高度范围，可以根据需要调整
+            AABB boundingBox = new AABB(
+                    player.getX() - 1000, 0, player.getZ() - 1000, // 左下角
+                    player.getX() + 1000, 256, player.getZ() + 1000 // 右上角
+            );
+
+// 获取在 AABB 区域内的所有物品实体
             List<ItemEntity> itemEntities = level.getEntitiesOfClass(ItemEntity.class, boundingBox);
             System.out.println("Found " + itemEntities.size() + " items.");
+
+// 遍历找到的物品
             for (ItemEntity itemEntity : itemEntities) {
                 ItemStack stack = itemEntity.getItem();
                 System.out.println("Found item: " + stack.getItem()); // 打印检测到的物品
+
+                // 判断物品是否是我们需要移除的物品
                 if (stack.getItem() == ModItems.ZUANSHI.get() || stack.getItem() == ModItems.JIFEN.get()) {
-                    itemEntity.remove(Entity.RemovalReason.DISCARDED); // 尝试用移除原因方法
+                    // 移除掉落物
+                    itemEntity.remove(Entity.RemovalReason.DISCARDED);
+                    System.out.println("Removed item: " + stack.getItem()); // 输出已移除的物品
                 }
             }
-
             // 清除所有玩家物品栏中的相关物品
             for (Player onlinePlayer : level.players()) {
                 // 清除主物品栏
@@ -418,4 +430,39 @@ public class PddEventHandler {
         // 发送提示信息给玩家
         player.sendSystemMessage(Component.literal("砍价成功!").withStyle(ChatFormatting.RED));
     }
+    @SubscribeEvent
+    public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
+        // 只处理服务器端的玩家事件
+        if (event.phase == TickEvent.Phase.START && !event.player.level().isClientSide) {
+            Player player = event.player;
+
+            // 检查玩家是否有 64 个 zuanshi
+            int zuanshiCount = 0;
+            for (ItemStack itemStack : player.getInventory().items) {
+                if (itemStack.getItem() == ModItems.ZUANSHI.get()) {
+                    zuanshiCount += itemStack.getCount();
+                }
+            }
+
+            if (zuanshiCount >= 64) {
+                // 玩家有 64 个 zuanshi，造成 1 点伤害
+                player.hurt(player.damageSources().magic(), 1.0F);
+                player.sendSystemMessage(Component.literal("你有 64 个钻石，受到 1 点伤害").withStyle(ChatFormatting.RED));
+            }
+
+            // 检查玩家是否有 64 个积分
+            int jifenCount = 0;
+            for (ItemStack itemStack : player.getInventory().items) {
+                if (itemStack.getItem() == ModItems.JIFEN.get()) {
+                    jifenCount += itemStack.getCount();
+                }
+            }
+
+            if (jifenCount >= 64) {
+                // 玩家有 64 个积分，在玩家处生成雷电
+                    player.level().explode(null, player.getX(), player.getY(), player.getZ(), 4.0F, Level.ExplosionInteraction.BLOCK);
+                }
+            }
+        }
+
 }
