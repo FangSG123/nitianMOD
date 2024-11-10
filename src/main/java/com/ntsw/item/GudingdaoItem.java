@@ -22,26 +22,45 @@ public class GudingdaoItem extends SwordItem {
     public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         boolean result = super.hurtEnemy(stack, target, attacker);
 
-        if (target instanceof Player targetPlayer && attacker != null) {
-            if (!hasRequiredItems(targetPlayer)) {
-                // 对目标造成双倍伤害
-                float baseDamage = getBaseDamage(attacker) * 2;
-
-                // 确认 DamageSource 的正确使用
-                DamageSource source;
-                if (attacker instanceof Player playerAttacker) {
-                    source = targetPlayer.damageSources().playerAttack(playerAttacker);
-                } else {
-                    source = attacker.damageSources().mobAttack(attacker);
+        if (attacker != null) {
+            if (target instanceof Player targetPlayer) {
+                if (!hasRequiredItems(targetPlayer)) {
+                    // 对玩家造成双倍伤害
+                    applyDoubleDamage(target, attacker);
                 }
-
-                target.hurt(source, baseDamage);
+            } else {
+                // 对非玩家生物（例如僵尸、骷髅等）造成双倍伤害
+                applyDoubleDamage(target, attacker);
             }
         }
 
         return result;
     }
 
+    /**
+     * 对目标造成双倍伤害
+     *
+     * @param target    受击目标
+     * @param attacker  攻击者
+     */
+    private void applyDoubleDamage(LivingEntity target, LivingEntity attacker) {
+        float baseDamage = getBaseDamage(attacker) * 2;
+        DamageSource source;
+        if (attacker instanceof Player playerAttacker) {
+            source = target.damageSources().playerAttack(playerAttacker);
+        } else {
+            source = attacker.damageSources().mobAttack(attacker);
+        }
+
+        target.hurt(source, baseDamage);
+    }
+
+    /**
+     * 检查玩家是否拥有所需物品
+     *
+     * @param player 玩家实体
+     * @return 如果玩家拥有至少一个所需物品，则返回 true，否则返回 false
+     */
     private boolean hasRequiredItems(Player player) {
         // 检查主物品栏
         for (ItemStack itemStack : player.getInventory().items) {
@@ -64,6 +83,12 @@ public class GudingdaoItem extends SwordItem {
         return false;
     }
 
+    /**
+     * 判断物品是否为所需物品
+     *
+     * @param itemStack 物品栈
+     * @return 如果是所需物品，则返回 true，否则返回 false
+     */
     private boolean isRequiredItem(ItemStack itemStack) {
         return itemStack.getItem() == ModItems.TIESUO_LIANHUAN.get()
                 || itemStack.getItem() == ModItems.SHAN.get()
@@ -71,6 +96,12 @@ public class GudingdaoItem extends SwordItem {
                 || itemStack.getItem() == ModItems.HUOSHA.get();
     }
 
+    /**
+     * 获取攻击者的基础伤害
+     *
+     * @param attacker 攻击者实体
+     * @return 攻击者的基础伤害值
+     */
     private float getBaseDamage(LivingEntity attacker) {
         // 获取攻击者的攻击伤害属性
         AttributeInstance attackDamageAttribute = attacker.getAttribute(Attributes.ATTACK_DAMAGE);

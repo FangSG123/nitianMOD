@@ -1,5 +1,6 @@
 package com.ntsw.event;
 
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.event.TickEvent;
@@ -42,7 +43,7 @@ public class EntityConnectionHandler {
 
             if (connectedEntity instanceof LivingEntity livingConnectedEntity && connectedEntity.isAlive()) {
                 // 对连接的实体造成相同的伤害
-                livingConnectedEntity.hurt(event.getSource(), event.getAmount());
+                livingConnectedEntity.hurt(event.getEntity().damageSources().fellOutOfWorld(), event.getAmount());
             } else {
                 // 如果连接的实体不再有效，移除连接
                 removeConnection(entity);

@@ -12,17 +12,15 @@ import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = Main.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ShikuaiItemEventHandler {
-    private static final int SHIFT_PRESS_COUNT = 5; // Number of times Shift needs to be pressed
+    private static final int SHIFT_PRESS_COUNT = 5;
 
     // Listen for player tick events
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        if (event.phase != TickEvent.Phase.END) return; // Only run at the end of the tick
+        if (event.phase != TickEvent.Phase.END) return;
         Player player = event.player;
 
-        if (player.level().isClientSide()) return; // Only run on the server side
-
-        // Retrieve per-player persistent data
+        if (player.level().isClientSide()) return;
         CompoundTag persistentData = player.getPersistentData();
 
         boolean isEating = persistentData.getBoolean("isEating");
@@ -33,32 +31,29 @@ public class ShikuaiItemEventHandler {
             shiftPressCounter++;
             if (shiftPressCounter >= SHIFT_PRESS_COUNT && isEating) {
                 ItemStack shikuaiItemStack = new ItemStack(ModItems.SHIKUAI_ITEM.get());
-                player.getInventory().add(shikuaiItemStack); // Add item to the player's inventory
-                shiftPressCounter = 0; // Reset the counter
-                isEating = false;      // Reset the eating flag
+                player.getInventory().add(shikuaiItemStack);
+                shiftPressCounter = 0;
+                isEating = false;
             }
         } else {
-            shiftPressCounter = 0; // Reset the counter if Shift is not held down
+            shiftPressCounter = 0;
         }
 
-        // Save the updated data back to the player's persistent data
         persistentData.putBoolean("isEating", isEating);
         persistentData.putInt("shiftPressCounter", shiftPressCounter);
     }
 
-    // Listen for when the player finishes using (eating) an item
     @SubscribeEvent
     public static void onPlayerEat(LivingEntityUseItemEvent.Finish event) {
         if (!(event.getEntity() instanceof Player player)) return;
 
-        if (player.level().isClientSide()) return; // Only run on the server side
+        if (player.level().isClientSide()) return;
 
         ItemStack itemStack = event.getItem();
 
-        // Check if the item consumed is edible
         if (itemStack.isEdible()) {
             CompoundTag persistentData = player.getPersistentData();
-            persistentData.putBoolean("isEating", true); // Set the eating flag
+            persistentData.putBoolean("isEating", true);
         }
     }
 }

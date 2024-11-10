@@ -4,7 +4,6 @@ import com.mojang.logging.LogUtils;
 import com.ntsw.entity.*;
 import com.ntsw.entityrenderer.*;
 import com.ntsw.event.DeathProtectionHandler;
-import com.ntsw.event.PlayerEventHandler;
 import com.ntsw.model.NaiLongModel;
 import com.ntsw.network.ModMessages;
 
@@ -54,6 +53,7 @@ public class Main {
                 output.accept(ModItems.JIU.get());
                 output.accept(ModItems.TIESUO_LIANHUAN.get());
                 output.accept(ModItems.HUOSHA.get());
+                output.accept(ModItems.BAGUAJING_HELMET.get());
 
 
                 output.accept(ModItems.ZIMIN_SPAWN_EGG.get());

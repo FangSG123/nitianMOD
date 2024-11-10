@@ -3,7 +3,10 @@ package com.ntsw;
 import com.ntsw.item.*;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.food.FoodProperties;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Tiers;
 import net.minecraftforge.common.ForgeSpawnEggItem;
@@ -45,7 +48,12 @@ public class ModItems {
     public static final RegistryObject<Item> HUOSHA = ITEMS.register("huosha",
             () -> new HuoShaItem(Tiers.IRON, 3, -2.4F, new Item.Properties().durability(250)));
 
-
+    public static final RegistryObject<Item> BAGUAJING_HELMET = ITEMS.register("baguajing",
+            () -> new BaguajingItem(
+                    ArmorMaterials.LEATHER, // 使用皮革材质
+                    ArmorItem.Type.HELMET,  // 使用 ArmorItem.Type.HELMET
+                    new Item.Properties()
+            ));
 
 
     public static final RegistryObject<Item> ZIMIN_SPAWN_EGG = ITEMS.register("zimin_spawn_egg",
@@ -71,6 +79,9 @@ public class ModItems {
 
     public static final RegistryObject<Item> SHIKUAI_ITEM = ITEMS.register("shikuai",
             () -> new ShikuaiItem(new Item.Properties()));
+    public static final RegistryObject<Item> PDD_ZHIDUN = ITEMS.register("pddzhidun",
+            () -> new PDDzhidun(new Item.Properties().stacksTo(1)));
+
 
 
     public static void register(IEventBus eventBus) {
