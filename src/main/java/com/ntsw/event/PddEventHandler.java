@@ -10,6 +10,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.npc.Villager;
@@ -455,14 +457,47 @@ public class PddEventHandler {
             for (ItemStack itemStack : player.getInventory().items) {
                 if (itemStack.getItem() == ModItems.JIFEN.get()) {
                     jifenCount += itemStack.getCount();
+
                 }
             }
 
             if (jifenCount >= 64) {
                 // 玩家有 64 个积分，在玩家处生成雷电
-                    player.level().explode(null, player.getX(), player.getY(), player.getZ(), 4.0F, Level.ExplosionInteraction.BLOCK);
+                if(!player.level().isClientSide())
+                {
+                    System.out.println("Linghting");
+                    LightningBolt lightningBolt = EntityType.LIGHTNING_BOLT.create((player.level()));
+                    lightningBolt.setPos(player.getX(), player.getY(),  player.getZ());
+                    player.hurt(player.damageSources().lightningBolt(),15);
+                    player.level().addFreshEntity(lightningBolt);
+                }
+                NonNullList<ItemStack> mainInventory = player.getInventory().items;
+                for (int i = 0; i < mainInventory.size(); i++) {
+                    ItemStack stack = mainInventory.get(i);
+                    if (stack.getItem() == ModItems.JIFEN.get()) {
+                        mainInventory.set(i, ItemStack.EMPTY);
+                    }
+                }
+            }
+            ItemStack daoMainHand = player.getMainHandItem();
+            ItemStack dunpaiOffHand = player.getOffhandItem();
+            if(daoMainHand.getItem() == ModItems.PDD.get() && dunpaiOffHand.getItem() == ModItems.PDD_ZHIDUN.get()) {
+                player.level().explode(null, player.getX(), player.getY(), player.getZ(), 10.0F, Level.ExplosionInteraction.NONE);
+                NonNullList<ItemStack> mainInventory = player.getInventory().items;
+                NonNullList<ItemStack> offInventory = player.getInventory().offhand;
+                for (int i = 0; i < mainInventory.size(); i++) {
+                    ItemStack stack = mainInventory.get(i);
+                    if (stack.getItem() == ModItems.PDD.get()) {
+                        mainInventory.set(i, ItemStack.EMPTY);
+                    }
+                }
+                for (int i = 0; i < offInventory.size(); i++) {
+                    ItemStack stack = offInventory.get(i);
+                    if (stack.getItem() == ModItems.PDD_ZHIDUN.get()) {
+                        offInventory.set(i, ItemStack.EMPTY);
+                    }
                 }
             }
         }
-
+    }
 }

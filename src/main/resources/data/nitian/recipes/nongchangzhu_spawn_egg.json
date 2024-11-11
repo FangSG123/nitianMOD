@@ -1,0 +1,21 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+      "GGG",
+      "GYG",
+      "GGG"
+    ],
+    "key": {
+      "G": {
+        "item": "minecraft:white_dye"
+      },
+      "Y": {
+        "item": "nitian:laohei_spawn_egg"
+      }
+    },
+    "result": {
+      "item": "nitian:nongchangzhu_spawn_egg",
+      "count": 1
+    }
+  }
+  

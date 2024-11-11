@@ -1,0 +1,21 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+      "YYY",
+      "YYY",
+      " X "
+    ],
+    "key": {
+      "Y": {
+        "item": "minecraft:wheat"
+      },
+      "X": {
+        "item": "minecraft:point"
+      }
+    },
+    "result": {
+      "item": "nitian:jiu",
+      "count": 1
+    }
+  }
+  

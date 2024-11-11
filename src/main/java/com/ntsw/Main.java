@@ -43,6 +43,7 @@ public class Main {
                 output.accept(ModItems.FeiJiPiao.get());
                 output.accept(ModItems.HuangTaoGuangTou.get());
                 output.accept(ModItems.PDD.get());
+                output.accept(ModItems.PDD_ZHIDUN.get());
                 output.accept(ModItems.JIFEN.get());
                 output.accept(ModItems.SAOBA.get());
                 output.accept(ModItems.ZHANSHISAOBA.get());
@@ -80,7 +81,6 @@ public class Main {
         ModMessages.register();
         ModEffects.MOB_EFFECTS.register(modEventBus);
         ModPotions.POTIONS.register(modEventBus);
-
 
         MinecraftForge.EVENT_BUS.addListener(this::addCreativeTab);
         modEventBus.addListener(this::commonSetup);

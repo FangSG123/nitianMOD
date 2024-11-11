@@ -1,5 +1,6 @@
 package com.ntsw.item;
 
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.world.item.ShieldItem;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.Item;
@@ -11,11 +12,12 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.level.Level;
 import net.minecraft.network.chat.Component;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
 import java.util.List;
 
 public class PDDzhidun extends ShieldItem {
-    private static final int MAX_DURABILITY = 60000;
+    private static final int MAX_DURABILITY = 65535;
 
     public PDDzhidun(Properties properties) {
         super(properties.durability(MAX_DURABILITY));

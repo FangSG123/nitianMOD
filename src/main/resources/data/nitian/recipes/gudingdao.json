@@ -1,0 +1,21 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+      " Y ",
+      " Y ",
+      " X "
+    ],
+    "key": {
+      "Y": {
+        "item": "minecraft:netherite_ingot"
+      },
+      "X": {
+        "item": "minecraft:diamond_sword"
+      }
+    },
+    "result": {
+      "item": "nitian:gudingdao",
+      "count": 1
+    }
+  }
+  

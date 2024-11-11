@@ -1,0 +1,18 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+      "GGG",
+      "G G",
+      "GGG"
+    ],
+    "key": {
+      "G": {
+        "item": "minecraft:wheat_seeds"
+      }
+    },
+    "result": {
+      "item": "nitian:laohei_spawn_egg",
+      "count": 1
+    }
+  }
+  

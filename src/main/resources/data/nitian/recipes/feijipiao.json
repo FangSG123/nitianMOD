@@ -1,0 +1,24 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+      "XZX",
+      "ZYZ",
+      "XZX"
+    ],
+    "key": {
+      "Y": {
+        "item": "minecraft:totem_of_undying"
+      },
+      "X": {
+        "item": "minecraft:coal_block"
+      },
+      "Z": {
+        "item": "minecraft:iron_block"
+      }
+    },
+    "result": {
+      "item": "nitian:feijipiao",
+      "count": 1
+    }
+  }
+  

@@ -1,0 +1,21 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+      "XYX",
+      "XXX",
+      " X "
+    ],
+    "key": {
+      "X": {
+        "item": "minecraft:redstone_block"
+      },
+      "Y": {
+        "item": "minecraft:shield"
+      }
+    },
+    "result": {
+      "item": "nitian:pddzhidun",
+      "count": 1
+    }
+  }
+  

@@ -1,0 +1,21 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+      " Y ",
+      " Y ",
+      " X "
+    ],
+    "key": {
+      "Y": {
+        "item": "minecraft:lava_bucket"
+      },
+      "X": {
+        "item": "minecraft:iron_sword"
+      }
+    },
+    "result": {
+      "item": "nitian:huosha",
+      "count": 1
+    }
+  }
+  
