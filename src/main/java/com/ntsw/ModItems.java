@@ -83,6 +83,12 @@ public class ModItems {
             () -> new PDDzhidun(new Item.Properties().stacksTo(1)));
 
 
+    public static final RegistryObject<Item> KNOCKBACK_WEAPON = ITEMS.register("jiuguding",
+            () -> new KnockbackWeapon());
+    public static final RegistryObject<Item> PIFENG = ITEMS.register("pifeng",
+            () -> new PifengItem(new Item.Properties()));
+
+
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

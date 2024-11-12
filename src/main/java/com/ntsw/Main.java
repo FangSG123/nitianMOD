@@ -4,12 +4,22 @@ import com.mojang.logging.LogUtils;
 import com.ntsw.entity.*;
 import com.ntsw.entityrenderer.*;
 import com.ntsw.event.DeathProtectionHandler;
+import com.ntsw.item.KeyBindings;
 import com.ntsw.model.NaiLongModel;
 import com.ntsw.network.ModMessages;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -95,6 +105,7 @@ public class Main {
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
+
         LOGGER.info("HELLO FROM COMMON SETUP");
         LOGGER.info("DIRT BLOCK >> {}", ForgeRegistries.BLOCKS.getKey(Blocks.DIRT));
     }
@@ -134,9 +145,10 @@ public class Main {
         EntityRenderers.register(ModEntitys.SHIKUAI.get(), ShiKuaiRenderer::new);
     }
 
+
     // 注册模型层定义
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(NaiLongModel.LAYER_LOCATION, NaiLongModel::createBodyLayer);
-    }
 
+    }
 }

@@ -1,0 +1,24 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+      "ZYZ",
+      "ZXZ",
+      "   "
+    ],
+    "key": {
+      "Y": {
+        "item": "minecraft:ender_pearl"
+      },
+      "X": {
+        "item": "minecraft:leather_helmet"
+      },
+      "Z": {
+        "item": "minecraft:copper_ingot"
+      }
+    },
+    "result": {
+      "item": "nitian:baguajing",
+      "count": 1
+    }
+  }
+  

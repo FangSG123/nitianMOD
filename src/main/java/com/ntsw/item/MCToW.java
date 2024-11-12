@@ -50,9 +50,9 @@ public class MCToW extends Item {
             int spawnedSlimes = 0;
 
             while (spawnedSlimes < 10) { // 生成10个史莱姆
-                int offsetX = random.nextInt(3) - 1;
-                int offsetZ = random.nextInt(3) - 1;
-                int offsetY = random.nextInt(3);
+                int offsetX = random.nextInt(5) - 1;
+                int offsetZ = random.nextInt(5) - 1;
+                int offsetY = random.nextInt(4);
 
                 BlockPos spawnPos = new BlockPos(
                         (int) clickLocation.x + offsetX,

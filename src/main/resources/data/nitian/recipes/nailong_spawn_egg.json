@@ -1,0 +1,21 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+      "GGG",
+      "GYG",
+      "GGG"
+    ],
+    "key": {
+      "G": {
+        "item": "minecraft:sugar"
+      },
+      "Y": {
+        "item": "nitian:nether_star"
+      }
+    },
+    "result": {
+      "item": "nitian:nailong_spawn_egg",
+      "count": 1
+    }
+  }
+  

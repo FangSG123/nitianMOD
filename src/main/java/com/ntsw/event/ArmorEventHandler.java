@@ -1,4 +1,4 @@
-package com.ntsw.item;
+package com.ntsw.event;
 
 import com.ntsw.Main;
 import com.ntsw.ModItems;

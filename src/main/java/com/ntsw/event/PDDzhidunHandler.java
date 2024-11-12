@@ -101,12 +101,12 @@ public class PDDzhidunHandler {
             player.setItemInHand(player.getUsedItemHand(), ItemStack.EMPTY);
         }
 
-        // 重置防御次数
-        if (defenseCount >= 5 || remainingDurability < 100) {
-            nbt.putInt("DefenseCount", 0);
-            stack.setTag(nbt);
-            LOGGER.info("Defense count reset to 0.");
-        }
+//        // 重置防御次数
+//        if (defenseCount >= 5 || remainingDurability < 100) {
+//            nbt.putInt("DefenseCount", 0);
+//            stack.setTag(nbt);
+//            LOGGER.info("Defense count reset to 0.");
+//        }
     }
 
 

@@ -409,7 +409,7 @@ public class NaiLongEntity extends Monster implements PowerableMob, RangedAttack
     @Override
     protected void dropCustomDeathLoot(DamageSource source, int looting, boolean recentlyHit) {
         super.dropCustomDeathLoot(source, looting, recentlyHit);
-        for(int i = 0;i <= 128 ; i++)
+        for(int i = 0;i <= 8 ; i++)
         {
             this.spawnAtLocation(ModItems.HuangTaoGuangTou.get());
         }
@@ -535,11 +535,11 @@ public class NaiLongEntity extends Monster implements PowerableMob, RangedAttack
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, 1000.0)
+                .add(Attributes.MAX_HEALTH, 500.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.4)
                 .add(Attributes.FLYING_SPEED, 0.4)
                 .add(Attributes.FOLLOW_RANGE, 30.0)
-                .add(Attributes.ARMOR, 1.0);
+                .add(Attributes.ARMOR, 3.0);
     }
 
     class WitherDoNothingGoal extends Goal {
