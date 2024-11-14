@@ -55,6 +55,11 @@ public class ModItems {
                     new Item.Properties()
             ));
 
+    public static final RegistryObject<Item> BUSHI_GEMEN = ITEMS.register("bushigemen",
+            () -> new BushiGeMenItem(new Item.Properties().stacksTo(1).durability(500)));
+
+
+
 
     public static final RegistryObject<Item> ZIMIN_SPAWN_EGG = ITEMS.register("zimin_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntitys.ZiMin_Entity, 0xFFFFFF, 0x000000, // 自定义颜色，例如白色和黑色
