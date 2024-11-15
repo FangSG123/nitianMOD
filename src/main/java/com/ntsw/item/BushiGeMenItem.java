@@ -94,13 +94,20 @@ public class BushiGeMenItem extends BowItem {
                 LivingEntity target = entities.get(0);
                 double speed = player.getDeltaMovement().length(); // 玩家速度
                 float damage = (float) (speed * 5.0); // 伤害值
-                target.hurt(player.damageSources().playerAttack(player), damage);
+                if(speed > 0.5D)
+                {
+                    target.hurt(player.damageSources().playerAttack(player), damage);
 
-                // 如果携带 TNT，触发爆炸
-                if (hasTNT) {
-                    level.explode(null, position.x, position.y, position.z, 3.0F, Level.ExplosionInteraction.BLOCK);
+                    // 如果携带 TNT，触发爆炸
+                    if (hasTNT) {
+                        level.explode(null, position.x, position.y, position.z, 3.0F, Level.ExplosionInteraction.BLOCK);
+                    }
+
+                    if (player.isOnFire()) {
+                        target.setSecondsOnFire(5); // 点燃生物 5 秒
+                    }
+
                 }
-
                 // 停止玩家运动
                 player.setDeltaMovement(Vec3.ZERO);
                 player.hurtMarked = true;
