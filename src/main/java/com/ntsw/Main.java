@@ -140,6 +140,7 @@ public class Main {
         event.put(ModEntitys.ZiMin_Entity.get(), ZiMinEntity.createAttributes().build());
         event.put(ModEntitys.LAO_HEI.get(), LaoHeiEntity.createAttributes().build());
         event.put(ModEntitys.NONGCHANGZHU.get(), NongChangZhuEntity.createAttributes().build());
+        event.put(ModEntitys.FeiJiBei.get(), NongChangZhuEntity.createAttributes().build());
     }
 
     private void onClientSetup(final FMLClientSetupEvent event) {
@@ -150,12 +151,12 @@ public class Main {
         EntityRenderers.register(ModEntitys.NONGCHANGZHU.get(),NongChangZhuEntityRenderer::new);
         EntityRenderers.register(ModEntitys.CHUANGJIANGUO.get(),ChuanJianGuoEntityRenderer::new);
         EntityRenderers.register(ModEntitys.SHIKUAI.get(), ShiKuaiRenderer::new);
+        EntityRenderers.register(ModEntitys.FeiJiBei.get(),FeijiBeiRenderer::new);
     }
 
 
     // 注册模型层定义
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(NaiLongModel.LAYER_LOCATION, NaiLongModel::createBodyLayer);
-        event.registerLayerDefinition(ModelLayers.CHICKEN, ChickenModel::createBodyLayer);
     }
 }
