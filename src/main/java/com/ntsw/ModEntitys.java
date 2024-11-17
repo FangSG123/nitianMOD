@@ -44,6 +44,8 @@ public class ModEntitys {
                     .clientTrackingRange(4)
                     .updateInterval(10)
                     .build("shikuai"));
+
+
     public static void register(IEventBus eventBus) {
         ENTITY_TYPES.register(eventBus);
         System.out.println("ShikuaiEntity registered."); // 确认注册是否执行

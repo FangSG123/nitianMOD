@@ -26,6 +26,11 @@ public class ModMessages {
                 .decoder(PacketFeiJiPiaoTotemEffect::new)
                 .consumerMainThread(PacketFeiJiPiaoTotemEffect::handle)
                 .add();
+        INSTANCE.messageBuilder(PacketMustDieTotemEffect.class, id++, NetworkDirection.PLAY_TO_CLIENT)
+                .encoder(PacketMustDieTotemEffect::toBytes)
+                .decoder(PacketMustDieTotemEffect::new)
+                .consumerMainThread(PacketMustDieTotemEffect::handle)
+                .add();
     }
     public static void sendToClient(Object message, ServerPlayer player) {
         INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), message);

@@ -9,8 +9,10 @@ import com.ntsw.model.NaiLongModel;
 import com.ntsw.network.ModMessages;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.ChickenModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.entity.EntityRenderers;
@@ -65,7 +67,7 @@ public class Main {
                 output.accept(ModItems.TIESUO_LIANHUAN.get());
                 output.accept(ModItems.HUOSHA.get());
                 output.accept(ModItems.BAGUAJING_HELMET.get());
-
+                output.accept(ModItems.MUST_DIE_TOTEM.get());
 
                 output.accept(ModItems.ZIMIN_SPAWN_EGG.get());
                 output.accept(ModItems.NONGCHANGZHU_SPAWN_EGG.get());
@@ -74,6 +76,7 @@ public class Main {
                 output.accept(ModItems.TRUMP_SPAWN_EGG.get());
                 output.accept(ModItems.HEIMANBA_SPAWN_EGG.get());
                 output.accept(ModItems.MCTOW_SPAWN_EGG.get());
+                output.accept(ModBlocks.LAUGH_OBSIDIAN_ITEM.get());
 
             }).build());
 
@@ -90,9 +93,13 @@ public class Main {
         ModItems.register(modEventBus);
         ModMessages.register();
         ModEffects.MOB_EFFECTS.register(modEventBus);
-        ModPotions.POTIONS.register(modEventBus);
 
+        ModPotions.POTIONS.register(modEventBus);
+        ModBlocks.BLOCKS.register(modEventBus);
+
+        ModBlocks.ITEMS.register(modEventBus);
         MinecraftForge.EVENT_BUS.addListener(this::addCreativeTab);
+//        ModDamageTypes.register(modEventBus);
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::onClientSetup);
         modEventBus.addListener(this::addEntityAttributes);
@@ -149,6 +156,6 @@ public class Main {
     // 注册模型层定义
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(NaiLongModel.LAYER_LOCATION, NaiLongModel::createBodyLayer);
-
+        event.registerLayerDefinition(ModelLayers.CHICKEN, ChickenModel::createBodyLayer);
     }
 }

@@ -1,0 +1,21 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+      " YX",
+      "Y X",
+      " YX"
+    ],
+    "key": {
+      "Y": {
+        "item": "minecraft:string"
+      },
+      "X": {
+        "item": "minecraft:stick"
+      }
+    },
+    "result": {
+      "item": "nitian:bushigemen",
+      "count": 1
+    }
+  }
+  

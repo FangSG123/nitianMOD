@@ -23,6 +23,46 @@
     "sounds": [
       "nitian:zimin_summon"
     ]
+  },
+  "entity.zimin.summon2": {
+    "sounds": [
+      "nitian:zimin_summon"
+    ]
+  },
+  "block.laughobsidian.sirenlaugh1": {
+    "sounds": [
+      "nitian:laughobsidian_sirenlaugh1"
+    ]
+  },
+  "block.laughobsidian.sirenlaugh2": {
+    "sounds": [
+      "nitian:laughobsidian_sirenlaugh2"
+    ]
+  },
+  "block.laughobsidian.sirenlaugh3": {
+    "sounds": [
+      "nitian:laughobsidian_sirenlaugh3"
+    ]
+  },
+  "block.laughobsidian.sirenlaugh4": {
+    "sounds": [
+      "nitian:laughobsidian_sirenlaugh4"
+    ]
+  },
+  "block.laughobsidian.sirenlaugh5": {
+    "sounds": [
+      "nitian:laughobsidian_sirenlaugh5"
+    ]
+  },
+  "block.laughobsidian.sirenlaugh6": {
+    "sounds": [
+      "nitian:laughobsidian_sirenlaugh6"
+    ]
+  },
+  "block.laughobsidian.sirenlaugh7": {
+    "sounds": [
+      "nitian:laughobsidian_sirenlaugh7"
+    ]
   }
 }
   
