@@ -49,7 +49,12 @@ public class LaughObsidianBlock extends Block {
             world.playSound(null, pos, sound, SoundSource.BLOCKS, 1.0F, 1.0F);
 
             // 扣除玩家一半生命值
-            player.hurt(player.damageSources().magic(), player.getHealth() / 2.0F);
+            if (player.getHealth() > 1.0F) { // 确保不会直接致死
+                player.hurt(player.damageSources().magic(), player.getHealth() / 2.0F);
+            }else {
+                player.hurt(player.damageSources().magic(), 1);
+            }
+
             // 关闭范围内怪物的 AI
             world.getEntitiesOfClass(Mob.class,
                             player.getBoundingBox().inflate(5.0)) // 以玩家为中心，半径为5格的范围

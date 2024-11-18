@@ -77,6 +77,8 @@ public class Main {
                 output.accept(ModItems.HEIMANBA_SPAWN_EGG.get());
                 output.accept(ModItems.MCTOW_SPAWN_EGG.get());
                 output.accept(ModBlocks.LAUGH_OBSIDIAN_ITEM.get());
+                output.accept(ModBlocks.NTN_BLOCK_ITEM.get());
+
 
             }).build());
 

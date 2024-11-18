@@ -1,6 +1,6 @@
 package com.ntsw;
 
-
+import com.ntsw.block.NTNBlock;
 import com.ntsw.block.LaughObsidianBlock;
 import net.minecraft.world.level.block.Block;
 import com.ntsw.block.LaughPortalBlock;
@@ -19,10 +19,15 @@ public class ModBlocks {
             () -> new LaughObsidianBlock());
     public static final RegistryObject<Block> LAUGH_PORTAL = BLOCKS.register("laugh_portal",
             LaughPortalBlock::new);
+    public static final RegistryObject<Block> NTN_BLOCK = BLOCKS.register("ntn_block", NTNBlock::new);
+
 
     public static final RegistryObject<Item> LAUGH_OBSIDIAN_ITEM = ITEMS.register("laughobsidian",
             () -> new BlockItem(LAUGH_OBSIDIAN.get(), new Item.Properties()));
     public static final RegistryObject<Item> LAUGH_PORTAL_ITEM = ITEMS.register("laugh_portal",
             () -> new BlockItem(LAUGH_PORTAL.get(), new Item.Properties()));
+    public static final RegistryObject<Item> NTN_BLOCK_ITEM = ITEMS.register("ntn_block_item",
+            () -> new BlockItem(ModBlocks.NTN_BLOCK.get(), new Item.Properties()));
+
 
 }

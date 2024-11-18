@@ -20,7 +20,6 @@ import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber(modid = "nitian")
 public class MustDieTotemHandler {
 
-    private static final String MING_DING_ZHI_SI_TAG = "mingdingzhisi";
     @SubscribeEvent
     public static void onPlayerHurt(LivingHurtEvent event) {
         // 检查实体是否为玩家
