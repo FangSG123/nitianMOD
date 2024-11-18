@@ -41,9 +41,17 @@ public class FeijiBeiEntity extends Animal {
 
             // 检测鼠标按键：左键上升，右键下降
             if (mc.options.keyAttack.isDown()) { // 鼠标左键
-                motion = motion.add(0, 0.5, 0);
+                motion = motion.add(0, 0.3, 0);
             } else if (mc.options.keyUse.isDown()) { // 鼠标右键
-                motion = motion.add(0, -0.5, 0);
+                motion = motion.add(0, -0.3, 0);
+            }else {
+                // 重力逻辑：当未按键时，实体受到重力影响
+                motion = motion.add(0, -0.08, 0); // -0.08 是默认重力加速度
+            }
+
+            // 限制最大下落速度，避免太快
+            if (motion.y < -1.0) {
+                motion = new Vec3(motion.x, -1.0, motion.z);
             }
 
             this.setDeltaMovement(motion); // 设置新的移动速度
