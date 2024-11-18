@@ -71,9 +71,9 @@ public class ModSounds {
                 SoundEvent event = SoundEvent.createVariableRangeEvent(new ResourceLocation(Main.MODID, "block.laughobsidian.sirenlaugh6"));
                 return event;
             });
-    public static final RegistryObject<SoundEvent> SiRenLaugh7 = SOUND_EVENTS.register("sirenlaugh1",
+    public static final RegistryObject<SoundEvent> SiRenLaugh7 = SOUND_EVENTS.register("block.laughobsidian.sirenlaugh7",
             () -> {
-                SoundEvent event = SoundEvent.createVariableRangeEvent(new ResourceLocation(Main.MODID, "sirenlaugh1"));
+                SoundEvent event = SoundEvent.createVariableRangeEvent(new ResourceLocation(Main.MODID, "block.laughobsidian.sirenlaugh7"));
                 return event;
             });
 

@@ -4,13 +4,14 @@ import com.ntsw.ModSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.registries.RegistryObject;
 import net.minecraft.sounds.SoundEvent;
@@ -29,7 +30,6 @@ public class LaughObsidianBlock extends Block {
             ModSounds.SiRenLaugh5,
             ModSounds.SiRenLaugh6,
             ModSounds.SiRenLaugh7
-
             // 添加更多的声音事件
     );
 
@@ -43,9 +43,17 @@ public class LaughObsidianBlock extends Block {
     public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player,
                                  InteractionHand hand, BlockHitResult hit) {
         if (!world.isClientSide()) {
+            // 随机播放笑声
             Random rand = new Random();
             SoundEvent sound = SOUND_EVENTS.get(rand.nextInt(SOUND_EVENTS.size())).get();
             world.playSound(null, pos, sound, SoundSource.BLOCKS, 1.0F, 1.0F);
+
+            // 扣除玩家一半生命值
+            player.hurt(player.damageSources().magic(), player.getHealth() / 2.0F);
+            // 关闭范围内怪物的 AI
+            world.getEntitiesOfClass(Mob.class,
+                            player.getBoundingBox().inflate(5.0)) // 以玩家为中心，半径为5格的范围
+                    .forEach(mob -> mob.setNoAi(true)); // 设置怪物 AI 为关闭
         }
         return InteractionResult.SUCCESS;
     }

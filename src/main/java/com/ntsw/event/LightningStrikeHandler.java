@@ -27,7 +27,7 @@ public class LightningStrikeHandler {
                     for (int z = -radius; z <= radius; z++) {
                         BlockPos blockPos = pos.offset(x, y, z);
                         if (event.getLevel().getBlockState(blockPos).is(Blocks.CRYING_OBSIDIAN)) {
-                            // 将哭泣的黑曜石替换为 laughobsidian
+                            // 将哭泣的黑曜石替换为 laughobsidian.json
                             event.getLevel().playSound(null, pos, ModSounds.SiRenLaugh7.get(), SoundSource.MUSIC, 1.0F, 1.0F);
                             event.getLevel().setBlockAndUpdate(blockPos,  ModBlocks.LAUGH_OBSIDIAN.get().defaultBlockState());
                         }

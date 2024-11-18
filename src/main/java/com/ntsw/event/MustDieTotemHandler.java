@@ -30,19 +30,21 @@ public class MustDieTotemHandler {
                 return;
             }
             // 检查玩家是否拥有必死图腾
-            ModMessages.sendToClient(new PacketMustDieTotemEffect(), (ServerPlayer) event.getEntity());
-            player.level().getServer().execute(() -> {
-                try {
-                    Thread.sleep(2000); // 阻塞线程，延迟 2 秒
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                if (player.isAlive()) {
-                    player.hurt(player.damageSources().magic(),player.getMaxHealth());
-                }
-            });
+            if(playerHasMustDieTotem(player)) {
+                ModMessages.sendToClient(new PacketMustDieTotemEffect(), (ServerPlayer) event.getEntity());
+                player.level().getServer().execute(() -> {
+                    try {
+                        Thread.sleep(2000); // 阻塞线程，延迟 2 秒
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    if (player.isAlive()) {
+                        player.hurt(player.damageSources().magic(),player.getMaxHealth());
+                    }
+                });
                 // 可选：移除一个必死图腾
                 removeOneMustDieTotem(player);
+                }
             }
         }
 
