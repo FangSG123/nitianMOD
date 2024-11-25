@@ -69,14 +69,17 @@ public class Main {
                 output.accept(ModItems.BAGUAJING_HELMET.get());
                 output.accept(ModItems.MUST_DIE_TOTEM.get());
 
+
                 output.accept(ModItems.ZIMIN_SPAWN_EGG.get());
                 output.accept(ModItems.NONGCHANGZHU_SPAWN_EGG.get());
                 output.accept(ModItems.NAILONG_SPAWN_EGG.get());
                 output.accept(ModItems.LAOHEI_SPAWN_EGG.get());
                 output.accept(ModItems.TRUMP_SPAWN_EGG.get());
                 output.accept(ModItems.HEIMANBA_SPAWN_EGG.get());
+                output.accept(ModItems.FEIJIBEI_SPAWN_EGG.get());
                 output.accept(ModItems.MCTOW_SPAWN_EGG.get());
                 output.accept(ModBlocks.LAUGH_OBSIDIAN_ITEM.get());
+                output.accept(ModBlocks.LAUGH_PORTAL_ITEM.get());
                 output.accept(ModBlocks.NTN_BLOCK_ITEM.get());
 
 

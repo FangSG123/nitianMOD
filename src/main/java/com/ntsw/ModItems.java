@@ -84,6 +84,9 @@ public class ModItems {
                     new Item.Properties()));
     public static final RegistryObject<Item> MCTOW_SPAWN_EGG = ITEMS.register("mctow_spawn_egg",
             () -> new MCToW(new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> FEIJIBEI_SPAWN_EGG = ITEMS.register("feijibei_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntitys.FeiJiBei, 0xFFFFFF, 0x000000, // 自定义颜色，例如白色和黑色
+                    new Item.Properties()));
 
     public static final RegistryObject<Item> SHIKUAI_ITEM = ITEMS.register("shikuai",
             () -> new ShikuaiItem(new Item.Properties()));

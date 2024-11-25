@@ -1,0 +1,24 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+      "XYX",
+      "XYX",
+      "XZX"
+    ],
+    "key": {
+      "Y": {
+        "item": "minecraft:feather"
+      },
+      "X": {
+        "item": "minecraft:smile_ball"
+      },
+      "Z": {
+        "item": "minecraft:ender_eye"
+      }
+    },
+    "result": {
+      "item": "nitian:feijibei_spawn_egg",
+      "count": 1
+    }
+  }
+  

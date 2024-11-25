@@ -6,6 +6,9 @@
   "entity.nitian.laohei_entity": "老黑",
   "entity.nitian.nongchangzhu_entity": "农场主",
   "entity.nitian.chuanjianguo_entity": "§c§l川建国",
+  "entity.nitian.feijibei": "飞鸡背",
+
+
   "item.nitian.htgt" : "黄桃罐头",
   "item.nitian.feijipiao" : "§6孩子们,我回来了",
   "item.nitian.pdd" : "§4速速砍一刀",
@@ -19,7 +22,10 @@
   "item.nitian.nongchangzhu_spawn_egg": "农场主",
   "item.nitian.heimanba_spawn_egg": "牢大",
   "item.nitian.nailong_spawn_egg": "牢大",
+  "item.nitian.feijibei_spawn_egg": "飞机背",
   "block.nitian.laughobsidian" : "欢笑黑曜石",
+  "block.nitian.ntn_block" : "NTN",
+  "block.nitian.laugh_portal" : "欢笑传送门",
 
 
   "item.nitian.saoba": "扫把",

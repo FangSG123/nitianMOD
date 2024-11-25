@@ -46,7 +46,7 @@ public class ModEntitys {
                     .build("shikuai"));
     public static final RegistryObject<EntityType<FeijiBeiEntity>> FeiJiBei = ENTITY_TYPES.register("feijibei",
             () -> EntityType.Builder.<FeijiBeiEntity>of(FeijiBeiEntity::new, MobCategory.MISC)
-                    .sized(0.25F, 0.25F)
+                    .sized(0.5F, 0.5F)
                     .clientTrackingRange(4)
                     .updateInterval(10)
                     .build("feijibei"));
