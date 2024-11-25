@@ -59,7 +59,7 @@ public class ModItems {
             () -> new BushiGeMenItem(new Item.Properties().stacksTo(1).durability(500)));
 
     public static final RegistryObject<Item> MUST_DIE_TOTEM = ITEMS.register("must_die_totem",
-            () -> new Item(new Item.Properties()));
+            () -> new Item(new Item.Properties().stacksTo(1)));
 
 
 

@@ -10,7 +10,10 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -164,5 +167,14 @@ public class FeijiBeiEntity extends Animal {
     @Nullable
     public AgeableMob getBreedOffspring(ServerLevel serverLevel, AgeableMob ageableMob) {
         return null; // 不支持繁殖逻辑
+    }
+    public static AttributeSupplier.Builder createAttributes() {
+        return Monster.createMonsterAttributes()
+                .add(Attributes.MAX_HEALTH, 5.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.4)
+                .add(Attributes.FLYING_SPEED, 0.4)
+                .add(Attributes.FOLLOW_RANGE, 30.0)
+                .add(Attributes.ATTACK_DAMAGE, 10.0)
+                .add(Attributes.ARMOR, 1.0);
     }
 }

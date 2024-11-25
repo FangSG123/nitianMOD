@@ -64,6 +64,8 @@ public class Main {
                 output.accept(ModItems.SHAN.get());
                 output.accept(ModItems.GUDINGDAO.get());
                 output.accept(ModItems.JIU.get());
+
+                output.accept(ModItems.BUSHI_GEMEN.get());
                 output.accept(ModItems.TIESUO_LIANHUAN.get());
                 output.accept(ModItems.HUOSHA.get());
                 output.accept(ModItems.BAGUAJING_HELMET.get());
@@ -145,7 +147,7 @@ public class Main {
         event.put(ModEntitys.ZiMin_Entity.get(), ZiMinEntity.createAttributes().build());
         event.put(ModEntitys.LAO_HEI.get(), LaoHeiEntity.createAttributes().build());
         event.put(ModEntitys.NONGCHANGZHU.get(), NongChangZhuEntity.createAttributes().build());
-        event.put(ModEntitys.FeiJiBei.get(), NongChangZhuEntity.createAttributes().build());
+        event.put(ModEntitys.FeiJiBei.get(), FeijiBeiEntity.createAttributes().build());
     }
 
     private void onClientSetup(final FMLClientSetupEvent event) {
