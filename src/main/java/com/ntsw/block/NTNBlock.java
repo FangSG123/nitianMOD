@@ -21,6 +21,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import org.jetbrains.annotations.Debug;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -64,6 +65,7 @@ public class NTNBlock extends Block {
         // 爆炸点燃 TNT
         if (!level.isClientSide()) {
             Player nearestPlayer = getNearestPlayer(level, pos); // 找到最近的玩家
+            System.out.println("nearestPlayer" + nearestPlayer);
             ignite(level, pos, nearestPlayer); // 点燃 TNT 并跟踪最近的玩家
         }
     }
@@ -97,7 +99,7 @@ public class NTNBlock extends Block {
         }
 
         // 在指定范围内找到最近的玩家（例如 10 格内）
-        return serverLevel.getNearestPlayer(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 10, false);
+        return serverLevel.getNearestPlayer(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 30, false);
     }
 
     @SubscribeEvent
