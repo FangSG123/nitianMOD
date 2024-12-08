@@ -29,7 +29,8 @@ public class MustDieTotemHandler {
                 return;
             }
             // 检查玩家是否拥有必死图腾
-            if(playerHasMustDieTotem(player)) {
+            if(playerHasMustDieTotem(player) && event.getSource() != player.damageSources().fellOutOfWorld()) {
+                removeOneMustDieTotem(player);
                 ModMessages.sendToClient(new PacketMustDieTotemEffect(), (ServerPlayer) event.getEntity());
                 player.level().getServer().execute(() -> {
                     try {
@@ -38,11 +39,9 @@ public class MustDieTotemHandler {
                         e.printStackTrace();
                     }
                     if (player.isAlive()) {
-                        player.hurt(player.damageSources().magic(),player.getMaxHealth());
+                        player.hurt(player.damageSources().genericKill(),player.getMaxHealth());
                     }
                 });
-                // 可选：移除一个必死图腾
-                removeOneMustDieTotem(player);
                 }
             }
         }

@@ -6,11 +6,11 @@
       "XZX"
     ],
     "key": {
-      "Y": {
+      "X": {
         "item": "minecraft:feather"
       },
-      "X": {
-        "item": "minecraft:smile_ball"
+      "Y": {
+        "item": "minecraft:slime_ball"
       },
       "Z": {
         "item": "minecraft:ender_eye"

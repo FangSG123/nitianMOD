@@ -15,3 +15,4 @@ public class ModEffects {
     public static final RegistryObject<MobEffect> REPEL = MOB_EFFECTS.register("repel", RepelEffect::new);
     public static final RegistryObject<MobEffect> DAMAGE_IMMUNITY = MOB_EFFECTS.register("damage_immunity", DamageImmunityEffect::new);
 }
+

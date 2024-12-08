@@ -26,7 +26,9 @@ public class FeijiBeiEntity extends Animal {
 
     private static final int MAX_FEED_TIME = 6000; // 最大时间限制
     private static final int FEED_INCREMENT = 600; // 每次喂食增加时间
+    public static final int MAX_PROGRESS = 5000; // 进度条最大值
     private static final EntityDataAccessor<Integer> REMAINING_MOVE_TIME = SynchedEntityData.defineId(FeijiBeiEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> PROGRESS = SynchedEntityData.defineId(FeijiBeiEntity.class, EntityDataSerializers.INT); // 进度条
 
     public FeijiBeiEntity(EntityType<? extends Animal> entityType, Level level) {
         super(entityType, level);
@@ -36,6 +38,7 @@ public class FeijiBeiEntity extends Animal {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(REMAINING_MOVE_TIME, 0); // 初始化同步数据
+        this.entityData.define(PROGRESS, 0); // 初始化进度条
     }
 
     public void setRemainingMoveTime(int time) {
@@ -44,6 +47,14 @@ public class FeijiBeiEntity extends Animal {
 
     public int getRemainingMoveTime() {
         return this.entityData.get(REMAINING_MOVE_TIME);
+    }
+
+    public void setProgress(int progress) {
+        this.entityData.set(PROGRESS, progress);
+    }
+
+    public int getProgress() {
+        return this.entityData.get(PROGRESS);
     }
 
     @Override
@@ -62,14 +73,15 @@ public class FeijiBeiEntity extends Animal {
                 Vec3 forwardMotion = Vec3.directionFromRotation(player.getXRot(), player.getYRot()).scale(forward * 0.4);
                 Vec3 motion = new Vec3(forwardMotion.x, this.getDeltaMovement().y, forwardMotion.z);
 
-                // 检测鼠标左键（上升）和右键（下降）
-                // 检测鼠标按键：左键上升，右键下降
+                // 鼠标左键上升，右键下降
                 if (mc.options.keyAttack.isDown()) { // 鼠标左键
-                    motion = motion.add(0, 0.3, 0);
+                    motion = motion.add(0, 0.20, 0);
+                    int currentProgress = getProgress();
+                    setProgress(currentProgress + 10);
                 } else if (mc.options.keyUse.isDown()) { // 鼠标右键
-                    motion = motion.add(0, -0.3, 0);
-                }else {
-                    // 重力逻辑：当未按键时，实体受到重力影响
+                    motion = motion.add(0, -0.20, 0);
+                } else {
+                    // 重力逻辑
                     motion = motion.add(0, -0.08, 0); // -0.08 是默认重力加速度
                 }
 
@@ -80,12 +92,54 @@ public class FeijiBeiEntity extends Animal {
 
                 this.setDeltaMovement(motion);
                 this.move(MoverType.SELF, this.getDeltaMovement());
+
+                // 增加进度条
+                int currentProgress = getProgress();
+                if (currentProgress < MAX_PROGRESS) {
+                    setProgress(currentProgress + 1); // 每次增加进度
+                }
+                // 如果在地狱，实体和骑乘的玩家都着火
+                if (this.level().dimension() == Level.NETHER) {
+                    // 给骑乘的玩家也设置着火效果
+                    if (player != null && !player.isOnFire()) {
+                        this.setSecondsOnFire(1); // 设置实体着火，持续 5 秒
+                        player.setSecondsOnFire(1); // 设置玩家着火，持续 5 秒
+                    }
+                }
+
             } else {
                 // 没有剩余时间，停止移动
                 this.setDeltaMovement(Vec3.ZERO);
             }
         } else {
             super.travel(travelVector); // 默认移动逻辑
+
+            // 未骑乘时减少进度条
+            int currentProgress = getProgress();
+            if (currentProgress > 0) {
+                setProgress(currentProgress - 1); // 每次减少进度
+            }
+        }
+
+        // 检查进度条是否满了
+        if (getProgress() >= MAX_PROGRESS) {
+            triggerExplosion();
+            setProgress(0); // 重置进度条
+        }
+        // 新增：检查进度条是否到达 80%，如果是则开始着火
+        if (getProgress() >= MAX_PROGRESS * 0.93) { // 80%进度
+            if (!this.isOnFire()) {
+                this.setSecondsOnFire(1); // 设置实体着火，持续 5 秒
+            }
+
+        }
+    }
+
+
+    private void triggerExplosion() {
+        if (!this.level().isClientSide) {
+            // 生成爆炸
+            this.level().explode(this, this.getX(), this.getY(), this.getZ(), 3.0F, false, Level.ExplosionInteraction.NONE);
         }
     }
 
@@ -123,21 +177,21 @@ public class FeijiBeiEntity extends Animal {
                     int increment = Math.min(FEED_INCREMENT, MAX_FEED_TIME - getRemainingMoveTime());
                     setRemainingMoveTime(getRemainingMoveTime() + increment);
 
-                    // 消耗小麦
+                    // 消耗物品
                     if (!player.getAbilities().instabuild) { // 非创造模式消耗物品
                         itemStack.shrink(1);
                     }
 
                     // 提示玩家剩余时间
                     player.displayClientMessage(
-                            Component.literal("喂食成功！剩余移动时间: ")
+                            Component.literal("喂食成功！剩余运行时间: ")
                                     .append(String.valueOf(getRemainingMoveTime() / 20))
                                     .append(" 秒"),
                             true
                     );
                 } else {
                     player.displayClientMessage(
-                            Component.literal("移动时间已达上限！"),
+                            Component.literal("运行时间已达上限！"),
                             true
                     );
                 }
@@ -168,13 +222,12 @@ public class FeijiBeiEntity extends Animal {
     public AgeableMob getBreedOffspring(ServerLevel serverLevel, AgeableMob ageableMob) {
         return null; // 不支持繁殖逻辑
     }
+
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, 5.0)
-                .add(Attributes.MOVEMENT_SPEED, 0.4)
-                .add(Attributes.FLYING_SPEED, 0.4)
-                .add(Attributes.FOLLOW_RANGE, 30.0)
-                .add(Attributes.ATTACK_DAMAGE, 10.0)
-                .add(Attributes.ARMOR, 1.0);
+                .add(Attributes.MAX_HEALTH, 20.0)
+                .add(Attributes.MOVEMENT_SPEED, 1)
+                .add(Attributes.FLYING_SPEED, 1)
+                .add(Attributes.ARMOR, 20.0);
     }
 }

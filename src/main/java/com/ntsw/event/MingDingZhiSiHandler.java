@@ -42,7 +42,7 @@ public class MingDingZhiSiHandler {
                     if (!entity.level().isClientSide() && entity.level() instanceof ServerLevel) {
                         itemEntity.discard(); // 删除掉落物实体
                     }
-                    entity.addEffect(new MobEffectInstance(ModEffects.MING_DING_ZHI_SI.get(),600,1));
+                    entity.addEffect(new MobEffectInstance(ModEffects.MING_DING_ZHI_SI.get(),600,0));
                 }
             }
 

@@ -39,7 +39,7 @@ public class LaughObsidianBlock extends Block {
     );
 
     public LaughObsidianBlock() {
-        super(BlockBehaviour.Properties.copy(Blocks.STONE)
+        super(BlockBehaviour.Properties.copy(Blocks.CRYING_OBSIDIAN)
                 .strength(3.0f, 3.0f)
                 .sound(SoundType.STONE));
     }
@@ -52,7 +52,7 @@ public class LaughObsidianBlock extends Block {
             Random rand = new Random();
             SoundEvent sound = SOUND_EVENTS.get(rand.nextInt(SOUND_EVENTS.size())).get();
             int randomNum = (int) rand.nextFloat(4);
-            System.out.println("randomNum = " + randomNum);
+            //System.out.println("randomNum = " + randomNum);
             world.playSound(null, pos, sound, SoundSource.BLOCKS, 1.0F, 1.0F);
             switch(randomNum)
             {
