@@ -6,7 +6,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 
 public class DaikuangtutengData {
-    private static final String TAG_KEY_DAMAGE = "daikuangtuteng_damage";
+    private static final String TAG_KEY_DAMAGE = "daikuangtuteng_damage_100.json";
     private static final String TAG_KEY_FLAG = "daikuangtuteng_applying_damage";
 
     // 获取玩家的累计伤害

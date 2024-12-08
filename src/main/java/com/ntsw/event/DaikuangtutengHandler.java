@@ -4,6 +4,7 @@ package com.ntsw.event;
 
 import com.ntsw.DaikuangtutengData;
 import com.ntsw.ModItems;
+import com.ntsw.item.DaikuangtutengItem;
 import com.ntsw.network.ModMessages;
 import com.ntsw.network.PacketDaikuangtutengEffect;
 import com.ntsw.network.PacketUpdateAccumulatedDamage;
@@ -43,6 +44,7 @@ public class DaikuangtutengHandler {
         DaikuangtutengData.addAccumulatedDamage(player, damageAmount);
 
         double currentDamage = DaikuangtutengData.getAccumulatedDamage(player);
+        DaikuangtutengItem.updateModelData(offHand, currentDamage);
 
         // 发送更新的累计伤害到客户端
         if (player instanceof ServerPlayer serverPlayer) {
@@ -50,12 +52,12 @@ public class DaikuangtutengHandler {
         }
 
         // 检查是否超过1000
-        if (currentDamage > 1000) {
+        if (currentDamage > 200) {
             applyAccumulatedDamage(player, currentDamage);
         }
         // 检查是否超过100
-        else if (currentDamage > 100) {
-            if (RANDOM.nextDouble() < 0.05) { // 5%概率
+        else if (currentDamage > 40) {
+            if (RANDOM.nextDouble() < currentDamage/1000) { // 5%概率
                 applyAccumulatedDamage(player, currentDamage);
             }
         }

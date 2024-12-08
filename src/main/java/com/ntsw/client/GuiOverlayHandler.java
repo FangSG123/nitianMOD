@@ -29,12 +29,15 @@ public class GuiOverlayHandler {
         // 检查副手是否持有 daikuangtuteng
         ItemStack offHand = player.getOffhandItem();
         if (offHand.getItem() != ModItems.DAIKUANGTUTENG.get()) return;
-
         // 获取累计伤害
         double accumulatedDamage = ClientAccumulatedDamageManager.getAccumulatedDamage();
-
+        double probability = accumulatedDamage/10;
+        if(accumulatedDamage < 40)
+        {
+            probability = 0;
+        }
         // 绘制文本
-        String text = "累计伤害: " + (int) accumulatedDamage;
+        String text = "累计伤害: " + (int) accumulatedDamage + "   " + "强制还款概率: " + (int)probability + "%";
         float x = 10.0F; // 左上角X坐标
         float y = 10.0F; // 左上角Y坐标
         int color = 0xFFFFFF; // 白色

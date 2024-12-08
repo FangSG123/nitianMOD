@@ -24,4 +24,16 @@ public class DaikuangtutengItem extends Item {
         }
         return super.use(level, player, hand);
     }
+    public static void updateModelData(ItemStack stack, double accumulatedDamage) {
+        if (accumulatedDamage > 40) {
+            stack.getOrCreateTag().putInt("CustomModelData", 1001);
+        } else {
+            if (stack.hasTag()) {
+                stack.getTag().remove("CustomModelData");
+                if (stack.getTag().isEmpty()) {
+                    stack.setTag(null);
+                }
+            }
+        }
+    }
 }
