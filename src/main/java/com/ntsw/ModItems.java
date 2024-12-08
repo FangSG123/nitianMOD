@@ -98,7 +98,8 @@ public class ModItems {
             () -> new KnockbackWeapon());
     public static final RegistryObject<Item> PIFENG = ITEMS.register("pifeng",
             () -> new PifengItem(new Item.Properties()));
-
+    public static final RegistryObject<Item> DAIKUANGTUTENG = ITEMS.register("daikuangtuteng",
+            () -> new DaikuangtutengItem(new Item.Properties()));
 
 
     public static void register(IEventBus eventBus) {

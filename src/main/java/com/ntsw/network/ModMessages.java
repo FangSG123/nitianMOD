@@ -1,7 +1,8 @@
+// ModMessages.java
+
 package com.ntsw.network;
 
 import com.ntsw.Main;
-import com.ntsw.network.PacketFeiJiPiaoTotemEffect;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkRegistry;
@@ -13,7 +14,7 @@ import net.minecraftforge.network.NetworkDirection;
 public class ModMessages {
     private static final String PROTOCOL_VERSION = "1";
     public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
-            new ResourceLocation(Main.MODID, Main.MODID), // 使用正确的Mod ID
+            new ResourceLocation(Main.MODID, Main.MODID),
             () -> PROTOCOL_VERSION,
             PROTOCOL_VERSION::equals,
             PROTOCOL_VERSION::equals
@@ -31,7 +32,19 @@ public class ModMessages {
                 .decoder(PacketMustDieTotemEffect::new)
                 .consumerMainThread(PacketMustDieTotemEffect::handle)
                 .add();
+        // 注册新的网络消息
+        INSTANCE.messageBuilder(PacketDaikuangtutengEffect.class, id++, NetworkDirection.PLAY_TO_CLIENT)
+                .encoder(PacketDaikuangtutengEffect::toBytes)
+                .decoder(PacketDaikuangtutengEffect::new)
+                .consumerMainThread(PacketDaikuangtutengEffect::handle)
+                .add();
+        INSTANCE.messageBuilder(PacketUpdateAccumulatedDamage.class, id++, NetworkDirection.PLAY_TO_CLIENT)
+                .encoder(PacketUpdateAccumulatedDamage::toBytes)
+                .decoder(PacketUpdateAccumulatedDamage::new)
+                .consumerMainThread(PacketUpdateAccumulatedDamage::handle)
+                .add();
     }
+
     public static void sendToClient(Object message, ServerPlayer player) {
         INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), message);
     }
