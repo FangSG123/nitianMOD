@@ -20,12 +20,17 @@ import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.Potions;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
@@ -39,6 +44,8 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.slf4j.Logger;
+
+import java.util.Collections;
 
 @Mod(Main.MODID)
 public class Main {
@@ -122,7 +129,18 @@ public class Main {
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
+        // 创建一个包含浓稠药水的 ItemStack
+        ItemStack thickPotionStack = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.THICK);
 
+        // 将 FAQING 药水效果添加到浓稠药水中
+        PotionUtils.setCustomEffects(thickPotionStack, Collections.singletonList(new MobEffectInstance(ModEffects.FAQING.get(), 3600)));
+
+        // 注册药水配方
+        BrewingRecipeRegistry.addRecipe(
+                Ingredient.of(thickPotionStack), // 基础药水（作为 ItemStack）
+                Ingredient.of(Items.BLAZE_POWDER), // 激活物品（烈焰棒）
+                thickPotionStack // 生成的药水（FAQING 药水效果）
+        );
         LOGGER.info("HELLO FROM COMMON SETUP");
         LOGGER.info("DIRT BLOCK >> {}", ForgeRegistries.BLOCKS.getKey(Blocks.DIRT));
     }

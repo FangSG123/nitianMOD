@@ -6,6 +6,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.npc.Villager;
+import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.level.Level;
@@ -18,6 +20,9 @@ import java.util.List;
 @Mod.EventBusSubscriber(modid = "nitian", bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class FaQingEventHandler {
 
+    private static final int SPAWN_COOLDOWN = 20; // 设置冷却时间为20 tick
+    private static int cooldownTimer = 0; // 冷却计时器，单位为tick
+
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if (event.phase == TickEvent.Phase.END) {
@@ -28,6 +33,8 @@ public class FaQingEventHandler {
             if (!world.isClientSide) {
                 // 检查玩家是否拥有“faqing”效果
                 if (player.hasEffect(ModEffects.FAQING.get())) {
+                    int faqingLevel = player.getEffect(ModEffects.FAQING.get()).getAmplifier(); // 获取FAQING药水效果的等级
+
                     // 检查玩家是否处于潜行状态
                     if (player.isShiftKeyDown()) { // 使用 isShiftKeyDown() 检查潜行状态
                         // 定义一个检测半径
@@ -35,13 +42,47 @@ public class FaQingEventHandler {
                         // 获取玩家周围的所有实体
                         List<Entity> nearbyEntities = world.getEntities(player, player.getBoundingBox().inflate(radius));
 
+                        // 只有冷却时间结束时才能生成小村民或小僵尸
+                        if (cooldownTimer > 0) {
+                            cooldownTimer--; // 冷却时间递减
+                        }
+
                         for (Entity entity : nearbyEntities) {
+                            // 如果是动物并处于求爱模式
                             if (entity instanceof Animal animal && isAnimalInLoveMode(animal)) {
                                 // 生成幼崽
                                 spawnBabyAnimal(animal);
 
                                 // 清除动物的求爱模式
                                 clearAnimalLoveMode(animal);
+
+                                // 如果FAQING药水效果等级为1，清除效果
+                                if (faqingLevel == 0) {
+                                    player.removeEffect(ModEffects.FAQING.get());
+                                    System.out.println("cleareffect");
+                                }
+                            }
+
+                            // 如果是村民并且冷却时间结束
+                            if (entity instanceof Villager villager && cooldownTimer == 0) {
+                                spawnBabyVillager(villager);
+                                cooldownTimer = SPAWN_COOLDOWN; // 重置冷却计时器
+
+                                // 如果FAQING药水效果等级为1，清除效果
+                                if (faqingLevel == 0) {
+                                    player.removeEffect(ModEffects.FAQING.get());
+                                }
+                            }
+
+                            // 如果是僵尸并且冷却时间结束
+                            if (entity instanceof Zombie zombie && cooldownTimer == 0) {
+                                spawnBabyZombie(zombie);
+                                cooldownTimer = SPAWN_COOLDOWN; // 重置冷却计时器
+
+                                // 如果FAQING药水效果等级为1，清除效果
+                                if (faqingLevel == 0) {
+                                    player.removeEffect(ModEffects.FAQING.get());
+                                }
                             }
                         }
                     }
@@ -78,8 +119,37 @@ public class FaQingEventHandler {
         }
     }
 
+    // 在村民位置生成小村民
+    private static void spawnBabyVillager(Villager villager) {
+        ServerLevel serverLevel = (ServerLevel) villager.level();
 
-        // 清除动物的求爱模式
+        // 创建并生成小村民
+        Villager babyVillager = EntityType.VILLAGER.create(serverLevel);
+        if (babyVillager != null) {
+            babyVillager.setBaby(true);  // 设置为婴儿
+            babyVillager.setPos(villager.getX(), villager.getY(), villager.getZ());
+            babyVillager.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(villager.blockPosition()),
+                    MobSpawnType.MOB_SUMMONED, null, null);
+            serverLevel.addFreshEntity(babyVillager);  // 将小村民添加到世界中
+        }
+    }
+
+    // 在僵尸位置生成小僵尸
+    private static void spawnBabyZombie(Zombie zombie) {
+        ServerLevel serverLevel = (ServerLevel) zombie.level();
+
+        // 创建并生成小僵尸
+        Zombie babyZombie = EntityType.ZOMBIE.create(serverLevel);
+        if (babyZombie != null) {
+            babyZombie.setBaby(true);  // 设置为婴儿
+            babyZombie.setPos(zombie.getX(), zombie.getY(), zombie.getZ());
+            babyZombie.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(zombie.blockPosition()),
+                    MobSpawnType.MOB_SUMMONED, null, null);
+            serverLevel.addFreshEntity(babyZombie);  // 将小僵尸添加到世界中
+        }
+    }
+
+    // 清除动物的求爱模式
     private static void clearAnimalLoveMode(Animal animal) {
         animal.resetLove();
     }

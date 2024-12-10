@@ -49,5 +49,9 @@
 
       "effect.nitian.damage_immunity" : "砍一刀中...",
     "effect.nitian.mingdingzhisi" : "命定之死",
-    "effect.nitian.repel" : "恶臭"
+    "effect.nitian.repel" : "恶臭",
+      "effect.nitian.faqing" : "发情....",
+
+      "item.minecraft.point.effect.repel" : "奋汁",
+      "item.minecraft.point.effect.faqing_point" : "spring药"
   }
