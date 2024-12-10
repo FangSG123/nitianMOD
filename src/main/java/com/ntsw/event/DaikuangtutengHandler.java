@@ -32,36 +32,90 @@ public class DaikuangtutengHandler {
             DaikuangtutengData.setApplyingDamage(player, false);
             return;
         }
-
         ItemStack offHand = player.getOffhandItem();
-        if (offHand.getItem() != ModItems.DAIKUANGTUTENG.get()) return;
+        if (offHand.getItem() == ModItems.DAIKUANGTUTENG.get()){
+            // 阻止伤害生效
+            event.setCanceled(true);
 
-        // 阻止伤害生效
-        event.setCanceled(true);
+            // 获取并累加伤害
+            double damageAmount = event.getAmount();
 
-        // 获取并累加伤害
-        double damageAmount = event.getAmount();
-        DaikuangtutengData.addAccumulatedDamage(player, damageAmount);
+            // 计算玩家盔甲的伤害减免
+            double armorDamageReduction = player.getArmorValue() * 0.04; // 每件护甲提供4%的伤害减免
 
-        double currentDamage = DaikuangtutengData.getAccumulatedDamage(player);
-        DaikuangtutengItem.updateModelData(offHand, currentDamage);
+            // 根据防御值调整实际伤害
+            double actualDamage = damageAmount * (1 - armorDamageReduction);
 
-        // 发送更新的累计伤害到客户端
-        if (player instanceof ServerPlayer serverPlayer) {
-            ModMessages.sendToClient(new PacketUpdateAccumulatedDamage(currentDamage), serverPlayer);
-        }
 
-        // 检查是否超过1000
-        if (currentDamage > 200) {
-            applyAccumulatedDamage(player, currentDamage);
-        }
-        // 检查是否超过100
-        else if (currentDamage > 40) {
-            if (RANDOM.nextDouble() < currentDamage/1000) { // 5%概率
+            DaikuangtutengData.addAccumulatedDamage(player, actualDamage);
+            DaikuangtutengData.calculateInterestDamage(player, actualDamage);
+            double currentDamage = DaikuangtutengData.getAccumulatedDamage(player);
+            DaikuangtutengItem.updateModelData(offHand, currentDamage);
+
+            // 发送更新的累计伤害到客户端
+            if (player instanceof ServerPlayer serverPlayer) {
+                ModMessages.sendToClient(new PacketUpdateAccumulatedDamage(currentDamage), serverPlayer);
+            }
+
+            // 检查是否超过1000
+            if (currentDamage > 100) {
                 applyAccumulatedDamage(player, currentDamage);
             }
-        }
+            // 检查是否超过100
+            else if (currentDamage > 20) {
+                if (RANDOM.nextDouble() < currentDamage/700) { // 5%概率
+                    applyAccumulatedDamage(player, currentDamage);
+                }
+            }
+        } else if (offHand.getItem() == ModItems.DAIKUANGTUTENGBIG.get()) {
+            // 阻止伤害生效
+            event.setCanceled(true);
 
+            // 获取并累加伤害
+            double damageAmount = event.getAmount();
+            // 计算玩家盔甲的伤害减免
+            double armorDamageReduction = player.getArmorValue() * 0.04; // 每件护甲提供4%的伤害减免
+
+            // 根据防御值调整实际伤害
+            double actualDamage = damageAmount * (1 - armorDamageReduction);
+
+            DaikuangtutengData.addAccumulatedDamage(player, actualDamage);
+            DaikuangtutengData.calculateHighInterestDamage(player, actualDamage);
+            double currentDamage = DaikuangtutengData.getAccumulatedDamage(player);
+            DaikuangtutengItem.updateModelData(offHand, currentDamage);
+
+            // 发送更新的累计伤害到客户端
+            if (player instanceof ServerPlayer serverPlayer) {
+                ModMessages.sendToClient(new PacketUpdateAccumulatedDamage(currentDamage), serverPlayer);
+            }
+
+            // 检查是否超过1000
+            if (currentDamage > 400) {
+                applyAccumulatedDamage(player, currentDamage);
+            }
+            // 检查是否超过100
+            else if (currentDamage > 100) {
+                if (RANDOM.nextDouble() < currentDamage/2000) { // 5%概率
+                    applyAccumulatedDamage(player, currentDamage);
+                }
+            }
+        }else if (offHand.getItem() == ModItems.DAIKUANGTUTENGMAX.get()) {
+            // 阻止伤害生效
+            event.setCanceled(true);
+
+            // 获取并累加伤害
+            double damageAmount = event.getAmount();
+            DaikuangtutengData.addAccumulatedDamage(player, damageAmount);
+            DaikuangtutengData.calculateInterestDamage(player, damageAmount);
+            double currentDamage = DaikuangtutengData.getAccumulatedDamage(player);
+            DaikuangtutengItem.updateModelData(offHand, currentDamage);
+
+            // 发送更新的累计伤害到客户端
+            if (player instanceof ServerPlayer serverPlayer) {
+                ModMessages.sendToClient(new PacketUpdateAccumulatedDamage(currentDamage), serverPlayer);
+            }
+
+        }
     }
 
     private static void applyAccumulatedDamage(Player player, double totalDamage) {

@@ -84,6 +84,9 @@ public class Main {
                 output.accept(ModBlocks.LAUGH_PORTAL_ITEM.get());
                 output.accept(ModBlocks.NTN_BLOCK_ITEM.get());
 
+                output.accept(ModItems.DAIKUANGTUTENG.get());
+                output.accept(ModItems.DAIKUANGTUTENGBIG.get());
+                output.accept(ModItems.DAIKUANGTUTENGMAX.get());
 
             }).build());
 

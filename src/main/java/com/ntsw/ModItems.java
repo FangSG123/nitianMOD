@@ -106,6 +106,10 @@ public class ModItems {
             () -> new PifengItem(new Item.Properties()));
     public static final RegistryObject<Item> DAIKUANGTUTENG = ITEMS.register("daikuangtuteng",
             () -> new DaikuangtutengItem(new Item.Properties()));
+    public static final RegistryObject<Item> DAIKUANGTUTENGBIG = ITEMS.register("daikuangtutengbig",
+            () -> new DaikuangtutengItem(new Item.Properties()));
+    public static final RegistryObject<Item> DAIKUANGTUTENGMAX = ITEMS.register("daikuangtutengmax",
+            () -> new DaikuangtutengItem(new Item.Properties()));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

@@ -3,16 +3,15 @@
 package com.ntsw.item;
 
 import com.ntsw.event.DaikuangtutengHandler;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Item.Properties;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.level.Level;
 
-public class DaikuangtutengItem extends Item {
-    public DaikuangtutengItem(Properties properties) {
+public class DaikuangtutengMAXItem extends Item {
+    public DaikuangtutengMAXItem(Properties properties) {
         super(properties);
     }
 
@@ -25,7 +24,7 @@ public class DaikuangtutengItem extends Item {
         return super.use(level, player, hand);
     }
     public static void updateModelData(ItemStack stack, double accumulatedDamage) {
-        if (accumulatedDamage > 20) {
+        if (accumulatedDamage > 1000000) {
             stack.getOrCreateTag().putInt("CustomModelData", 1001);
         } else {
             if (stack.hasTag()) {

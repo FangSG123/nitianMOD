@@ -43,9 +43,11 @@
     "item.nitian.jiu": "酒",
     "item.nitian.tiesuolianhuan": "铁索连环",
     "item.nitian.baguajing": "八卦镜",
+    "item.nitian.daikuangtuteng": "贷款图腾",
+    "item.nitian.daikuangtutengbig": "高额度贷款图腾",
+      "item.nitian.daikuangtutengmax": "马斯克贷款图腾",
 
-
-    "effect.nitian.damage_immunity" : "砍一刀中...",
+      "effect.nitian.damage_immunity" : "砍一刀中...",
     "effect.nitian.mingdingzhisi" : "命定之死",
     "effect.nitian.repel" : "恶臭"
   }

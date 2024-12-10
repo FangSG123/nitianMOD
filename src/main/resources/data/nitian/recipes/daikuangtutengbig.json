@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "nitian_daikuangtutengbig",
+  "ingredients": [
+    { "item": "minecraft:coal_block" },
+    { "item": "minecraft:iron_block" },
+    { "item": "minecraft:gold_block" },
+    { "item": "minecraft:diamond_block" },
+    { "item": "minecraft:redstone_block" },
+    { "item": "minecraft:lapis_block" },
+    { "item": "minecraft:netherite_block" },
+    { "item": "nitian:daikuangtuteng" },
+    { "item": "minecraft:nether_star" }
+  ],
+  "result": {
+    "item": "nitian:daikuangtutengbig",
+    "count": 1
+  }
+}

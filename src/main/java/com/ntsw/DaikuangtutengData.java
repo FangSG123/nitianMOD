@@ -27,6 +27,14 @@ public class DaikuangtutengData {
         setAccumulatedDamage(player, current + damage);
     }
 
+    public static void calculateInterestDamage(Player player, double damage) {
+        double current = getAccumulatedDamage(player);
+        setAccumulatedDamage(player, current*1.1);
+    }
+    public static void calculateHighInterestDamage(Player player, double damage) {
+        double current = getAccumulatedDamage(player);
+        setAccumulatedDamage(player, current*1.2);
+    }
     // 减少玩家的累计伤害
     public static void subtractAccumulatedDamage(Player player, double damage) {
         double current = getAccumulatedDamage(player);
@@ -50,4 +58,5 @@ public class DaikuangtutengData {
         CompoundTag tag = player.getPersistentData();
         tag.putBoolean(TAG_KEY_FLAG, value);
     }
+
 }
