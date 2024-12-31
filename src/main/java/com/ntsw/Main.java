@@ -4,25 +4,16 @@ import com.mojang.logging.LogUtils;
 import com.ntsw.entity.*;
 import com.ntsw.entityrenderer.*;
 import com.ntsw.event.DeathProtectionHandler;
-import com.ntsw.item.KeyBindings;
 import com.ntsw.model.NaiLongModel;
 import com.ntsw.network.ModMessages;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.ChickenModel;
-import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.model.geom.ModelLayerLocation;
-import net.minecraft.client.model.geom.ModelLayers;
-import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.client.renderer.entity.ItemRenderer;
+
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.decoration.ArmorStand;
+
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
@@ -90,6 +81,8 @@ public class Main {
                 output.accept(ModBlocks.LAUGH_OBSIDIAN_ITEM.get());
                 output.accept(ModBlocks.LAUGH_PORTAL_ITEM.get());
                 output.accept(ModBlocks.NTN_BLOCK_ITEM.get());
+                output.accept(ModBlocks.NON_RESPAWN_ANCHOR_ITEM.get());
+
 
                 output.accept(ModItems.DAIKUANGTUTENG.get());
                 output.accept(ModItems.DAIKUANGTUTENGBIG.get());
@@ -124,7 +117,7 @@ public class Main {
         CREATIVE_MODE_TABS.register(modEventBus);
 
 
-        MinecraftForge.EVENT_BUS.register(new DeathProtectionHandler()); //自定义监听器
+//        MinecraftForge.EVENT_BUS.register(new DeathProtectionHandler()); //自定义监听器
         MinecraftForge.EVENT_BUS.register(this);
     }
 

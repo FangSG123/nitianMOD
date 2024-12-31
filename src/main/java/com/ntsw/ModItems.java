@@ -111,6 +111,21 @@ public class ModItems {
     public static final RegistryObject<Item> DAIKUANGTUTENGMAX = ITEMS.register("daikuangtutengmax",
             () -> new DaikuangtutengItem(new Item.Properties()));
 
+    public static final RegistryObject<Item> ESCUDO_SWORD = ITEMS.register(
+            "escudo_sword",
+            () -> new EscudoSwordItem(new Item.Properties()
+                    .stacksTo(1) // 限制只能一把
+            )
+    );
+    public static final RegistryObject<Item> LL_XIUGAIQI =
+            ITEMS.register("llxiugaiqi",
+                    () -> new LLXiugaiqiItem(
+                            new Item.Properties()
+                                    .stacksTo(1)     // 只能叠一件
+                                    .fireResistant() // 示例属性，可选
+                    )
+            );
+
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
     }

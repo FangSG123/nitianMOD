@@ -1,9 +1,12 @@
 package com.ntsw.event;
 
 import com.ntsw.ModItems;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.GameType;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -65,6 +68,23 @@ public class PlayerEventHandler {
                 player.setHealth(2.0F);
                 // 取消此次伤害
                 event.setCanceled(true);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerDeath(LivingDeathEvent event) {
+        // 判断是否为玩家死亡
+        if (event.getEntity() instanceof ServerPlayer serverPlayer) {
+            // 读取之前打上的标记
+            boolean flag = serverPlayer.getPersistentData().getBoolean("NonRespawn");
+            if (flag) {
+                // 直接改为观察者模式
+                serverPlayer.setGameMode(GameType.SPECTATOR);
+
+                // 如果只想让玩家在死亡后一次性进入观察者模式，而下次再进游戏正常复活，
+                // 那么可以在这里重置标志（防止玩家一直保持观察者模式无法正常游玩）
+                // serverPlayer.getPersistentData().putBoolean("NonRespawn", false);
             }
         }
     }

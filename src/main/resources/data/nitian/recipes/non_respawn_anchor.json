@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "GGG",
+    "YYY",
+    "GGG"
+  ],
+  "key": {
+    "Y": {
+      "item": "minecraft:glowstone_dust"
+    },
+    "G": {
+      "item": "nitian:laughobsidian"
+    }
+  },
+  "result": {
+    "item": "nitian:non_respawn_anchor",
+    "count": 1
+  }
+}

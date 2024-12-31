@@ -1,7 +1,61 @@
 {
-  "entity.nitian.nailong_entity": "nailong",
-  "entity.nitian.heimanba_entity": "heimanba",
-  "item.nitian.htgt" : "htgt",
-  "item.nitian.feijipiao" : "feijipiao",
-  "item.nitian.zimin_spawn_egg" : "baohudaziran"
+  "itemGroup.nitian": "Inverse Heaven",
+  "entity.nitian.nailong_entity": "Milk Dragon",
+  "entity.nitian.heimanba_entity": "Prison Big",
+  "entity.nitian.zimin_entity": "§aRice Hill Villager",
+  "entity.nitian.laohei_entity": "Old Black",
+  "entity.nitian.nongchangzhu_entity": "Farm Owner",
+  "entity.nitian.chuanjianguo_entity": "§c§lChuan Jianguo",
+  "entity.nitian.feijibei": "Flying Chicken Back",
+
+  "item.nitian.htgt": "Yellow Peach Canned",
+  "item.nitian.feijipiao": "§6Kids, I'm Back",
+  "item.nitian.pdd": "§4Quickly Chop Once",
+  "item.nitian.pddzhidun": "§4Bingxi Shield",
+  "item.nitian.jifen": "§1Points",
+  "item.nitian.zuanshi": "Diamond",
+  "item.nitian.bushigemen": "Not Shooting? Bro",
+  "item.nitian.must_die_totem": "Must Die Totem",
+  "item.nitian.zimin_spawn_egg": "§2§l§nProtect Big Seed",
+  "item.nitian.laohei_spawn_egg": "Old Black",
+  "item.nitian.trump_spawn_egg": "Chuan Jianguo",
+  "item.nitian.nongchangzhu_spawn_egg": "Farm Owner",
+  "item.nitian.heimanba_spawn_egg": "Prison Big",
+  "item.nitian.nailong_spawn_egg": "Milk Dragon",
+  "item.nitian.feijibei_spawn_egg": "Flying Chicken Back",
+  "block.nitian.laughobsidian": "Laugh Obsidian",
+  "block.nitian.ntn_block": "NTN",
+  "block.nitian.laugh_portal": "Laugh Portal",
+
+  "item.nitian.saoba": "Broom",
+  "item.nitian.shikuai": "Dung Block",
+  "item.nitian.dabian": "Defense",
+  "item.nitian.dabian.tooltip": "Eating this will cause nausea, poisoning, and foul odor effects.",
+  "item.nitian.zhanshisaoba": "§6Enchanted §kS§r§6 Broom",
+
+  "item.nitian.mctow_spawn_egg": "Target Range",
+
+  "item.nitian.huosha": "Fire Kill",
+  "item.nitian.shan": "Flash",
+  "item.nitian.gudingdao": "Ancient Iron Sword",
+  "item.nitian.jiu": "Wine",
+  "item.nitian.tiesuolianhuan": "Iron Chain",
+  "item.nitian.baguajing": "Bagua Mirror",
+  "item.nitian.daikuangtuteng": "Loan Totem",
+  "item.nitian.daikuangtutengbig": "High Credit Loan Totem",
+  "item.nitian.daikuangtutengmax": "Musk Loan Totem",
+
+  "effect.nitian.damage_immunity": "Chopped Once...",
+  "effect.nitian.mingdingzhisi": "Fate Death",
+  "effect.nitian.repel": "Foul Odor",
+  "effect.nitian.faqing": "In Heat...",
+
+  "item.minecraft.potion.effect.repel_potion": "Repellent Juice",
+  "item.minecraft.potion.effect.faqing_potion": "Spring Potion",
+
+  "item.minecraft.splash_potion.effect.repel_potion": "Repellent Juice",
+  "item.minecraft.splash_potion.effect.faqing_potion": "Splash Spring Potion",
+
+  "item.minecraft.lingering_potion.effect.repel_potion": "Repellent Juice",
+  "item.minecraft.lingering_potion.effect.faqing_potion": "Lingering Spring Potion"
 }

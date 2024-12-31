@@ -1,0 +1,5 @@
+{
+  "variants": {
+    "": { "model": "nitian:block/non_respawn_anchor" }
+  }
+}
