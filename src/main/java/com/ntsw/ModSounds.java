@@ -77,4 +77,11 @@ public class ModSounds {
                 return event;
             });
 
+
+    public static final RegistryObject<SoundEvent> ShaLuGuangHuan_Sound = SOUND_EVENTS.register("bgm.nitianfumo.shaluguanghuan",
+            () -> {
+                SoundEvent event = SoundEvent.createVariableRangeEvent(new ResourceLocation(Main.MODID, "bgm.nitianfumo.shaluguanghuan"));
+                LOGGER.info("注册音效: " + event.getLocation());
+                return event;
+            });
 }

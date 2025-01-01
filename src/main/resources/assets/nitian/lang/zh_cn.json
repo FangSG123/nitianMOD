@@ -64,5 +64,45 @@
         "item.minecraft.splash_potion.effect.faqing_potion" : "喷溅型spring药",
 
         "item.minecraft.lingering_potion.effect.repel_potion" : "奋汁",
-        "item.minecraft.lingering_potion.effect.faqing_potion" : "滞留型spring药"
+        "item.minecraft.lingering_potion.effect.faqing_potion" : "滞留型spring药",
+
+
+        "enchantment.nitian.fire_enchant": "火焰附加",
+        "enchantment.nitian.knockback_enchant" : "击退",
+        "enchantment.nitian.loyalty_enchant": "忠诚",
+        "enchantment.nitian.efficiency_enchant": "效率",
+        "enchantment.nitian.blessing_of_vanishing": "§6消失祝福",
+        "enchantment.nitian.lightning_enchant": "引雷",
+        "enchantment.nitian.finite_enchant": "有限",
+        "enchantment.nitian.impact_enchant": "冲击",
+        "enchantment.nitian.duncuo_enchant": "盾戳",
+        "enchantment.nitian.shaluguanghuan": "§k§4杀↗戮↘光↗环↘",
+        "enchantment.nitian.jiyanxingzhe": "基岩行者",
+        "enchantment.nitian.wajueji": "挖掘机",
+        "enchantment.nitian.zhishengji": "直升机",
+        "enchantment.nitian.suo": "小锁不算锁",
+        "enchantment.nitian.toushi": "小透不算透",
+        "enchantment.nitian.shupizhiren": "竖劈之刃",
+        "enchantment.nitian.meihuo": "魅惑",
+        "enchantment.nitian.daotoujiushui": "到头就睡",
+        "enchantment.nitian.qichuangqi": "起床气",
+        "enchantment.nitian.luodishui": "落地，水",
+        "enchantment.nitian.wodishengao": "我滴神镐",
+        "enchantment.nitian.zuanshichanzi": "钻石铲铲",
+        "enchantment.nitian.chuanggelipei": "创哥理赔",
+        "enchantment.nitian.jianrenpianzuo": "剑刃偏左",
+        "enchantment.nitian.goujitiaoqiang": "狗急跳墙",
+
+
+        "enchantment.nitian.fuqiangduo": "抢夺 -",
+        "enchantment.nitian.fushiyun": "时运 -",
+        "enchantment.nitian.fuhuoyanfujia": "火焰附加 -",
+        "enchantment.nitian.fujingyanxiubu": "经验修补 -",
+        "enchantment.nitian.fujitui": "击退 -",
+        "enchantment.nitian.fufengli": "锋利 -",
+
+
+
+        "effect.nitian.meiliao" : "魅了",
+        "itemGroup.fumo_tab": "逆天附魔"
   }

@@ -18,6 +18,7 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -91,6 +92,50 @@ public class Main {
             }).build());
 
 
+
+
+    public static final RegistryObject<CreativeModeTab> FuMo_TAB = CREATIVE_MODE_TABS.register("fumo_tab", () -> CreativeModeTab.builder()
+            .withTabsBefore(CreativeModeTabs.COMBAT)
+            .icon(() -> new ItemStack(Items.ENCHANTED_BOOK))
+            .title(Component.translatable("itemGroup.fumo_tab"))
+            .displayItems((parameters, output) -> {
+                output.accept(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(ModEnchantments.FIRE_ENCHANT.get(), 1)));
+                output.accept(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(ModEnchantments.KNOCKBACK_ENCHANT.get(), 1)));
+                output.accept(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(ModEnchantments.LOYALTY_ENCHANT.get(), 1)));
+                output.accept(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(ModEnchantments.EFFICIENCY_ENCHANT.get(), 1)));
+                output.accept(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(ModEnchantments.EFFICIENCY_ENCHANT.get(), 2)));
+                output.accept(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(ModEnchantments.EFFICIENCY_ENCHANT.get(), 3)));
+                output.accept(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(ModEnchantments.EFFICIENCY_ENCHANT.get(), 4)));
+                output.accept(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(ModEnchantments.EFFICIENCY_ENCHANT.get(), 5)));
+                output.accept(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(ModEnchantments.BLESSING_OF_VANISHING.get(), 1)));
+                output.accept(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(ModEnchantments.LIGHTNING_ENCHANT.get(), 1)));
+                output.accept(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(ModEnchantments.FINITE_ENCHANT.get(), 1)));
+                output.accept(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(ModEnchantments.DUNCUO_ENCHANT.get(), 1)));
+                output.accept(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(ModEnchantments.SHALUGUANGHUAN.get(), 1)));
+                output.accept(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(ModEnchantments.ZHISHENGJI.get(), 1)));
+                output.accept(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(ModEnchantments.WAJUEJI.get(), 1)));
+                output.accept(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(ModEnchantments.TOUSHI.get(), 1)));
+                output.accept(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(ModEnchantments.SUO.get(), 1)));
+                output.accept(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(ModEnchantments.SHUPIZHIREN.get(), 1)));
+                output.accept(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(ModEnchantments.JIYANXINGZHE.get(), 1)));
+                output.accept(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(ModEnchantments.MEIHUO.get(), 1)));
+                output.accept(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(ModEnchantments.DAOTOUJIUSHUI.get(), 1)));
+                output.accept(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(ModEnchantments.QICHUANGQI.get(), 1)));
+                output.accept(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(ModEnchantments.ZUANSHICHANZI.get(), 1)));
+                output.accept(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(ModEnchantments.CHUANGGELIPEI.get(), 1)));
+                output.accept(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(ModEnchantments.WODISHENGAO.get(), 1)));
+                output.accept(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(ModEnchantments.LUODISHUI.get(), 1)));
+                output.accept(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(ModEnchantments.FUQIANGDUO.get(), 1)));
+                output.accept(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(ModEnchantments.FUJINGYANXIUBU.get(), 1)));
+                output.accept(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(ModEnchantments.FUJITUI.get(), 1)));
+                output.accept(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(ModEnchantments.FUHUOYANFUJIA.get(), 1)));
+                output.accept(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(ModEnchantments.FUFENGLI.get(), 1)));
+                output.accept(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(ModEnchantments.FUSHIYUN.get(), 1)));
+                output.accept(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(ModEnchantments.JIANRENPIANZUO.get(), 1)));
+                output.accept(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(ModEnchantments.GOUJITIAOQIANG.get(), 1)));
+
+
+            }).build());
 
 
 

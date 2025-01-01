@@ -18,5 +18,8 @@ public class ModEffects {
     public static final RegistryObject<MobEffect> DAMAGE_IMMUNITY = MOB_EFFECTS.register("damage_immunity", DamageImmunityEffect::new);
     public static final RegistryObject<MobEffect> FAQING = MOB_EFFECTS.register("faqing", FaqingEffect::new);
 
+
+    public static final RegistryObject<MobEffect> MEILIAO = MOB_EFFECTS.register("meiliao", com.ntsw.effect.MeiliaoEffect::new);
+
 }
 
