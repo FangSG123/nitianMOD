@@ -7,6 +7,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -45,17 +46,15 @@ public class LLXiugaiqiItem extends Item {
         // 潜行 + 右键 -> 切换模式
         if (player.isShiftKeyDown()) {
             mode++;
-            // 如果模式超过 9，就回到 1
-            if (mode > 9) {
+            // 如果模式超过 10，就回到 1
+            if (mode > 10) {
                 mode = 1;
             }
             stack.getOrCreateTag().putInt(MODE_KEY, mode);
 
             if (!level.isClientSide) {
                 player.displayClientMessage(
-                        net.minecraft.network.chat.Component.translatable(
-                                "切换模式 -> " + mode
-                        ),
+                        net.minecraft.network.chat.Component.translatable("切换模式 -> " + mode),
                         true
                 );
             }
@@ -73,7 +72,8 @@ public class LLXiugaiqiItem extends Item {
                 case 6 -> executeMode6((ServerPlayer) player);
                 case 7 -> executeMode7((ServerPlayer) player);
                 case 8 -> executeMode8((ServerPlayer) player);
-                case 9 -> executeMode9((ServerPlayer) player);  // 新增模式9
+                case 9 -> executeMode9((ServerPlayer) player);
+                case 10 -> executeMode10((ServerPlayer) player); // <-- 新增第10模式
                 default -> {
                     // 理论上不会触发
                 }
@@ -109,7 +109,7 @@ public class LLXiugaiqiItem extends Item {
             player.displayClientMessage(net.minecraft.network.chat.Component.literal("绿宝石不足，操作失败！"), true);
             return;
         }
-        ServerLevel serverLevel =(ServerLevel) player.level();
+        ServerLevel serverLevel = (ServerLevel) player.level();
         List<LivingEntity> nearbyEntities = serverLevel.getEntitiesOfClass(
                 LivingEntity.class,
                 player.getBoundingBox().inflate(10),
@@ -142,14 +142,13 @@ public class LLXiugaiqiItem extends Item {
     }
 
     /**
-     * 模式4：消耗648颗绿宝石，随机获得100个物品
+     * 模式4：消耗65颗绿宝石（你原代码里写的是 65，注意校对），随机获得100个物品
      */
     private void executeMode4(ServerPlayer player) {
         if (!removeEmeralds(player, 65)) {
             player.displayClientMessage(net.minecraft.network.chat.Component.literal("绿宝石不足，操作失败！"), true);
             return;
         }
-        // 获得100个随机物品
         for (int i = 0; i < 100; i++) {
             ItemStack randomStack = getRandomItemStack(1);
             player.getInventory().add(randomStack);
@@ -214,7 +213,7 @@ public class LLXiugaiqiItem extends Item {
             player.displayClientMessage(net.minecraft.network.chat.Component.literal("绿宝石不足，操作失败！"), true);
             return;
         }
-        ServerLevel serverLevel =(ServerLevel) player.level();
+        ServerLevel serverLevel = (ServerLevel) player.level();
         var advancements = serverLevel.getServer().getAdvancements();
 
         for (Advancement adv : advancements.getAllAdvancements()) {
@@ -227,29 +226,21 @@ public class LLXiugaiqiItem extends Item {
     }
 
     /**
-     * ======================== 新增模式 9 ========================
-     */
-
-    /**
-     * 模式9：消耗 64 颗绿宝石，清除玩家为中心 16×16×16 范围的方块
+     * 模式9：消耗 64 颗绿宝石，清除玩家为中心 16×16×16 范围内的方块
      */
     private void executeMode9(ServerPlayer player) {
         if (!removeEmeralds(player, 64)) {
             player.displayClientMessage(net.minecraft.network.chat.Component.literal("绿宝石不足，操作失败！"), true);
             return;
         }
-        ServerLevel serverLevel =(ServerLevel) player.level();
+        ServerLevel serverLevel = (ServerLevel) player.level();
         BlockPos playerPos = player.blockPosition();
 
-        // 假设半径为 8，则一共是 16 格 ( -8 ~ +7 )
-        int radius = 8;
-
-        // 循环替换
+        int radius = 8;  // 半径8 -> 16格直径
         for (int x = -radius; x < radius; x++) {
             for (int y = -radius; y < radius; y++) {
                 for (int z = -radius; z < radius; z++) {
                     BlockPos targetPos = playerPos.offset(x, y, z);
-                    // 这里直接替换为空气，如需排除基岩/命令方块等可以加判断
                     serverLevel.setBlock(targetPos, Blocks.AIR.defaultBlockState(), 3);
                 }
             }
@@ -257,6 +248,33 @@ public class LLXiugaiqiItem extends Item {
 
         player.displayClientMessage(net.minecraft.network.chat.Component.literal(
                 "已清除玩家周围 16×16×16 范围内的方块！"), true);
+    }
+
+    /**
+     * ======================== 新增模式 10 ========================
+     */
+    /**
+     * 模式10：消耗 328 颗绿宝石，移除当前世界中除自己外的所有实体
+     */
+    private void executeMode10(ServerPlayer player) {
+        // 1. 检查并移除绿宝石
+        if (!removeEmeralds(player, 328)) {
+            player.displayClientMessage(net.minecraft.network.chat.Component.literal("绿宝石不足，操作失败！"), true);
+            return;
+        }
+
+        // 2. 获取所有非自身实体，并移除
+        ServerLevel serverLevel = (ServerLevel) player.level();
+        List<? extends Entity> entities = serverLevel.getEntities(null, e -> e != player);
+
+        for (Entity e : entities) {
+            e.discard(); // 将其移除出世界
+        }
+
+        player.displayClientMessage(
+                net.minecraft.network.chat.Component.literal("已清除除你自身外的所有实体！"),
+                true
+        );
     }
 
     /**
