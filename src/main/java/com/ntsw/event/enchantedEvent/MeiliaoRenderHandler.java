@@ -1,4 +1,4 @@
-package com.ntsw.event;
+package com.ntsw.event.enchantedEvent;
 
 
 import com.mojang.blaze3d.vertex.PoseStack;
