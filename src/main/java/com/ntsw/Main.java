@@ -148,7 +148,7 @@ public class Main {
         ModItems.register(modEventBus);
         ModMessages.register();
         ModEffects.MOB_EFFECTS.register(modEventBus);
-
+        ModEnchantments.register(modEventBus);
         ModPotions.POTIONS.register(modEventBus);
         ModBlocks.BLOCKS.register(modEventBus);
 
