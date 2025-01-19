@@ -3,6 +3,7 @@ package com.ntsw.event.enchantedEvent;
 
 import com.ntsw.ModEffects;
 import com.ntsw.ModEnchantments;
+import com.ntsw.ModItems;
 import com.ntsw.goal.FollowPlayerGoal;
 import com.ntsw.goal.SlimeDropSlimeballGoal;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -40,9 +41,9 @@ public class MeihuoEffectHandler {
 
         // 检查武器是否带有 "meihuo" 附魔
         int meihuoLevel = weapon.getEnchantmentLevel(ModEnchantments.MEIHUO.get());
-        if (meihuoLevel > 0) {
+        if (meihuoLevel > 0 ||  player.getMainHandItem().getItem() == ModItems.MHAPP.get()) {
             // 根据附魔等级给目标施加 "meiliao" 药水效果
-            int duration = 100 * meihuoLevel; // 效果持续时间，等级越高，时间越长
+            int duration = 10000 * meihuoLevel; // 效果持续时间，等级越高，时间越长
             target.addEffect(new MobEffectInstance(ModEffects.MEILIAO.get(), duration, 0));
 
             // 如果目标是 Mob 类型，则添加跟随玩家的目标
@@ -79,14 +80,19 @@ public class MeihuoEffectHandler {
         // 新增功能：如果目标是村民且带有 "meiliao" 效果，每次攻击掉落一个绿宝石
         if (target instanceof Villager && target.hasEffect(ModEffects.MEILIAO.get())) {
             dropEmerald(target);
-            target.setHealth(target.getHealth() * 0.6f);
+            target.setHealth(target.getHealth() + 1);
+        }
+        MobEffectInstance meiliaoEffect = target.getEffect(ModEffects.MEILIAO.get());
+
+        if ((meiliaoEffect != null && meiliaoEffect.getDuration() > 0 )) {
+            target.getPersistentData().putBoolean("cuiming", true);
         }
     }
 
     private static void dropLoot(LivingEntity entity) {
         if (entity.level() != null && !entity.level().isClientSide) {
             // 定义掉落的经验数量，这里以随机数为例
-            int experience = 3 + random.nextInt(6); // 生成5到10个经验
+            int experience = 30 + random.nextInt(60); // 生成5到10个经验
             ExperienceOrb orb = new ExperienceOrb(entity.level(), entity.getX(), entity.getY(), entity.getZ(), experience);
             entity.level().addFreshEntity(orb);
             //System.out.println("Dropped " + experience + " experience orb(s) for " + entity.getName().getString());
@@ -97,7 +103,7 @@ public class MeihuoEffectHandler {
     private static void dropEmerald(LivingEntity entity) {
         if (entity.level() != null) {
             // 掉落一个绿宝石
-            ItemStack emerald = new ItemStack(Items.EMERALD);
+            ItemStack emerald = new ItemStack(Items.EMERALD , 6);
             entity.spawnAtLocation(emerald);
         }
     }

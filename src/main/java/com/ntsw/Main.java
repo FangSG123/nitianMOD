@@ -4,9 +4,11 @@ import com.mojang.logging.LogUtils;
 import com.ntsw.entity.*;
 import com.ntsw.entityrenderer.*;
 import com.ntsw.event.DeathProtectionHandler;
+import com.ntsw.model.ETHModel;
 import com.ntsw.model.NaiLongModel;
 import com.ntsw.network.ModMessages;
 
+import com.ntsw.network.ModNetworkHandler;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 
 import net.minecraft.core.registries.Registries;
@@ -88,7 +90,15 @@ public class Main {
                 output.accept(ModItems.DAIKUANGTUTENG.get());
                 output.accept(ModItems.DAIKUANGTUTENGBIG.get());
                 output.accept(ModItems.DAIKUANGTUTENGMAX.get());
+                output.accept(ModItems.MHAPP.get());
 
+
+                output.accept(ModItems.FCX.get());
+                output.accept(ModItems.DAMAO.get());
+                output.accept(ModItems.YLXJ.get());
+                output.accept(ModItems.LUDENG.get());
+                output.accept(ModItems.GUISUO.get());
+                output.accept(ModItems.NSZY.get());
             }).build());
 
 
@@ -151,7 +161,7 @@ public class Main {
         ModEnchantments.register(modEventBus);
         ModPotions.POTIONS.register(modEventBus);
         ModBlocks.BLOCKS.register(modEventBus);
-
+        ModNetworkHandler.registerPackets();
         ModBlocks.ITEMS.register(modEventBus);
         MinecraftForge.EVENT_BUS.addListener(this::addCreativeTab);
 //        ModDamageTypes.register(modEventBus);
@@ -199,6 +209,8 @@ public class Main {
         event.put(ModEntitys.LAO_HEI.get(), LaoHeiEntity.createAttributes().build());
         event.put(ModEntitys.NONGCHANGZHU.get(), NongChangZhuEntity.createAttributes().build());
         event.put(ModEntitys.FeiJiBei.get(), FeijiBeiEntity.createAttributes().build());
+        event.put(ModEntitys.ETH_ENTITY.get(), ETHEntity.createAttributes().build());
+
     }
 
     private void onClientSetup(final FMLClientSetupEvent event) {
@@ -210,11 +222,14 @@ public class Main {
         EntityRenderers.register(ModEntitys.CHUANGJIANGUO.get(),ChuanJianGuoEntityRenderer::new);
         EntityRenderers.register(ModEntitys.SHIKUAI.get(), ShiKuaiRenderer::new);
         EntityRenderers.register(ModEntitys.FeiJiBei.get(),FeijiBeiRenderer::new);
+        EntityRenderers.register(ModEntitys.ETH_ENTITY.get(),ETHEntityRenderer::new);
     }
 
 
     // 注册模型层定义
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(NaiLongModel.LAYER_LOCATION, NaiLongModel::createBodyLayer);
+        event.registerLayerDefinition(ETHModel.LAYER_LOCATION, ETHModel::createBodyLayer);
+
     }
 }

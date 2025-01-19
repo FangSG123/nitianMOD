@@ -18,7 +18,8 @@ public class ModPotions {
             () -> new Potion(new MobEffectInstance(ModEffects.REPEL.get(), 3600)));
     public static final RegistryObject<Potion> FAQING_POTION = POTIONS.register("faqing_potion",
             () -> new Potion(new MobEffectInstance(ModEffects.FAQING.get(), 3600)));
-
+    public static final RegistryObject<Potion> MEILIAO_POTION = POTIONS.register("meiliao_potion",
+            () -> new Potion(new MobEffectInstance(ModEffects.MEILIAO.get(), 3600)));
     public static void register(IEventBus eventBus) {
         POTIONS.register(eventBus);
     }

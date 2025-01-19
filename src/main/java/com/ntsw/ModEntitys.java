@@ -17,6 +17,10 @@ public class ModEntitys {
             () -> EntityType.Builder.of(NaiLongEntity::new, MobCategory.MONSTER)
                     .sized(3f, 6f)  // 设置实体的尺寸
                     .build(new ResourceLocation(Main.MODID, "nailong_entity").toString()));
+    public static final RegistryObject<EntityType<ETHEntity>> ETH_ENTITY = ENTITY_TYPES.register("eth_entity",
+            () -> EntityType.Builder.of(ETHEntity::new, MobCategory.MONSTER)
+                    .sized(3f, 6f)  // 设置实体的尺寸
+                    .build(new ResourceLocation(Main.MODID, "eth_entity").toString()));
     public static final RegistryObject<EntityType<HeiManBaEntity>> HeiManBa_Entity = ENTITY_TYPES.register("heimanba_entity",
             () -> EntityType.Builder.of(HeiManBaEntity::new, MobCategory.MISC)
                     .sized(0.6F, 1.8F) // 设置实体尺寸

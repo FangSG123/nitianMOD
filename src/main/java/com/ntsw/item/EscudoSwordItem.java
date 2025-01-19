@@ -30,9 +30,20 @@ public class EscudoSwordItem extends Item {
     }
 
     /**
+     * 初始化默认 NBT 数据
+     */
+    private void initializeDefaultNBT(ItemStack stack) {
+        CompoundTag tag = stack.getOrCreateTag();
+        if (!tag.contains(TAG_DAMAGE)) {
+            tag.putInt(TAG_DAMAGE, 1); // 默认伤害为 1
+        }
+    }
+
+    /**
      * 获取当前武器的伤害值
      */
     public int getCurrentDamage(ItemStack stack) {
+        initializeDefaultNBT(stack); // 确保默认值已设置
         CompoundTag tag = stack.getOrCreateTag();
         return tag.getInt(TAG_DAMAGE);
     }
@@ -41,6 +52,7 @@ public class EscudoSwordItem extends Item {
      * 设置当前武器的伤害值
      */
     public void setCurrentDamage(ItemStack stack, int damage) {
+        initializeDefaultNBT(stack); // 确保 NBT 初始化
         CompoundTag tag = stack.getOrCreateTag();
         tag.putInt(TAG_DAMAGE, Math.min(damage, MAX_DAMAGE));
     }
@@ -79,13 +91,7 @@ public class EscudoSwordItem extends Item {
         if (currentList == null || currentList.isEmpty()) {
             return false;
         }
-        String[] split = currentList.split(";");
-        for (String s : split) {
-            if (s.equals(entityKey)) {
-                return true;
-            }
-        }
-        return false;
+        return Arrays.stream(currentList.split(";")).anyMatch(entityKey::equals);
     }
 
     /**
@@ -132,8 +138,7 @@ public class EscudoSwordItem extends Item {
         if (currentList == null || currentList.isEmpty()) {
             return 0;
         }
-        String[] speciesArray = currentList.split(";");
-        return speciesArray.length;
+        return (int) Arrays.stream(currentList.split(";")).distinct().count();
     }
 
     /**
@@ -161,7 +166,6 @@ public class EscudoSwordItem extends Item {
         } else if (speciesCount >= 1) {
             return Component.literal("埃斯库多之剑 - 尘模式");
         } else {
-            // 如果还没有进入任何模式，就返回原名称（语言文件或直接写死）
             return super.getName(stack);
         }
     }
@@ -177,6 +181,9 @@ public class EscudoSwordItem extends Item {
             net.minecraft.world.item.TooltipFlag flag
     ) {
         super.appendHoverText(stack, level, tooltip, flag);
+
+        // 初始化默认 NBT
+        initializeDefaultNBT(stack);
 
         // 显示当前武器伤害
         int currentDmg = getCurrentDamage(stack);

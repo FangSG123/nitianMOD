@@ -7,7 +7,7 @@
       "entity.nitian.nongchangzhu_entity": "农场主",
       "entity.nitian.chuanjianguo_entity": "§c§l川建国",
       "entity.nitian.feijibei": "飞鸡背",
-
+    "entity.nitian.eth_entity": "我是厄塔汗",
 
       "item.nitian.htgt" : "黄桃罐头",
       "item.nitian.feijipiao" : "§6孩子们,我回来了",
@@ -52,14 +52,31 @@
       "item.nitian.daikuangtutengbig": "高额度贷款图腾",
       "item.nitian.daikuangtutengmax": "马斯克贷款图腾",
 
+
+    "item.nitian.jinbi" : "1G",
+    "item.nitian.damao" : "灭世者的死亡之帽",
+    "item.nitian.nszy" : "纳什之牙",
+    "item.nitian.guisuo" : "鬼索的狂暴之刃",
+    "item.nitian.ludeng" : "卢登的回响",
+    "item.nitian.ylxj" : "银鳞胸甲",
+    "item.nitian.fcx" : "法师之靴",
+    "item.nitian.wqzr" : "压缩的剑",
+
+
+    "item.nitian.mhapp": "催眠APP",
+
+
       "effect.nitian.damage_immunity" : "砍一刀中...",
       "effect.nitian.mingdingzhisi" : "命定之死",
       "effect.nitian.repel" : "恶臭",
-      "effect.nitian.faqing" : "发情....",
+      "effect.nitian.faqing" : "想要了是吧",
+    "effect.nitian.meiliao" : "魅了",
+
+
 
       "item.minecraft.potion.effect.repel_potion" : "奋汁",
-      "item.minecraft.potion.effect.faqing_potion" : "spring药",
-
+      "item.minecraft.potion.effect.faqing_potion" : "添加了大量粉色花瓣的药水",
+    "item.minecraft.potion.effect.meiliao_potion" : "提高魅力的药水",
         "item.minecraft.splash_potion.effect.repel_potion" : "奋汁",
         "item.minecraft.splash_potion.effect.faqing_potion" : "喷溅型spring药",
 
@@ -103,6 +120,6 @@
 
 
 
-        "effect.nitian.meiliao" : "魅了",
+
         "itemGroup.fumo_tab": "逆天附魔"
   }

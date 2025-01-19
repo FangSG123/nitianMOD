@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.nitian.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "RedStoneWireBlockMixin"
+  ],
+  "client": [
+    "RedStoneWireBlockMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

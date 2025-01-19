@@ -15,5 +15,6 @@ public class BrewingRecipes {
     public static void onCommonSetup(FMLCommonSetupEvent event) {
         // 注册自定义的酿造配方
         BrewingRecipeRegistry.addRecipe(new FaqingBrewingRecipe());
+        BrewingRecipeRegistry.addRecipe(new MeiliaoBrewingRecipe());
     }
 }

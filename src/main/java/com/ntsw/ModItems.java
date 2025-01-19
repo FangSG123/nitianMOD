@@ -45,6 +45,14 @@ public class ModItems {
             -> new FeiJiPiao(new Item.Properties()));
 
     public static final RegistryObject<Item> ZUANSHI  = ITEMS.register("zuanshi", ZuanShiItem::new);
+    public static final RegistryObject<Item> JINBI  = ITEMS.register("jinbi", CoinItem::new);
+    public static final RegistryObject<Item> DAMAO  = ITEMS.register("damao", LoLItem::new);
+    public static final RegistryObject<Item> GUISUO  = ITEMS.register("guisuo", LoLItem::new);
+    public static final RegistryObject<Item> FCX  = ITEMS.register("fcx", LoLItem::new);
+    public static final RegistryObject<Item> LUDENG  = ITEMS.register("ludeng", LoLItem::new);
+    public static final RegistryObject<Item> NSZY  = ITEMS.register("nszy", LoLItem::new);
+    public static final RegistryObject<Item> YLXJ  = ITEMS.register("ylxj", LoLItem::new);
+
     public static final RegistryObject<Item> JIFEN = ITEMS.register("jifen", JifenItem::new);
     public static final RegistryObject<Item> SHAN = ITEMS.register("shan",ShanItem::new);
     public static final RegistryObject<Item> JIU = ITEMS.register("jiu",
@@ -104,6 +112,8 @@ public class ModItems {
             () -> new KnockbackWeapon());
     public static final RegistryObject<Item> PIFENG = ITEMS.register("pifeng",
             () -> new PifengItem(new Item.Properties()));
+
+
     public static final RegistryObject<Item> DAIKUANGTUTENG = ITEMS.register("daikuangtuteng",
             () -> new DaikuangtutengItem(new Item.Properties()));
     public static final RegistryObject<Item> DAIKUANGTUTENGBIG = ITEMS.register("daikuangtutengbig",
@@ -111,12 +121,26 @@ public class ModItems {
     public static final RegistryObject<Item> DAIKUANGTUTENGMAX = ITEMS.register("daikuangtutengmax",
             () -> new DaikuangtutengItem(new Item.Properties()));
 
+    public static final RegistryObject<Item> MHAPP = ITEMS.register("mhapp",
+            () -> new MhappItem(new Item.Properties().stacksTo(1))
+    );
+
     public static final RegistryObject<Item> ESCUDO_SWORD = ITEMS.register(
             "escudo_sword",
             () -> new EscudoSwordItem(new Item.Properties()
                     .stacksTo(1) // 限制只能一把
             )
     );
+
+    public static final RegistryObject<Item> WQZR_SWORD = ITEMS.register(
+            "wqzr",
+            () -> new wqzrItem(new Item.Properties()
+                    .stacksTo(1) // 限制只能一把
+            )
+    );
+
+
+
     public static final RegistryObject<Item> LL_XIUGAIQI =
             ITEMS.register("llxiugaiqi",
                     () -> new LLXiugaiqiItem(

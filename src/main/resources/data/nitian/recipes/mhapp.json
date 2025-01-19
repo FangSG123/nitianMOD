@@ -1,0 +1,26 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+      "YYY",
+      "YXY",
+      "YZY"
+    ],
+    "key": {
+      "Y": {
+        "item": "minecraft:quartz"
+      },
+      "X": {
+        "item": "minecraft:potion",
+        "nbt": "{Potion:\"nitian:meiliao\"}"
+      },
+      "Z": {
+        "item": "minecraft:potion",
+        "nbt": "{Potion:\"nitian:faqing\"}"
+      }
+    },
+    "result": {
+      "item": "nitian:mhapp",
+      "count": 1
+    }
+  }
+  

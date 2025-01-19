@@ -104,24 +104,25 @@ public class EscudoSwordEventHandler {
     @SubscribeEvent
     public static void onEntityJoinLevel(EntityJoinLevelEvent event) {
         Entity entity = event.getEntity();
-        // 在多人游戏中，这个逻辑要非常谨慎，否则可能出现“其他玩家创造的生物也被杀”的情况。
-        // 这里演示最简单的全局处理——只要检测到某个玩家的武器中含有此类型，就把它杀了。
-        // 遍历所有在线玩家，检查他们的背包或手中的“埃斯库多之剑”
-        // 注意效率和范围（仅附近的玩家才生效？还是全球生效？）
+
+        // 仅处理服务端逻辑，避免客户端无意义运算
+        if (entity.level().isClientSide) {
+            return;
+        }
+
+        // 检查所有玩家的武器
         for (Player player : event.getLevel().players()) {
-            // 检查主手、副手、背包……这里只示例主手
             ItemStack held = player.getMainHandItem();
+
+            // 检查是否为埃斯库多之剑
             if (held.getItem() instanceof EscudoSwordItem escudoSword) {
-                // 判断该实体类型是否在自动击杀列表中
                 String entityKey = entity.getType().toString();
+
+                // 检查实体类型是否在自动击杀列表中
                 if (escudoSword.isInAutoKillList(held, entityKey)) {
-                    // 立即 Kill
-                    if (entity instanceof LivingEntity living) {
-                        living.kill();
-                        // 或者 living.setHealth(0.0F);
-                    } else {
-                        entity.discard(); // 如果是别的非 LivingEntity 类型，也可以直接移除
-                    }
+                    // 阻止实体生成
+                    event.setCanceled(true);
+                    return; // 避免继续遍历，提升性能
                 }
             }
         }

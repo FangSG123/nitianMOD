@@ -25,8 +25,7 @@ public class MeiliaoRenderHandler {
         Font font = minecraft.font;
 
         // 动态检查生物是否仍然拥有“meiliao”效果
-        MobEffectInstance meiliaoEffect = entity.getEffect(ModEffects.MEILIAO.get());
-        if (meiliaoEffect != null && meiliaoEffect.getDuration() > 0) {
+        if (entity.hasEffect(ModEffects.MEILIAO.get())) {
             // 设置要显示的文本
             String text = "魅了";
 
